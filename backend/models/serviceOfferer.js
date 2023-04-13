@@ -18,6 +18,7 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
   ServiceOfferer.associate = (models) => {
+    ServiceOfferer.belongsTo(models.User);
     ServiceOfferer.hasMany(models.Order);
     ServiceOfferer.belongsToMany(models.Service, {
       through: models.ServiceOffererServiceBind,

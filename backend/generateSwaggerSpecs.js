@@ -7,7 +7,7 @@ const doc = {
         description: '',  // by default: ''
     },
     host: '',      // by default: 'localhost:3000'
-    basePath: '',  // by default: '/'
+    basePath: '/api/',  // by default: '/'
     schemes: [],   // by default: ['http']
     consumes: [],  // by default: ['application/json']
     produces: [],  // by default: ['application/json']

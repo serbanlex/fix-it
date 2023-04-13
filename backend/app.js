@@ -23,8 +23,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routers
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+const apiEntryPoint = '/api';
+app.use(apiEntryPoint, indexRouter);
+app.use(apiEntryPoint, usersRouter);
 
 // api docs
 app.use(

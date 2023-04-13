@@ -7,7 +7,8 @@ module.exports = (sequelize, Sequelize) => {
         },
     });
     Client.associate = (models) => {
-        Client.hasMany(models.Order)
+        Client.hasMany(models.Order);
+        Client.belongsTo(models.User);
     };
     return Client;
 };

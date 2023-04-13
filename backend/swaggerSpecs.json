@@ -6,7 +6,7 @@
     "description": ""
   },
   "host": "",
-  "basePath": "",
+  "basePath": "/api/",
   "tags": [
     {
       "name": "",
