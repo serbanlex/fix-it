@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const userValidator = Joi.object({
+const userSchema = Joi.object({
   ID: Joi.number().integer().positive(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
@@ -9,4 +9,4 @@ const userValidator = Joi.object({
   password: Joi.string().required(),
 });
 
-module.exports = userValidator;
+module.exports = userSchema;

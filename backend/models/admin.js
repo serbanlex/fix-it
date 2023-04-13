@@ -2,8 +2,8 @@ module.exports = (sequelize, Sequelize) => {
     const Admin = sequelize.define("Admin", {
         ID: {
             type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
+            primaryKey: true,
+            references: { model: 'User', key: 'id', onDelete: 'CASCADE'} 
         },
     });
     Admin.associate = (models) => {

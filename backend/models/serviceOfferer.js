@@ -1,8 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
   const ServiceOfferer = sequelize.define("ServiceOfferer", {
-    ID: {
+      ID: {
         'type': Sequelize.INTEGER,
-        'primaryKey': true
+        'primaryKey': true,
+        references: { model: 'User', key: 'id', onDelete: 'CASCADE'} 
       },
       firmName: {
         'type': Sequelize.STRING, 
@@ -20,10 +21,7 @@ module.exports = (sequelize, Sequelize) => {
   ServiceOfferer.associate = (models) => {
     ServiceOfferer.belongsTo(models.User);
     ServiceOfferer.hasMany(models.Order);
-    ServiceOfferer.belongsToMany(models.Service, {
-      through: models.ServiceOffererServiceBind,
-      foreignKey: 'ServiceOffererID'
-    });
+    ServiceOfferer.hasMany(models.OfferedService);
   };
   return ServiceOfferer;
 };

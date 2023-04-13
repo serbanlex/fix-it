@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
     });
     Service.associate = (models) => {
         Service.belongsToMany(models.ServiceOfferer, {
-            through: models.ServiceOffererServiceBind,
+            through: models.OfferedService,
             foreignKey: 'ServiceID'
           });
     };

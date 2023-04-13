@@ -2,12 +2,12 @@ const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {
     info: {
-        version: '',      // by default: '1.0.0'
-        title: '',        // by default: 'REST API'
+        version: '1.0.0',      // by default: '1.0.0'
+        title: 'Fix-It API',        // by default: 'REST API'
         description: '',  // by default: ''
     },
     host: '',      // by default: 'localhost:3000'
-    basePath: '/api/',  // by default: '/'
+    basePath: '/',  // by default: '/'
     schemes: [],   // by default: ['http']
     consumes: [],  // by default: ['application/json']
     produces: [],  // by default: ['application/json']

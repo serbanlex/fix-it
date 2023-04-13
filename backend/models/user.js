@@ -1,3 +1,5 @@
+const phoneValidationRegex = /\d{3}-\d{3}-\d{4}/;
+
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("User", {
         ID: {
@@ -23,7 +25,9 @@ module.exports = (sequelize, Sequelize) => {
         phoneNumber: {
             type: Sequelize.STRING,
             validate: {
-                isEmail: true,
+                validator: function(v) {
+                    return phoneValidationRegex.test(v); 
+                }
             },
             allowNull: false,
         },

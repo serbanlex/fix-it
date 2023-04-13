@@ -6,7 +6,7 @@ var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./swaggerSpecs.json')
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var clientsRouter = require('./routes/clients');
 const db = require("./models");
 
 var app = express();
@@ -23,17 +23,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routers
-const apiEntryPoint = '/api';
+const apiEntryPoint = '/';
 app.use(apiEntryPoint, indexRouter);
-app.use(apiEntryPoint, usersRouter);
+app.use(apiEntryPoint, clientsRouter);
 
 // api docs
 app.use(
-    "/api/docs",
+    "/docs",
     swaggerUi.serve,
     swaggerUi.setup(swaggerSpecs)
 );
-
 
 db.sequelize
     .sync({ force: true }).then( () => {
