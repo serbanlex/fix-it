@@ -1,62 +1,53 @@
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
-const swaggerSpecs = require('./swaggerSpecs.json')
-var indexRouter = require('./routes/index');
-var clientsRouter = require('./routes/clients');
-const db = require("./models");
+const swaggerSpecs = require('./config/swaggerSpecs.json')
+var routes = require('./routes');
+const db = require("./models/index");
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 // loggers
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // routers
-const apiEntryPoint = '/';
-app.use(apiEntryPoint, indexRouter);
-app.use(apiEntryPoint, clientsRouter);
+app.use("/", routes);
 
 // api docs
 app.use(
-    "/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpecs)
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpecs)
 );
 
+
+// db table syncing
 db.sequelize
-    .sync({ force: true }).then( () => {
-      console.log("Synced (created) db models")
-    })
-    .catch ( (error) => {
-      console.error('Unable to sync models:', error);
-    })
+  .sync({ force: false }).then(() => {
+    console.log("Synced (created) db models")
+  })
+  .catch((error) => {
+    console.error('Unable to sync models:', error);
+  })
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
+  console.log("Accessed a non-existent route: " + req.url)
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(500).json({ message: 'Something went wrong' });
 });
 
 module.exports = app;

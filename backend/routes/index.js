@@ -1,8 +1,8 @@
 var express = require('express');
-var router = express.Router();
+const clients = require('./clients');
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const router = express.Router();
+
+router.use(clients);
 
 module.exports = router;

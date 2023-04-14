@@ -7,16 +7,18 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "swaggerSpecs.json"
+      "config/swaggerSpecs.json"
     ],
     "events": {
-      "restart": "node generateSwaggerSpecs.js"
+      "restart": "node config/generateSwaggerSpecs.js"
     }
   },
   "dependencies": {
     "@apidevtools/swagger-express-middleware": "^4.0.2",
+    "bcrypt": "^5.1.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "eslint": "^8.38.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",

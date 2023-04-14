@@ -3,12 +3,16 @@ module.exports = (sequelize, Sequelize) => {
         ID: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            references: { model: 'Users', key: 'ID', onDelete: 'CASCADE'} 
+            references: { model: 'User', key: 'ID', onDelete: 'CASCADE' }
+        },
+        history: {
+            type: Sequelize.STRING,
+            nullable: true,
         },
     });
     Client.associate = (models) => {
         Client.hasMany(models.Order);
-        Client.belongsTo(models.User, {foreignKey: 'ID', targetKey: 'ID'});
+        Client.belongsTo(models.User, { foreignKey: 'ID', targetKey: 'ID', as: 'userInfo' });
     };
     return Client;
 };

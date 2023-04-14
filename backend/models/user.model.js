@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
         ID: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
-            primaryKey: true
+            primaryKey: true,
         },
         firstName: {
             type: Sequelize.STRING,
@@ -21,15 +21,17 @@ module.exports = (sequelize, Sequelize) => {
                 isEmail: true,
             },
             allowNull: false,
+            unique: true,
         },
         phoneNumber: {
             type: Sequelize.STRING,
             validate: {
-                validator: function(v) {
-                    return phoneValidationRegex.test(v); 
+                validator: function (v) {
+                    return phoneValidationRegex.test(v);
                 }
             },
             allowNull: false,
+            unique: true,
         },
         password: {
             type: Sequelize.STRING,
