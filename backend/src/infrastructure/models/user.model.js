@@ -39,7 +39,7 @@ module.exports = (sequelize, Sequelize) => {
         },
     });
     User.associate = (models) => {
-        User.hasOne(models.Admin)
+        User.hasOne(models.Client, { foreignKey: 'ID', sourceKey: 'ID', as: 'clientInfo' });
     };
     return User;
 };

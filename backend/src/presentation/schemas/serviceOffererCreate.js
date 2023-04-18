@@ -1,6 +1,6 @@
-const userBaseCreate = require('./userBaseCreate')
+const userBaseCreate = require('./userCreate')
 
-const serviceOffererCreate = userBaseCreate.keys(
+module.exports = userBaseCreate.keys(
     {
         firmName: Joi.string().required(),
         CUI: Joi.string().required(),

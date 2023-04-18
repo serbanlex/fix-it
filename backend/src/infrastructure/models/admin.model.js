@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
         ID: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            references: { model: 'User', key: 'id', onDelete: 'CASCADE' }
+            references: { model: 'Users', key: 'ID', onDelete: 'CASCADE' }
         },
     });
     Admin.associate = (models) => {

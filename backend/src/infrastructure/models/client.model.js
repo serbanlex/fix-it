@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
         ID: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            references: { model: 'User', key: 'ID', onDelete: 'CASCADE' }
+            references: { model: 'Users', key: 'ID', onDelete: 'CASCADE' }
         },
         history: {
             type: Sequelize.STRING,
@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
     });
     Client.associate = (models) => {
         Client.hasMany(models.Order);
-        Client.belongsTo(models.User, { foreignKey: 'ID', targetKey: 'ID', as: 'userInfo' });
+        Client.belongsTo(models.User, { foreignKey: 'ID', targetKey: 'ID', as: 'userInfo', onDelete: 'CASCADE' });
     };
     return Client;
 };

@@ -4,8 +4,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./config/swaggerSpecs.json')
-var routes = require('./routes');
-const db = require("./models/index");
+var routes = require('./presentation/routes');
+const db = require("./infrastructure/models");
 
 var app = express();
 

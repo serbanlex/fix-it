@@ -7,10 +7,10 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "config/swaggerSpecs.json"
+      "src/config/swaggerSpecs.json"
     ],
     "events": {
-      "restart": "node config/generateSwaggerSpecs.js"
+      "restart": "node src/config/generateSwaggerSpecs.js"
     }
   },
   "dependencies": {

@@ -1,7 +1,8 @@
-const { EntityAlreadyExists } = require('../exceptions');
+const { EntityAlreadyExists, EntityNotFound } = require('../../exceptions');
 const { User } = require('../models');
 const { Op } = require('sequelize');
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const { deleteById } = require('./client.repo');
 
 class UserRepository {
     async create(userInfo) {
@@ -15,6 +16,26 @@ class UserRepository {
         } catch (error) {
             throw new Error('Failed to create user. Reason: ' + error);
         }
+    }
+
+    async getAll() {
+        return await User.findAll({ include: 'clientInfo', exclude: ['ID'] });
+    }
+
+    async getById(id) {
+        const user = await User.findByPk(id, { include: 'clientInfo', exclude: ['ID'] });
+        if (!user) {
+            throw new EntityNotFound('User not found');
+        }
+        return user;
+    }
+
+    async deleteById(id) {
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw new EntityNotFound('User not found');
+        }
+        return await user.destroy();
     }
 
     async credentialsInUse(email, phone) {

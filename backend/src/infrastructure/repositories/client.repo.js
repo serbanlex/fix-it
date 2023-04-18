@@ -1,4 +1,4 @@
-const { EntityAlreadyExists, EntityNotFound } = require('../exceptions');
+const { EntityAlreadyExists, EntityNotFound } = require('../../exceptions');
 const { Client, User } = require('../models');
 const userRepo = require('./user.repo');
 
@@ -17,26 +17,23 @@ class ClientRepository {
     }
 
     async getById(id) {
-        try {
-            const result = await Client.findByPk(
-                id,
-                {
-                    include: [
-                        {
-                            model: User,
-                            required: true,
-                            attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] },
-                            as: "userInfo"
-                        }
-                    ],
-                },
-            );
-            return result ? result : null;
+        const result = await Client.findByPk(
+            id,
+            {
+                include: [
+                    {
+                        model: User,
+                        required: true,
+                        attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] },
+                        as: "userInfo"
+                    }
+                ],
+            },
+        );
+        if (!result) {
+            throw new EntityNotFound(`Client with ID ${id} not found`);
         }
-        catch (error) {
-            console.log("Error getting client by id. Reason: " + error);
-            throw error;
-        }
+        return result;
 
     }
 
@@ -56,10 +53,11 @@ class ClientRepository {
     }
 
     async deleteById(id) {
-        const result = await Client.destroy({
-            where: { ID: id },
-        });
-        return result === 1;
+        const client = await Client.findByPk(id);
+        if (!client) {
+            throw new EntityNotFound('Client not found');
+        }
+        return await client.destroy();
     }
 
     async getAll() {
