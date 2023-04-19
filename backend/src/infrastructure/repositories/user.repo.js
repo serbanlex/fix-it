@@ -19,11 +19,16 @@ class UserRepository {
     }
 
     async getAll() {
-        return await User.findAll({ include: 'clientInfo', exclude: ['ID'] });
+        return await User.findAll({ include: ['clientInfo', 'serviceOffererInfo'], exclude: ['ID'] });
     }
 
     async getById(id) {
-        const user = await User.findByPk(id, { include: 'clientInfo', exclude: ['ID'] });
+        const user = await User.findByPk(id, {
+            include: [
+                { model: Client, as: 'clientInfo', exclude: ['ID', 'createdAt', 'updatedAt'] },
+                { model: ServiceOfferer, as: 'serviceOffererInfo', exclude: ['ID', 'createdAt', 'updatedAt'] }
+            ],
+        });
         if (!user) {
             throw new EntityNotFound('User not found');
         }

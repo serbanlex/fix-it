@@ -16,6 +16,7 @@
   "dependencies": {
     "@apidevtools/swagger-express-middleware": "^4.0.2",
     "bcrypt": "^5.1.0",
+    "class-transformer": "^0.5.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "eslint": "^8.38.0",

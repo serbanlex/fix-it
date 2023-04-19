@@ -59,7 +59,7 @@
                 },
                 "phoneNumber": {
                   "type": "string",
-                  "example": "123-456-7890"
+                  "example": "0773-456-789"
                 },
                 "password": {
                   "type": "string",
@@ -156,6 +156,128 @@
       "delete": {
         "tags": [
           "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/serviceOfferers": {
+      "get": {
+        "tags": [
+          "ServiceOfferers"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ServiceOfferers"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "client",
+            "in": "body",
+            "description": "Basic user details of the service offerer, including his firm information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "Jhon"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "some@email.com"
+                },
+                "phoneNumber": {
+                  "type": "string",
+                  "example": "0772-456-789"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "user"
+                },
+                "firmName": {
+                  "type": "string",
+                  "example": "FixIt"
+                },
+                "firmCity": {
+                  "type": "string",
+                  "example": "Montreal"
+                },
+                "firmAddress": {
+                  "type": "string",
+                  "example": "1234 Main St"
+                },
+                "CUI": {
+                  "type": "string",
+                  "example": "RO12345678"
+                },
+                "CAEN": {
+                  "type": "string",
+                  "example": "4123"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "phoneNumber",
+                "password",
+                "firmName",
+                "firmCity",
+                "firmAddress",
+                "CUI",
+                "CAEN"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/serviceOfferers/{id}": {
+      "get": {
+        "tags": [
+          "ServiceOfferers"
         ],
         "description": "",
         "parameters": [

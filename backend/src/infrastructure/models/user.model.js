@@ -1,4 +1,4 @@
-const phoneValidationRegex = /\d{3}-\d{3}-\d{4}/;
+const phoneValidationRegex = /\d{4}-\d{3}-\d{3}/;
 
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("User", {
@@ -40,6 +40,7 @@ module.exports = (sequelize, Sequelize) => {
     });
     User.associate = (models) => {
         User.hasOne(models.Client, { foreignKey: 'ID', sourceKey: 'ID', as: 'clientInfo' });
+        User.hasOne(models.ServiceOfferer, { foreignKey: 'ID', sourceKey: 'ID', as: 'serviceOffererInfo' });
     };
     return User;
 };

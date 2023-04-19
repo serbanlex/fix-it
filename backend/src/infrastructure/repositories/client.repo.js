@@ -5,11 +5,14 @@ const userRepo = require('./user.repo');
 class ClientRepository {
     async create(clientInfo) {
         let client;
+        let user;
         try {
-            const user = await userRepo.create(clientInfo);
+            user = await userRepo.create(clientInfo);
             client = await Client.create({ "ID": user.ID });
-            client = client.toJSON();
         } catch (error) {
+            if (user) {
+                userRepo.deleteById(user.ID);
+            }
             console.log("Error creating client: " + error);
             throw error;
         }
@@ -24,7 +27,7 @@ class ClientRepository {
                     {
                         model: User,
                         required: true,
-                        attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] },
+                        attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] },
                         as: "userInfo"
                     }
                 ],

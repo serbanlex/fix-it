@@ -31,6 +31,9 @@ db.sequelize
   .sync({ force: false }).then(() => {
     console.log("Synced (created) db models")
   })
+  .then(() => {
+    console.log("App started on localhost:3000, docs available on localhost:3000/docs")
+  })
   .catch((error) => {
     console.error('Unable to sync models:', error);
   })
