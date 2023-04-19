@@ -33,20 +33,20 @@ module.exports = {
     async createServiceOfferer(req, res, next) {
         // #swagger.tags = ['ServiceOfferers']
         /*  #swagger.parameters['client'] = {
-                    in: 'body',
-                    description: 'Basic user details of the service offerer, including his firm information',
-                    schema: {
-                        $firstName: 'Jhon',
-                        $lastName: 'Doe',
-                        $email: 'some@email.com',
-                        $phoneNumber: '0772-456-789',
-                        $password: 'user',
-                        $firmName: 'FixIt',
-                        $firmCity: 'Montreal',
-                        $firmAddress: '1234 Main St',
-                        $CUI: 'RO12345678',
-                        $CAEN: '4123'
-                    }
+                in: 'body',
+                description: 'Basic user details of the service offerer, including his firm information',
+                schema: {
+                    $firstName: 'Jhon',
+                    $lastName: 'Doe',
+                    $email: 'some@email.com',
+                    $phoneNumber: '0772-456-789',
+                    $password: 'user',
+                    $firmName: 'FixIt',
+                    $firmCity: 'Montreal',
+                    $firmAddress: '1234 Main St',
+                    $CUI: 'RO12345678',
+                    $CAEN: '4123'
+                }
             } 
           #swagger.tags = ['Clients']
         */

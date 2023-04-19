@@ -18,8 +18,15 @@ class EntityAlreadyExists extends FixItError {
     }
 }
 
+class InvalidCredentials extends FixItError {
+    constructor(message) {
+        super(message, 401);
+    }
+}
+
 module.exports = {
     FixItError,
     EntityNotFound,
-    EntityAlreadyExists
+    EntityAlreadyExists,
+    InvalidCredentials
 }

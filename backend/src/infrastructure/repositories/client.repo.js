@@ -19,6 +19,20 @@ class ClientRepository {
         return this.getById(client.ID);
     }
 
+    async getAll() {
+        const result = await Client.findAll({
+            include: [
+                {
+                    model: User,
+                    required: true,
+                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] },
+                    as: "userInfo"
+                }
+            ],
+        });
+        return result.map((client) => client.toJSON());
+    }
+
     async getById(id) {
         const result = await Client.findByPk(
             id,
@@ -61,20 +75,6 @@ class ClientRepository {
             throw new EntityNotFound('Client not found');
         }
         return await client.destroy();
-    }
-
-    async getAll() {
-        const result = await Client.findAll({
-            include: [
-                {
-                    model: User,
-                    required: true,
-                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] },
-                    as: "userInfo"
-                }
-            ],
-        });
-        return result.map((client) => client.toJSON());
     }
 }
 

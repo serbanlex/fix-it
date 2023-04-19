@@ -32,15 +32,15 @@ module.exports = {
 
     async createClient(req, res) {
         /*  #swagger.parameters['client'] = {
-                    in: 'body',
-                    description: 'Basic user details of the client',
-                    schema: {
-                        $firstName: 'Jhon',
-                        $lastName: 'Doe',
-                        $email: 'bla@bla.com',
-                        $phoneNumber: '0773-456-789',
-                        $password: '123456',
-                    }
+                in: 'body',
+                description: 'Basic user details of the client',
+                schema: {
+                    $firstName: 'Jhon',
+                    $lastName: 'Doe',
+                    $email: 'bla@bla.com',
+                    $phoneNumber: '0773-456-789',
+                    $password: '123456',
+                }
             } 
           #swagger.tags = ['Clients']
             */

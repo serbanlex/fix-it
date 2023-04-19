@@ -6,6 +6,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./config/swaggerSpecs.json')
 var routes = require('./presentation/routes');
 const db = require("./infrastructure/models");
+const path = require('path');
+
+require('dotenv').config({ path: path.join(__dirname, 'config', '.env') })
 
 var app = express();
 
@@ -32,7 +35,7 @@ db.sequelize
     console.log("Synced (created) db models")
   })
   .then(() => {
-    console.log("App started on localhost:3000, docs available on localhost:3000/docs")
+    console.log("App started on localhost:3000, docs available on localhost:3000/docs ")
   })
   .catch((error) => {
     console.error('Unable to sync models:', error);
@@ -50,6 +53,7 @@ app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+  console.log(err);
   res.status(500).json({ message: 'Something went wrong' });
 });
 
