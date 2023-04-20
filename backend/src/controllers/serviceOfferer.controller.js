@@ -8,11 +8,7 @@ module.exports = {
             const serviceOffererData = await ServiceOffererRepo.getAll();
             res.status(200).json(serviceOffererData);
         } catch (error) {
-            if (error instanceof FixItError) {
-                res.status(error.statusCode).json({ error: error.message });
-            }
-            console.log(error);
-            res.status(500).json({ error: error.message });
+            next(error);
         }
     },
 
@@ -22,11 +18,7 @@ module.exports = {
             const serviceOffererData = await ServiceOffererRepo.getById(req.params.id);
             res.status(200).json(serviceOffererData);
         } catch (error) {
-            if (error instanceof FixItError) {
-                res.status(error.statusCode).json({ error: error.message });
-            }
-            console.log(error);
-            res.status(500).json({ error: error.message });
+            next(error);
         }
     },
 
@@ -54,11 +46,7 @@ module.exports = {
             const serviceOffererData = await ServiceOffererRepo.create(req.body);
             res.status(200).json(serviceOffererData);
         } catch (error) {
-            if (error instanceof FixItError) {
-                res.status(error.statusCode).json({ error: error.message });
-            }
-            console.log(error);
-            res.status(500).json({ error: error.message });
+            next(error);
         }
     },
 };

@@ -20,11 +20,7 @@ module.exports = {
             res.status(200).cookie('session', token, { httpOnly: true, sameSite: 'strict' }).json(loggedInUser);
         }
         catch (error) {
-            if (error instanceof FixItError) {
-                res.status(error.statusCode).json({ error: error.message });
-            }
-            console.log(error);
-            res.status(500).json({ error: error.message });
+            next(error);
         }
     }
 };

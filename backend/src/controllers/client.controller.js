@@ -8,11 +8,7 @@ module.exports = {
             const userData = await clientRepo.getAll();
             res.status(200).json(userData);
         } catch (error) {
-            if (error instanceof FixItError) {
-                res.status(error.statusCode).json({ error: error.message });
-            }
-            console.log(error);
-            res.status(500).json({ error: error.message });
+            next(error);
         }
     },
 
@@ -22,11 +18,7 @@ module.exports = {
             const userData = await clientRepo.getById(req.params.id);
             res.status(200).json(userData);
         } catch (error) {
-            if (error instanceof FixItError) {
-                res.status(error.statusCode).json({ error: error.message });
-            }
-            console.log(error);
-            res.status(500).json({ error: error.message });
+            next(error);
         }
     },
 
@@ -51,11 +43,7 @@ module.exports = {
                 res.status(200).json(client);
             })
             .catch((error) => {
-                if (error instanceof FixItError) {
-                    res.status(error.statusCode).json({ error: error.message });
-                }
-                console.log(error);
-                res.status(500).json({ error: error.message });
+                next(error);
             });
     },
 };
