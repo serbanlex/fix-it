@@ -8,9 +8,8 @@ module.exports = async (email, password) => {
     if (!loggedInUser) {
         throw new InvalidCredentials("Invalid credentials");
     }
-
     const token = jwt.sign(
-        loggedInUser.toJSON(),
+        { user: loggedInUser },
         process.env.JWT_SECRET,
         {
             expiresIn: "24h"

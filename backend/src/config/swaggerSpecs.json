@@ -271,7 +271,7 @@
         }
       }
     },
-    "/sessions": {
+    "/session": {
       "post": {
         "tags": [
           "Sessions"
@@ -307,6 +307,30 @@
           },
           "422": {
             "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Sessions"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sessions"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
