@@ -30,9 +30,18 @@ class JWTDecodeError extends FixItError {
     }
 }
 
+class Unauthorized extends FixItError {
+    constructor(message) {
+        super(message, 401);
+    }
+}
+
+
 module.exports = {
     FixItError,
     EntityNotFound,
     EntityAlreadyExists,
-    InvalidCredentials
+    InvalidCredentials,
+    JWTDecodeError,
+    Unauthorized
 }
