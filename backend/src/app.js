@@ -31,7 +31,7 @@ app.use(
 
 // db table syncing
 db.sequelize
-  .sync({ force: false }).then(() => {
+  .sync({ force: true }).then(() => {
     console.log("Synced (created) db models")
   })
   .then(() => {

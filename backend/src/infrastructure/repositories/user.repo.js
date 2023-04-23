@@ -76,9 +76,10 @@ class UserRepository {
             return false;
         }
         const validCredentials = bcrypt.compareSync(password, user.password);
-        if (validCredentials) {
-            return user;
+        if (!validCredentials) {
+            return null;
         }
+        return this.getById(user.ID);
     }
 
     async credentialsInUse(email, phone) {

@@ -5,12 +5,23 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true,
             primaryKey: true
         },
+        name: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        description: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
     });
     Service.associate = (models) => {
         Service.belongsToMany(models.ServiceOfferer, {
             through: models.OfferedService,
             foreignKey: 'ServiceID'
-          });
+        });
+        Service.hasOne(models.ServiceCategory, {
+            foreignKey: 'ServiceID', as: 'category'
+        })
     };
     return Service;
 };
