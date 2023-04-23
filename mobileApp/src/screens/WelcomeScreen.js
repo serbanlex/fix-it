@@ -1,8 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Button } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './LoginScreen.js';
 
-const WelcomeScreen = ({ navigation }) => {
+function HomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <ImageBackground
@@ -21,6 +24,17 @@ const WelcomeScreen = ({ navigation }) => {
         </View>
     );
 };
+
+const Stack = createNativeStackNavigator();
+
+function WelcomeScreen() {
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}} />
+    </Stack.Navigator>
+  );
+}
 
 const styles = StyleSheet.create({
     container: {
