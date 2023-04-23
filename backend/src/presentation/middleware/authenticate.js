@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { Unauthorized } = require('../../exceptions');
 
 module.exports = (req, res, next) => {
-    const token = req.cookies.jwt;
+    const token = req.cookies.session;
     if (!token) {
         throw new Unauthorized('No authorization token provided');
     }

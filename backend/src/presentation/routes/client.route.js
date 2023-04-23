@@ -8,7 +8,7 @@ const authenticate = require('../middleware/authenticate');
 
 router.get('/clients', authenticate, clientController.getAllClients);
 router.get('/clients/:id', authenticate, clientController.getClientById);
-router.post('/clients', authenticate, validate(clientCreateSchema), clientController.createClient);
+router.post('/clients', validate(clientCreateSchema), clientController.createClient);
 
 
 module.exports = router;
