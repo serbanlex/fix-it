@@ -7,6 +7,7 @@ const swaggerSpecs = require('./config/swaggerSpecs.json')
 var routes = require('./presentation/routes');
 const db = require("./infrastructure/models");
 const path = require('path');
+var cors = require('cors')
 
 require('dotenv').config({ path: path.join(__dirname, 'config', '.env') })
 
@@ -28,7 +29,8 @@ app.use(
   swaggerUi.setup(swaggerSpecs)
 );
 
-
+// enable cors for the mobile app (frontend) running on a different port
+app.use(cors())
 // db table syncing
 db.sequelize
   .sync({ force: false }).then(() => {
