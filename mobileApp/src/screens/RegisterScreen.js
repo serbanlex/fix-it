@@ -1,18 +1,41 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Alert } from 'react-native';
 import { Button } from 'native-base';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
+import {useNavigation } from '@react-navigation/native';
+import {useForm, Controller} from 'react-hook-form';
 
-function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-    const onRegisterPressed = () => {
-        console.warn('Register Pressed');
-    }
+function RegisterScreen({}) {
+    const navigation = useNavigation();
+
+    const {control, handleSubmit, watch} = useForm();
+    const pwd = watch('password');
+
+    const onRegisterPressed = async data => {
+      try {
+        const response = await fetch('http://192.168.100.70:3000/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          // Registration successful, navigate to confirmation screen
+          navigation.navigate('ConfirmEmail');
+        } else {
+          // Registration failed, show error message
+          Alert.alert('Registration Error', 'Failed to register user.');
+        }
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Registration Error', 'Failed to register user.');
+      }
+    };
 
     return (
     <ScrollView showsVerticalScrollIndicator={false} >
@@ -24,28 +47,49 @@ function LoginScreen({ navigation }) {
                 <Text style={styles.buttonText}>Back</Text>
             </Button>
             <CustomInput
+            name="username"
+            control={control}
             placeholder="Username"
-            value={username}
-            setValue={setUsername}
+            rules={{required: 'Username is required',
+                    minLength: {value: 3, message: 'Username must be at least 3 characters long'},
+                    maxLength: {value: 21, message: 'Username must be at most 21 characters long'}
+            }}
             />
             <CustomInput
+            name="email"
+            control={control}
             placeholder="Email"
-            value={email}
-            setValue={setEmail}
+            rules={{required: 'Email is required',
+                    pattern: {value: EMAIL_REGEX, message: 'Invalid email address'}
+            }}
             />
             <CustomInput
+            name="phoneNumber"
+            control={control}
             placeholder="Phone Number"
-            value={phoneNumber}
-            setValue={setPhoneNumber}
+            rules={{required: 'Phone Number is required'}}
             />
             <CustomInput
+            name="password"
+            control={control}
             placeholder="Password"
-            value={password}
-            setValue={setPassword}
             secureTextEntry={true}
+            rules={{required: 'Password is required',
+                    minLength: {value: 8, message: 'Password must be at least 8 characters long'},
+            }}
+            />
+            <CustomInput
+            name="password-repeat"
+            control={control}
+            placeholder="Repeat Password"
+            secureTextEntry={true}
+            rules={{
+                validate: value =>
+                    value == pwd || 'Passwords do not match',
+            }}
             />
 
-            <CustomButton text="Register" onPress={onRegisterPressed} />
+            <CustomButton text="Register" onPress={handleSubmit(onRegisterPressed)} />
         </View>
     </ScrollView>
     );
@@ -72,4 +116,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

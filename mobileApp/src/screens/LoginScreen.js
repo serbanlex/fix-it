@@ -1,22 +1,30 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, TextInput } from 'react-native';
 import { Button } from 'native-base';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
+import {useNavigation } from '@react-navigation/native';
+import {useForm, Controller} from 'react-hook-form';
+import {Auth} from 'aws-amplify';
 
-function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+function LoginScreen({}) {
+    const navigation = useNavigation();
 
-    const onLogInPressed = () => {
-        console.warn('Log In Pressed');
-    }
-    const onForgotPasswordPressed = () => {
-        console.warn('Forgot Password Pressed');
-    }
-    const onRegisterPressed = () => {
-        console.warn('Register Pressed');
-    }
+    const {control, handleSubmit, formState: {errors}} = useForm();
+
+    console.log(errors);
+
+    const onLogInPressed = async data => {
+        navigation.navigate('Home');
+      };
+
+      const onForgotPasswordPressed = () => {
+        navigation.navigate('ForgotPassword');
+      };
+
+      const onRegisterPressed = () => {
+        navigation.navigate('Register');
+      };
 
     return (
     <ScrollView showsVerticalScrollIndicator={false} >
@@ -28,18 +36,20 @@ function LoginScreen({ navigation }) {
                 <Text style={styles.buttonText}>Back</Text>
             </Button>
             <CustomInput
+            name="username"
             placeholder="Username"
-            value={username}
-            setValue={setUsername}
+            control={control}
+            rules={{required: 'Username is required', minLength: {value: 3, message: 'Username must be at least 3 characters long'}}}
             />
             <CustomInput
+            name="password"
             placeholder="Password"
-            value={password}
-            setValue={setPassword}
             secureTextEntry={true}
+            control={control}
+            rules={{required: 'Password is required', minLength: {value: 6, message: 'Password must be at least 6 characters long'}}}
             />
 
-            <CustomButton text="Log In" onPress={onLogInPressed} />
+            <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
             <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
             <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
         </View>

@@ -5,8 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './LoginScreen.js';
 import RegisterScreen from './RegisterScreen.js';
+import HomePage from './HomePage.js';
+import ConfirmEmailScreen from './ConfirmEmailScreen.js';
+import ForgotPasswordScreen from './ForgotPasswordScreen.js';
+import NewPasswordScreen from './NewPasswordScreen.js';
 
-function HomeScreen({ navigation }) {
+function StartScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.overlay} />
@@ -25,10 +29,14 @@ const Stack = createNativeStackNavigator();
 
 function WelcomeScreen() {
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    <Stack.Navigator initialRouteName="Start">
+      <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false}} />
+      <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false}} />
+      <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} options={{ headerShown: false}} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false}} />
+        <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false}} />
     </Stack.Navigator>
   );
 }
