@@ -4,6 +4,7 @@ import { Button } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './LoginScreen.js';
+import RegisterScreen from './RegisterScreen.js';
 
 function HomeScreen({ navigation }) {
     return (
@@ -27,6 +28,7 @@ function WelcomeScreen() {
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}} />
+      <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false}} />
     </Stack.Navigator>
   );
 }
