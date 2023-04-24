@@ -13,6 +13,18 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        serviceCategoryID: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            validate: {
+                notNull: {
+                    msg: 'A category ID is required'
+                },
+                notEmpty: {
+                    msg: 'A category ID is required'
+                }
+            }
+        }
     });
     Service.associate = (models) => {
         Service.belongsToMany(models.ServiceOfferer, {

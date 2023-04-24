@@ -16,7 +16,7 @@ module.exports = (sequelize, Sequelize) => {
     });
     ServiceCategory.associate = (models) => {
         ServiceCategory.hasMany(models.Service, {
-            as: 'services'
+            as: 'services', foreignKey: 'serviceCategoryID'
         });
     }
     return ServiceCategory;

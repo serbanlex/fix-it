@@ -1,12 +1,16 @@
-const Service = require("../models/service.model");
 const { Op } = require('sequelize');
-
+const { FixItError } = require("../../exceptions");
+const { Service } = require("../models");
+const { EntityNotFound } = require("../../exceptions");
 
 class ServiceRepository {
     async create(serviceInfo) {
         try {
             return await Service.create(serviceInfo);
         } catch (error) {
+            if (error.name === 'SequelizeForeignKeyConstraintError') {
+                throw new EntityNotFound(`ServiceCategory with ID ${serviceInfo.serviceCategoryID} not found`);
+            }
             throw new Error('Failed to create service. Reason: ' + error);
         }
     }
@@ -21,6 +25,22 @@ class ServiceRepository {
             throw new EntityNotFound('Service not found');
         }
         return service;
+    }
+
+    async getServiceOfferersThatOfferService(serviceId) {
+        await this.getById(serviceId);
+        try {
+            const services = await Service.findByPk(serviceId, {
+                include: [{
+                    model: ServiceOfferer,
+                    as: 'serviceOfferers'
+                }]
+            });
+            return services.serviceOfferers;
+        } catch (error) {
+            console.log(`Failed to get service offerers that offer service with ID ${serviceId}. Reason: ${error}`);
+            throw new FixItError("Failed to get service offerers that offer this service");
+        }
     }
 
     async update(id, serviceInfo) {
@@ -41,3 +61,5 @@ class ServiceRepository {
         }
     }
 }
+
+module.exports = new ServiceRepository();

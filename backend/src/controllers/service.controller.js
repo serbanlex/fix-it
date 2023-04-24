@@ -1,39 +1,87 @@
-const serviceRepo = require('../repositories/service.repository');
+const serviceRepo = require('../infrastructure/repositories/service.repo');
 const { EntityNotFound } = require('../exceptions');
 
 module.exports = {
-    async createService(req, res) {
+    async createService(req, res, next) {
         // #swagger.tags = ['Services (general)']
+        /*  #swagger.parameters['service'] = {
+                in: 'body',
+                description: 'Basic information of the service',
+                schema: {
+                    $name: 'Repairing sinks',
+                    $description: 'Careful repair of sinks',
+                    $serviceCategoryID: 1
+                }
+            }
+        */
         const serviceInfo = req.body;
-        const service = await serviceRepo.create(serviceInfo);
-        res.status(201).json(service);
+        try {
+            const service = await serviceRepo.create(serviceInfo);
+            res.status(200).json(service);
+        }
+        catch (error) {
+            next(error);
+        }
     },
 
-    async getAllServices(req, res) {
+    async getAllServices(req, res, next) {
         // #swagger.tags = ['Services (general)']
-        const services = await serviceRepo.getAll();
-        res.status(200).json(services);
+        try {
+            const services = await serviceRepo.getAll();
+            res.status(200).json(services);
+        }
+        catch (error) {
+            next(error);
+        }
     },
 
-    async getServiceById(req, res) {
+    async getServiceById(req, res, next) {
         // #swagger.tags = ['Services (general)']
         const id = req.params.id;
-        const service = await serviceRepo.getById(id);
-        res.status(200).json(service);
+        try {
+            const service = await serviceRepo.getById(id);
+            res.status(200).json(service);
+        }
+        catch (error) {
+            next(error);
+        }
     },
 
-    async updateService(req, res) {
+    async getServiceOfferersThatOfferService(req, res, next) {
+        // #swagger.tags = ['Services (general)']
+        const id = req.params.id;
+        try {
+            const serviceOfferers = await serviceRepo.getServiceOfferersThatOfferService(id);
+            res.status(200).json(serviceOfferers);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+
+    async updateService(req, res, next) {
         // #swagger.tags = ['Services (general)']
         const id = req.params.id;
         const serviceInfo = req.body;
-        const service = await serviceRepo.update(id, serviceInfo);
-        res.status(200).json(service);
+        try {
+            const service = await serviceRepo.update(id, serviceInfo);
+            res.status(200).json(service);
+        }
+        catch (error) {
+            next(error);
+        }
     },
 
-    async deleteService(req, res) {
+    async deleteService(req, res, next) {
         // #swagger.tags = ['Services (general)']
         const id = req.params.id;
-        await serviceRepo.deleteById(id);
-        res.status(204).send();
+        try {
+            await serviceRepo.deleteById(id);
+            const services = await serviceRepo.getAll();
+            res.status(200).json(services);
+        }
+        catch (error) {
+            next(error);
+        }
     }
 }
