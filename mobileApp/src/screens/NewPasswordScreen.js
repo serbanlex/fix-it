@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
-import {useNavigation} from '@react-navigation/native';
-import {useForm} from 'react-hook-form';
-import {Auth} from 'aws-amplify';
+import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
 
 const NewPasswordScreen = () => {
-  const {control, handleSubmit} = useForm();
+  const { control, handleSubmit } = useForm();
 
   const navigation = useNavigation();
 
@@ -28,14 +27,14 @@ const NewPasswordScreen = () => {
           placeholder="Username"
           name="username"
           control={control}
-          rules={{required: 'Username is required'}}
+          rules={{ required: 'Username is required' }}
         />
 
         <CustomInput
           placeholder="Code"
           name="code"
           control={control}
-          rules={{required: 'Code is required'}}
+          rules={{ required: 'Code is required' }}
         />
 
         <CustomInput
