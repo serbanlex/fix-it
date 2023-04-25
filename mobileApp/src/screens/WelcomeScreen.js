@@ -6,7 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './LoginScreen.js';
 import RegisterScreen from './RegisterScreen.js';
 import HomePage from './HomePage.js';
-import ConfirmEmailScreen from './ConfirmEmailScreen.js';
 import ForgotPasswordScreen from './ForgotPasswordScreen.js';
 import NewPasswordScreen from './NewPasswordScreen.js';
 
@@ -34,7 +33,6 @@ function WelcomeScreen() {
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false}} />
       <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false}} />
-      <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} options={{ headerShown: false}} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false}} />
         <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false}} />
     </Stack.Navigator>
@@ -60,11 +58,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     button: {
-        width: '80%',
+        width: '90%',
         backgroundColor: '#fff',
         marginBottom: 20,
         justifyContent: 'center',
-        borderRadius: 10,
+        borderRadius: 20,
     },
     buttonText: {
         color: '#000',

@@ -15,22 +15,24 @@ function RegisterScreen({}) {
     const pwd = watch('password');
 
     const onRegisterPressed = async data => {
+     console.log(data);
       try {
-        const response = await fetch('http://192.168.100.70:3000/users', {
+        const response = await fetch('http://192.168.100.70:3000/clients', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(data)
-        });
+        }).then(response => {
 
         if (response.ok) {
           // Registration successful, navigate to confirmation screen
-          navigation.navigate('ConfirmEmail');
+          navigation.navigate('Home');
         } else {
           // Registration failed, show error message
           Alert.alert('Registration Error', 'Failed to register user.');
         }
+        });
       } catch (error) {
         console.error(error);
         Alert.alert('Registration Error', 'Failed to register user.');
@@ -47,12 +49,21 @@ function RegisterScreen({}) {
                 <Text style={styles.buttonText}>Back</Text>
             </Button>
             <CustomInput
-            name="username"
+            name="firstName"
             control={control}
-            placeholder="Username"
-            rules={{required: 'Username is required',
-                    minLength: {value: 3, message: 'Username must be at least 3 characters long'},
-                    maxLength: {value: 21, message: 'Username must be at most 21 characters long'}
+            placeholder="First Name"
+            rules={{required: 'First Name is required',
+                    minLength: {value: 3, message: 'First Name must be at least 3 characters long'},
+                    maxLength: {value: 21, message: 'First Name must be at most 21 characters long'}
+            }}
+            />
+            <CustomInput
+            name="lastName"
+            control={control}
+            placeholder="Last Name"
+            rules={{required: 'Last Name is required',
+                    minLength: {value: 3, message: 'Last Name must be at least 3 characters long'},
+                    maxLength: {value: 21, message: 'Last Name must be at most 21 characters long'}
             }}
             />
             <CustomInput

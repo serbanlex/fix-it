@@ -10,7 +10,7 @@ function HomePage({}) {
 
     const navigation = useNavigation();
 
-    const onLogOutPressed = () => {
+    const onLogOutPressed = () => { //fetch request to log out
             navigation.navigate('Start');
         }
 

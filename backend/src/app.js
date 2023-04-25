@@ -30,7 +30,7 @@ app.use(
 );
 
 // enable cors for the mobile app (frontend) running on a different port
-app.use(cors())
+//app.use(cors())
 // db table syncing
 db.sequelize
   .sync({ force: false }).then(() => {
