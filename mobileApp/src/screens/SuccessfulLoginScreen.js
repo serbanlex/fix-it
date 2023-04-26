@@ -8,7 +8,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-function LoginScreen({ }) {
+function SuccessfulLoginScreen({ }) {
   const navigation = useNavigation();
 
   const { control, handleSubmit, formState: { errors } } = useForm();
@@ -49,7 +49,10 @@ function LoginScreen({ }) {
   return (
     <ScrollView showsVerticalScrollIndicator={false} >
       <View style={styles.container}>
-        <Text style={styles.title}>Log In</Text>
+        <Text style={styles.title}>
+            You have successfully registered! {'\n'}
+            Please log in with your credentials
+        </Text>
         <Button
           style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
           onPress={() => navigation.goBack()}>
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#000',
     fontWeight: 'bold',
-    fontSize: 36,
+    fontSize: 25,
     marginBottom: 50,
   },
   buttonText: {
@@ -98,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SuccessfulLoginScreen;

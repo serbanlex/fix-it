@@ -17,7 +17,7 @@ function RegisterScreen({}) {
     const onRegisterPressed = async data => {
      console.log(data);
       try {
-        const response = await fetch('http://192.168.100.70:3000/clients', {
+        const response = await fetch('http://192.168.100.71:3000/clients', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -26,10 +26,8 @@ function RegisterScreen({}) {
         }).then(response => {
 
         if (response.ok) {
-          // Registration successful, navigate to confirmation screen
-          navigation.navigate('Home');
+          navigation.navigate('SuccessfulLogin');
         } else {
-          // Registration failed, show error message
           Alert.alert('Registration Error', 'Failed to register user.');
         }
         });
