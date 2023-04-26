@@ -1,11 +1,12 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { Button } from 'native-base';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import { API_URL } from '@env';
+import GradientBackground from '../components/GradientBackground';
 
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -53,29 +54,35 @@ function LoginScreen({ }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Log In</Text>
-      <Button
-        style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
-        onPress={() => navigation.goBack()}>
-        <Text style={styles.buttonText}>Back</Text>
-      </Button>
-      <CustomInput
-        name="email"
-        placeholder="email"
-        control={control}
-        rules={{ required: 'Email is required', pattern: { value: EMAIL_REGEX, message: 'Not a valid email' } }}
-      />
-      <CustomInput
-        name="password"
-        placeholder="Password"
-        secureTextEntry={true}
-        control={control}
-        rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } }}
-      />
+      <GradientBackground>
+        <Text style={styles.title}>Log In</Text>
+        <Button
+          style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
+          onPress={() => navigation.goBack()}>
+          <Text style={styles.buttonText}>Back</Text>
+        </Button>
+        <CustomInput
+          name="email"
+          placeholder="email"
+          control={control}
+          rules={{ required: 'Email is required', pattern: { value: EMAIL_REGEX, message: 'Not a valid email' } }}
+        />
+        <CustomInput
+          name="password"
+          placeholder="Password"
+          secureTextEntry={true}
+          control={control}
+          rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } }}
+        />
 
-      <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
-      <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
-      <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
+        <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
+        {/* <TouchableOpacity onPress={onForgotPasswordPressed}>
+          <Text style={{ color: 'white', textDecorationLine: 'underline', padding: '3%' }}>{"Forgot Password"}</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity onPress={onRegisterPressed}>
+          <Text style={{ color: 'orange', textDecorationLine: 'underline', padding: '3%' }}>{"Don't have an account? Create One"}</Text>
+        </TouchableOpacity>
+      </GradientBackground>
     </View>
   );
 }
@@ -85,8 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 100,
+    alignItems: 'center'
   },
   title: {
     color: '#000',

@@ -2,25 +2,19 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
 import { Button } from 'native-base';
 import Logo from '../../assets/logo.png';
+import Background from '../../assets/background-welcome-2.jpg';
+import GradientBackground from '../components/GradientBackground';
+import CustomButton from '../components/CustomButton';
 
 function WelcomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <ImageBackground
-                source={{ uri: 'https://images.unsplash.com/photo-1622129710676-16a6b2014aec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80' }}
-                style={styles.backgroundImage}
-            >
-                <View style={styles.overlay} />
+            <GradientBackground>
                 <Image source={Logo} style={styles.logo}></Image>
                 <Text style={styles.title}>Welcome to FixIt!</Text>
-                <Button style={styles.button} onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </Button>
-                <Button style={styles.button} onPress={() => navigation.navigate('Register')}>
-                    <Text style={styles.buttonText}>Register</Text>
-                </Button>
-            </ImageBackground>
-
+                <CustomButton onPress={() => navigation.navigate('Login')} text="Login" type="Welcome"></CustomButton>
+                <CustomButton onPress={() => navigation.navigate('Register')} text="Register" type="Welcome"></CustomButton>
+            </GradientBackground>
         </View>
 
     );
@@ -36,12 +30,6 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFill,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         fontSize: 36,

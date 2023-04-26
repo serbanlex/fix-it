@@ -6,6 +6,7 @@ import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import { API_URL } from '@env';
+import GradientBackground from '../components/GradientBackground';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -106,6 +107,7 @@ function RegisterScreen({ }) {
 
         <CustomButton text="Register" onPress={handleSubmit(onRegisterPressed)} />
       </View>
+
     </ScrollView>
   );
 }

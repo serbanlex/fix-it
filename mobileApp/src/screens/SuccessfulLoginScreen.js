@@ -48,36 +48,29 @@ function SuccessfulLoginScreen({ }) {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} >
-      <View style={styles.container}>
-        <Text style={styles.title}>
-          You have successfully registered! {'\n'}
-          Please log in with your credentials
-        </Text>
-        <Button
-          style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Back</Text>
-        </Button>
-        <CustomInput
-          name="email"
-          placeholder="email"
-          control={control}
-          rules={{ required: 'Email is required', pattern: { value: EMAIL_REGEX, message: 'Not a valid email' } }}
-        />
-        <CustomInput
-          name="password"
-          placeholder="Password"
-          secureTextEntry={true}
-          control={control}
-          rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } }}
-        />
+    <View style={styles.container}>
+      <Text style={styles.title}>
+        Register successful! {'\n'}
+        Please log in with your credentials
+      </Text>
+      <CustomInput
+        name="email"
+        placeholder="email"
+        control={control}
+        rules={{ required: 'Email is required', pattern: { value: EMAIL_REGEX, message: 'Not a valid email' } }}
+      />
+      <CustomInput
+        name="password"
+        placeholder="Password"
+        secureTextEntry={true}
+        control={control}
+        rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } }}
+      />
 
-        <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
-        <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
-        <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
-      </View>
-    </ScrollView>
+      <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
+      <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
+      <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
+    </View>
   );
 }
 
@@ -90,6 +83,7 @@ const styles = StyleSheet.create({
     paddingTop: 100,
   },
   title: {
+    paddingTop: "10%",
     color: '#000',
     fontWeight: 'bold',
     fontSize: 25,
