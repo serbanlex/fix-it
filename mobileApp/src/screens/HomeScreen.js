@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
 
-function HomePage({ }) {
+function HomeScreen({ }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
 
     const navigation = useNavigation();
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomePage;
+export default HomeScreen;

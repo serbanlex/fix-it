@@ -17,15 +17,15 @@ function LoginScreen({ }) {
 
   console.log(errors);
 
-  const onLogInPressed = async data => {
-    try {
-      await fetch(`${API_URL}/session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }).then(response => {
+  const onLogInPressed = async (data) => {
+    await fetch(`${API_URL}/session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
         if (response.ok) {
           navigation.navigate('Home');
         } else {
@@ -36,11 +36,11 @@ function LoginScreen({ }) {
             Alert.alert('Login Error', 'Failed to login user.');
           }
         }
+      })
+      .catch(error => {
+        console.error(error);
+        Alert.alert('Login Error', 'Failed to login user.');
       });
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Login Error', 'Failed to login user.');
-    }
   };
 
   const onForgotPasswordPressed = () => {
@@ -52,33 +52,31 @@ function LoginScreen({ }) {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} >
-      <View style={styles.container}>
-        <Text style={styles.title}>Log In</Text>
-        <Button
-          style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Back</Text>
-        </Button>
-        <CustomInput
-          name="email"
-          placeholder="email"
-          control={control}
-          rules={{ required: 'Email is required', pattern: { value: EMAIL_REGEX, message: 'Not a valid email' } }}
-        />
-        <CustomInput
-          name="password"
-          placeholder="Password"
-          secureTextEntry={true}
-          control={control}
-          rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } }}
-        />
+    <View style={styles.container}>
+      <Text style={styles.title}>Log In</Text>
+      <Button
+        style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
+        onPress={() => navigation.goBack()}>
+        <Text style={styles.buttonText}>Back</Text>
+      </Button>
+      <CustomInput
+        name="email"
+        placeholder="email"
+        control={control}
+        rules={{ required: 'Email is required', pattern: { value: EMAIL_REGEX, message: 'Not a valid email' } }}
+      />
+      <CustomInput
+        name="password"
+        placeholder="Password"
+        secureTextEntry={true}
+        control={control}
+        rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } }}
+      />
 
-        <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
-        <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
-        <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
-      </View>
-    </ScrollView>
+      <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
+      <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
+      <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
+    </View>
   );
 }
 

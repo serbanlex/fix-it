@@ -1,45 +1,30 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
 import { Button } from 'native-base';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './LoginScreen.js';
-import SuccessfulLoginScreen from './SuccessfulLoginScreen.js';
-import RegisterScreen from './RegisterScreen.js';
-import HomePage from './HomePage.js';
-import ForgotPasswordScreen from './ForgotPasswordScreen.js';
-import NewPasswordScreen from './NewPasswordScreen.js';
+import Logo from '../../assets/logo.png';
 
-function StartScreen({ navigation }) {
+function WelcomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <View style={styles.overlay} />
-            <Text style={styles.title}>Welcome to Fix-It!</Text>
-            <Button style={styles.button} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.buttonText}>Login</Text>
-            </Button>
-            <Button style={styles.button} onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.buttonText}>Register</Text>
-            </Button>
+            <ImageBackground
+                source={{ uri: 'https://images.unsplash.com/photo-1622129710676-16a6b2014aec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80' }}
+                style={styles.backgroundImage}
+            >
+                <View style={styles.overlay} />
+                <Image source={Logo} style={styles.logo}></Image>
+                <Text style={styles.title}>Welcome to FixIt!</Text>
+                <Button style={styles.button} onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.buttonText}>Login</Text>
+                </Button>
+                <Button style={styles.button} onPress={() => navigation.navigate('Register')}>
+                    <Text style={styles.buttonText}>Register</Text>
+                </Button>
+            </ImageBackground>
+
         </View>
+
     );
 };
-
-const Stack = createNativeStackNavigator();
-
-function WelcomeScreen() {
-  return (
-    <Stack.Navigator initialRouteName="Start">
-      <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}} />
-      <Stack.Screen name="SuccessfulLogin" component={SuccessfulLoginScreen} options={{ headerShown: false}} />
-      <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false}} />
-      <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false}} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false}} />
-        <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false}} />
-    </Stack.Navigator>
-  );
-}
 
 const styles = StyleSheet.create({
     container: {
@@ -51,6 +36,12 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFill,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
         fontSize: 36,
@@ -70,6 +61,10 @@ const styles = StyleSheet.create({
         color: '#000',
         fontWeight: 'bold',
     },
+    logo: {
+        width: 200,
+        height: 200,
+    }
 });
 
 export default WelcomeScreen;
