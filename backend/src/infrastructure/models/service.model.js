@@ -31,8 +31,8 @@ module.exports = (sequelize, Sequelize) => {
             through: models.OfferedService,
             foreignKey: 'ServiceID'
         });
-        Service.hasOne(models.ServiceCategory, {
-            foreignKey: 'ServiceID', as: 'category'
+        Service.belongsTo(models.ServiceCategory, {
+            foreignKey: 'serviceCategoryID', as: 'category'
         })
     };
     return Service;

@@ -39,6 +39,15 @@ module.exports = {
             next(error);
         }
     },
+    async deleteServiceCategory(req, res, next) {
+        // #swagger.tags = ['ServiceCategories']
+        try {
+            remainingCategories = await ServiceCategoryRepo.delete(req.params.id);
+            res.status(200).json(remainingCategories);
+        } catch (error) {
+            next(error);
+        }
+    },
     async getServicesBelongingToCategory(req, res, next) {
         // #swagger.tags = ['ServiceCategories']
         try {

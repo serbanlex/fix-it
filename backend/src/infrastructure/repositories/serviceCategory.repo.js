@@ -39,6 +39,15 @@ class ServiceCategoryRepo {
         const result = await ServiceCategory.findAll();
         return result;
     }
+
+    async delete(id) {
+        const serviceCategory = await ServiceCategory.findByPk(id);
+        if (!serviceCategory) {
+            throw new EntityNotFound(`ServiceCategory with ID ${id} not found`);
+        }
+        await serviceCategory.destroy();
+        return this.getAll();
+    }
 }
 
 module.exports = new ServiceCategoryRepo();

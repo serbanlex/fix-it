@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const { FixItError } = require("../../exceptions");
-const { Service } = require("../models");
+const { Service, ServiceCategory } = require("../models");
 const { EntityNotFound } = require("../../exceptions");
 
 class ServiceRepository {
@@ -16,7 +16,12 @@ class ServiceRepository {
     }
 
     async getAll() {
-        return await Service.findAll();
+        return await Service.findAll({
+            include: [{
+                model: ServiceCategory,
+                as: 'category'
+            }]
+        });
     }
 
     async getById(id) {
