@@ -22,7 +22,7 @@ module.exports = {
         }
     },
 
-    async createClient(req, res) {
+    async createClient(req, res, next) {
         /*  #swagger.parameters['client'] = {
                 in: 'body',
                 description: 'Basic user details of the client',
