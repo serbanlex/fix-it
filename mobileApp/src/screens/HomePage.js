@@ -1,18 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Button } from 'native-base';
 import CustomButton from '../components/CustomButton';
-import {useNavigation } from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
+import { API_URL } from '@env';
 
-function HomePage({}) {
-    const {control, handleSubmit, formState: {errors}} = useForm();
+function HomePage({ }) {
+    const { control, handleSubmit, formState: { errors } } = useForm();
 
     const navigation = useNavigation();
 
-    const onLogOutPressed = () => { //fetch request to log out
+    const onLogOutPressed = async () => { //fetch request to log out
+        await fetch(`${API_URL}/session`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
             navigation.navigate('Start');
-        }
+        })
+            .catch(error => {
+                console.error(error);
+                Alert.alert('Logout Error', 'Failed to logout user.');
+            });
+    }
 
     return (
         <View style={styles.container}>
@@ -24,17 +35,17 @@ function HomePage({}) {
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 100,
+        flex: 1,
+        backgroundColor: '#fff',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingTop: 100,
     },
     title: {
-    color: '#43428b',
-    fontWeight: 'bold',
-    fontSize: 36,
-    marginBottom: 200,
+        color: '#43428b',
+        fontWeight: 'bold',
+        fontSize: 36,
+        marginBottom: 200,
     },
 });
 

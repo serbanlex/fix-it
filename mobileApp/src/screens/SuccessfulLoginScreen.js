@@ -5,6 +5,7 @@ import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
+import { API_URL } from '@env';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -17,25 +18,25 @@ function SuccessfulLoginScreen({ }) {
 
   const onLogInPressed = async data => {
     try {
-            console.log(data);
-            const response = await fetch('http://192.168.100.71:3000/session', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data)
-            }).then(response=> {
+      console.log(data);
+      const response = await fetch(`${API_URL}/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(response => {
 
-            if (response.ok) {
-              navigation.navigate('Home');
-            } else {
-              Alert.alert('Login Error', 'Failed to login user.');
-            }
-           });
-          } catch (error) {
-            console.error(error);
-            Alert.alert('Login Error', 'Failed to login user.');
-          }
+        if (response.ok) {
+          navigation.navigate('Home');
+        } else {
+          Alert.alert('Login Error', 'Failed to login user.');
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Login Error', 'Failed to login user.');
+    }
   };
 
   const onForgotPasswordPressed = () => {
@@ -50,8 +51,8 @@ function SuccessfulLoginScreen({ }) {
     <ScrollView showsVerticalScrollIndicator={false} >
       <View style={styles.container}>
         <Text style={styles.title}>
-            You have successfully registered! {'\n'}
-            Please log in with your credentials
+          You have successfully registered! {'\n'}
+          Please log in with your credentials
         </Text>
         <Button
           style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
