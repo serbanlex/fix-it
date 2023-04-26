@@ -3,9 +3,11 @@ const router = express.Router();
 const clientController = require('../../controllers/client.controller');
 const validate = require('../middleware/validate');
 const clientCreateSchema = require('../schemas/clientCreate');
+const authenticate = require('../middleware/authenticate');
 
-router.get('/clients', clientController.getAllClients);
-router.get('/clients/:id', clientController.getClientById);
+
+router.get('/clients', authenticate, clientController.getAllClients);
+router.get('/clients/:id', authenticate, clientController.getClientById);
 router.post('/clients', validate(clientCreateSchema), clientController.createClient);
 
 

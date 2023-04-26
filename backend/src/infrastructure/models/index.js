@@ -28,7 +28,13 @@ fs
   })
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
+    try {
+      db[model.name] = model;
+    }
+    catch (TypeError) {
+      console.log("Error: ", TypeError.message, " in file: ", file);
+      console.log("Possible cause - you forgot to export the model in the file. Check the file: ", file)
+    }
   });
 
 Object.keys(db).forEach(modelName => {

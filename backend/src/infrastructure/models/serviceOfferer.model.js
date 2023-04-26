@@ -29,7 +29,7 @@ module.exports = (sequelize, Sequelize) => {
   ServiceOfferer.associate = (models) => {
     ServiceOfferer.belongsTo(models.User, { foreignKey: 'ID', targetKey: 'ID', as: 'userInfo', onDelete: 'CASCADE' });
     ServiceOfferer.hasMany(models.Order);
-    ServiceOfferer.hasMany(models.OfferedService);
+    ServiceOfferer.hasMany(models.OfferedService, { as: 'offeredServices' });
   };
   return ServiceOfferer;
 };

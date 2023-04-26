@@ -5,12 +5,35 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true,
             primaryKey: true
         },
+        name: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        description: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        serviceCategoryID: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            validate: {
+                notNull: {
+                    msg: 'A category ID is required'
+                },
+                notEmpty: {
+                    msg: 'A category ID is required'
+                }
+            }
+        }
     });
     Service.associate = (models) => {
         Service.belongsToMany(models.ServiceOfferer, {
             through: models.OfferedService,
             foreignKey: 'ServiceID'
-          });
+        });
+        Service.belongsTo(models.ServiceCategory, {
+            foreignKey: 'serviceCategoryID', as: 'category'
+        })
     };
     return Service;
 };
