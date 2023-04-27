@@ -5,10 +5,10 @@ import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
-import { API_URL } from '@env';
-import GradientBackground from '../components/GradientBackground';
+import GradientBackground from '../components/GradientBackground2';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+API_URL="http://192.168.100.71:3000";
 
 function RegisterScreen({ }) {
   const navigation = useNavigation();
@@ -43,6 +43,7 @@ function RegisterScreen({ }) {
   return (
     <ScrollView showsVerticalScrollIndicator={false} >
       <View style={styles.container}>
+      <GradientBackground>
         <Text style={styles.title}>Register</Text>
         <Button
           style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
@@ -106,8 +107,8 @@ function RegisterScreen({ }) {
         />
 
         <CustomButton text="Register" onPress={handleSubmit(onRegisterPressed)} />
+        </GradientBackground>
       </View>
-
     </ScrollView>
   );
 }

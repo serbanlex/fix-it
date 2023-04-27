@@ -5,9 +5,10 @@ import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
-import { API_URL } from '@env';
+import GradientBackground from '../components/GradientBackground2';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+API_URL="http://192.168.100.71:3000";
 
 function SuccessfulLoginScreen({ }) {
   const navigation = useNavigation();
@@ -16,28 +17,31 @@ function SuccessfulLoginScreen({ }) {
 
   console.log(errors);
 
-  const onLogInPressed = async data => {
-    try {
-      console.log(data);
-      const response = await fetch(`${API_URL}/session`, {
+    const onLogInPressed = async (data) => {
+      await fetch(`${API_URL}/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-      }).then(response => {
-
-        if (response.ok) {
-          navigation.navigate('Home');
-        } else {
+      })
+        .then(response => {
+          if (response.ok) {
+            navigation.navigate('Home');
+          } else {
+            if (response.status === 401) {
+              Alert.alert('Login Error', 'Invalid credentials.');
+            }
+            else {
+              Alert.alert('Login Error', 'Failed to login user.');
+            }
+          }
+        })
+        .catch(error => {
+          console.error(error);
           Alert.alert('Login Error', 'Failed to login user.');
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Login Error', 'Failed to login user.');
-    }
-  };
+        });
+    };
 
   const onForgotPasswordPressed = () => {
     navigation.navigate('ForgotPassword');
@@ -49,6 +53,7 @@ function SuccessfulLoginScreen({ }) {
 
   return (
     <View style={styles.container}>
+    <GradientBackground>
       <Text style={styles.title}>
         Register successful! {'\n'}
         Please log in with your credentials
@@ -70,6 +75,7 @@ function SuccessfulLoginScreen({ }) {
       <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
       <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
       <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
+    </GradientBackground>
     </View>
   );
 }
@@ -80,7 +86,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 100,
   },
   title: {
     paddingTop: "10%",

@@ -5,9 +5,9 @@ import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
-import { API_URL } from '@env';
-import GradientBackground from '../components/GradientBackground';
+import GradientBackground from '../components/GradientBackground2';
 
+API_URL="http://192.168.100.71:3000";
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -54,7 +54,7 @@ function LoginScreen({ }) {
 
   return (
     <View style={styles.container}>
-      <GradientBackground>
+    <GradientBackground>
         <Text style={styles.title}>Log In</Text>
         <Button
           style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
@@ -80,9 +80,9 @@ function LoginScreen({ }) {
           <Text style={{ color: 'white', textDecorationLine: 'underline', padding: '3%' }}>{"Forgot Password"}</Text>
         </TouchableOpacity> */}
         <TouchableOpacity onPress={onRegisterPressed}>
-          <Text style={{ color: 'orange', textDecorationLine: 'underline', padding: '3%' }}>{"Don't have an account? Create One"}</Text>
+          <Text style={{ color: 'grey', fontWeight: 'bold', textDecorationLine: 'underline', padding: '3%' }}>{"Don't have an account? Create One"}</Text>
         </TouchableOpacity>
-      </GradientBackground>
+    </GradientBackground>
     </View>
   );
 }
