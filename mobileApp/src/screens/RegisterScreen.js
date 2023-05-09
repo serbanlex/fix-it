@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   contentContainer: {
-      flexGrow: 1,
+      flexGrow: 2,
   },
   title: {
     color: '#000',
