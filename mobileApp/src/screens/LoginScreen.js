@@ -44,10 +44,6 @@ function LoginScreen({ }) {
       });
   };
 
-  const onForgotPasswordPressed = () => {
-    navigation.navigate('ForgotPassword');
-  };
-
   const onRegisterPressed = () => {
     navigation.navigate('Register');
   };
@@ -76,9 +72,6 @@ function LoginScreen({ }) {
         />
 
         <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
-        {/* <TouchableOpacity onPress={onForgotPasswordPressed}>
-          <Text style={{ color: 'white', textDecorationLine: 'underline', padding: '3%' }}>{"Forgot Password"}</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity onPress={onRegisterPressed}>
           <Text style={{ color: 'grey', fontWeight: 'bold', textDecorationLine: 'underline', padding: '3%' }}>{"Don't have an account? Create One"}</Text>
         </TouchableOpacity>

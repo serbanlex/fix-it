@@ -1,7 +1,6 @@
 import LoginScreen from '../screens/LoginScreen.js';
 import SuccessfulLoginScreen from '../screens/SuccessfulLoginScreen.js';
 import RegisterScreen from '../screens/RegisterScreen.js';
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen.js';
 import NewPasswordScreen from '../screens/NewPasswordScreen.js';
 import WelcomeScreen from '../screens/WelcomeScreen.js';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -15,7 +14,6 @@ function WelcomeNavigator() {
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="SuccessfulLogin" component={SuccessfulLoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
             <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     );

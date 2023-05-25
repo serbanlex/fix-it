@@ -43,10 +43,6 @@ function SuccessfulLoginScreen({ }) {
         });
     };
 
-  const onForgotPasswordPressed = () => {
-    navigation.navigate('ForgotPassword');
-  };
-
   const onRegisterPressed = () => {
     navigation.navigate('Register');
   };
@@ -73,7 +69,6 @@ function SuccessfulLoginScreen({ }) {
       />
 
       <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />
-      <CustomButton text="Forgot Password?" onPress={onForgotPasswordPressed} type="TERTIARY" />
       <CustomButton text="Don't have an account? Create One" onPress={onRegisterPressed} type="TERTIARY" />
     </GradientBackground>
     </View>
