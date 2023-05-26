@@ -13,7 +13,7 @@ function WelcomeScreen({ navigation }) {
                 <Image source={Logo} style={styles.logo}></Image>
                 <Text style={styles.title}>Welcome to FixIt!</Text>
                 <CustomButton onPress={() => navigation.navigate('Login')} text="Login" type="Welcome"></CustomButton>
-                <CustomButton onPress={() => navigation.navigate('Register')} text="Register" type="Welcome"></CustomButton>
+                <CustomButton onPress={() => navigation.navigate('ChooseRole')} text="Register" type="Welcome"></CustomButton>
             </GradientBackground>
         </View>
 
