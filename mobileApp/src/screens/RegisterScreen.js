@@ -6,9 +6,13 @@ import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import GradientBackground from '../components/GradientBackground2';
+import { API_URL } from '@env';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-API_URL="http://192.168.100.71:3000";
+
+if (!API_URL) {
+  API_URL = "http://192.168.100.71:3000";
+}
 
 const RegisterScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -26,21 +30,21 @@ const RegisterScreen = ({ route }) => {
 
   const onRegisterPressed = async data => {
     try {
-        const response = await fetch(`${API_URL}/clients`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-          
-          if (response.ok) {
-            navigation.navigate('SuccessfulLogin');
-          } else {
-            const errorResponse = await response.json();
-            console.log(errorResponse);
-            Alert.alert('Registration Error', `Failed to register client. Reason: ${errorResponse.error}`);
-          }
+      const response = await fetch(`${API_URL}/clients`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        navigation.navigate('SuccessfulLogin');
+      } else {
+        const errorResponse = await response.json();
+        console.log(errorResponse);
+        Alert.alert('Registration Error', `Failed to register client. Reason: ${errorResponse.error}`);
+      }
     } catch (error) {
       console.error(error);
       Alert.alert('Registration Error', 'Failed to register client.');
@@ -114,15 +118,15 @@ const RegisterScreen = ({ route }) => {
             }}
           />
           {role === "serviceOfferer" && (
-          <>
-            <CustomButton text="Next" onPress={handleSubmit(onNextPressed)} />
-          </>
+            <>
+              <CustomButton text="Next" onPress={handleSubmit(onNextPressed)} />
+            </>
           )}
 
           {role === "client" && (
-          <>
-            <CustomButton text="Register" onPress={handleSubmit(onRegisterPressed)} />
-          </>
+            <>
+              <CustomButton text="Register" onPress={handleSubmit(onRegisterPressed)} />
+            </>
           )}
 
         </GradientBackground>

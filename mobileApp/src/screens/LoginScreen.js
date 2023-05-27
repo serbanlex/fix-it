@@ -6,8 +6,11 @@ import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import GradientBackground from '../components/GradientBackground2';
+import { API_URL } from '@env';
 
-API_URL="http://192.168.100.71:3000";
+if (!API_URL) {
+  API_URL = "http://192.168.100.71:3000";
+}
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -34,13 +37,14 @@ function LoginScreen({ }) {
             Alert.alert('Login Error', 'Invalid credentials.');
           }
           else {
-            Alert.alert('Login Error', 'Failed to login user.');
+            response = response.json();
+            Alert.alert('Login Error', 'Failed to login user. Reason: ' + response.message);
           }
         }
       })
       .catch(error => {
         console.error(error);
-        Alert.alert('Login Error', 'Failed to login user.');
+        Alert.alert('Login Error', 'Something went wrong.');
       });
   };
 
@@ -50,7 +54,7 @@ function LoginScreen({ }) {
 
   return (
     <View style={styles.container}>
-    <GradientBackground>
+      <GradientBackground>
         <Text style={styles.title}>Log In</Text>
         <Button
           style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
@@ -75,7 +79,7 @@ function LoginScreen({ }) {
         <TouchableOpacity onPress={onRegisterPressed}>
           <Text style={{ color: 'grey', fontWeight: 'bold', textDecorationLine: 'underline', padding: '3%' }}>{"Don't have an account? Create One"}</Text>
         </TouchableOpacity>
-    </GradientBackground>
+      </GradientBackground>
     </View>
   );
 }
