@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, FlatList, Alert } from 'react-native';
-import CustomButton from '../components/CustomButton';
+import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
@@ -40,17 +40,39 @@ function HomeScreen({ }) {
 
     const navigation = useNavigation();
 
+    const onLogOutPressed = async () => { //fetch request to log out
+        await fetch(`${API_URL}/session`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            navigation.navigate('Start');
+        })
+            .catch(error => {
+                console.error(error);
+                Alert.alert('Logout Error', 'Failed to logout user.');
+            });
+    }
+
     try {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Homepage</Text>
-                {/* TODO: this logout should be more like back button */}
-                <CustomButton text="Log Out" onPress={handleSubmit(onLogOutPressed)} />
+                <Text style={styles.title}>Home</Text>
+                <Button
+                style={{ backgroundColor: '#fffff', position: 'absolute', top: 50, left: 20 }}
+                onPress={handleSubmit(onLogOutPressed)}
+                >
+                <Text style={styles.buttonText}>Log out</Text>
+            </Button>
                 <View>
                     <FlatList
                         data={categories}
                         renderItem={({ item }) => <ServiceCategory category={item} />}
                         keyExtractor={item => item.ID.toString()}
+                        numColumns={2}
+                        columnWrapperStyle={styles.columnWrapper}
+                        contentContainerStyle={styles.columnSpacer} 
                     />
                 </View>
 
@@ -61,21 +83,6 @@ function HomeScreen({ }) {
         console.log("Error making categories: " + err)
     }
 
-}
-
-const onLogOutPressed = async () => { //fetch request to log out
-    await fetch(`${API_URL}/session`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then((response) => {
-        navigation.navigate('Start');
-    })
-        .catch(error => {
-            console.error(error);
-            Alert.alert('Logout Error', 'Failed to logout user.');
-        });
 }
 
 const styles = StyleSheet.create({
@@ -90,7 +97,23 @@ const styles = StyleSheet.create({
         color: '#43428b',
         fontWeight: 'bold',
         fontSize: 36,
-        marginBottom: 200,
+        marginBottom: 150,
+    },
+    buttonText: {
+        color: '#43428b',
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
+    columnWrapper: {
+        flex: 1,
+        justifyContent: 'space-between',
+        marginHorizontal: '15%',
+        marginBottom: '10%',
+        marginTop: 10,
+
+    },
+    columnSpacer: {
+        width: 400,
     },
 });
 
