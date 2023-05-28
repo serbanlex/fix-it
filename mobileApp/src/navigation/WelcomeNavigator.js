@@ -10,6 +10,7 @@ import ServicesClientScreen from '../screens/Home/ServicesClientScreen.js';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/Home/HomeScreen.js';
 import OfferedServices from '../screens/Orders/OfferedServices.js';
+import OrderServiceScreen from '../screens/Orders/OrderService.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +28,7 @@ function WelcomeNavigator() {
             <Stack.Screen name="ServicesClient" component={ServicesClientScreen} options={{ headerShown: false }} />
             <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false }} />
             <Stack.Screen name="OfferedServices" component={OfferedServices} options={{ headerShown: false }} />
-
+            <Stack.Screen name="OrderService" component={OrderServiceScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }

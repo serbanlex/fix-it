@@ -9,7 +9,6 @@ import ServiceCategory from '../../components/ServiceCategory';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
-console.log(API_URL)
 function HomeScreen({ }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [categories, setCategories] = useState([]);

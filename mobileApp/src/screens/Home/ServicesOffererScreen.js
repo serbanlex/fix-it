@@ -10,7 +10,7 @@ import Services from '../../components/Services';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
-
+console.log(API_URL)
 function ServicesOffererScreen({ route }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [services, setServices] = useState([]);

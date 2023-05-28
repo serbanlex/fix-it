@@ -9,7 +9,7 @@ import OfferedService from '../../components/OfferedService';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
-
+console.log(API_URL)
 function OfferedServicesScreen({ route }) {
     const [offeredServices, setOfferedServices] = useState([]);
     const serviceID = route.params.item.ID;
@@ -44,7 +44,7 @@ function OfferedServicesScreen({ route }) {
 
     const onServicePressed = async (data) => {
         console.log("Service pressed, order data: " + JSON.stringify(data))
-        // navigation.navigate('Order', data);
+        navigation.navigate('OrderService', { data: data });
     }
 
     try {

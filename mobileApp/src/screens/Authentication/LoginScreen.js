@@ -11,7 +11,6 @@ import { API_URL } from '@env';
 if (!API_URL) {
   API_URL = "http://192.168.100.71:3000";
 }
-console.log(API_URL)
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 function LoginScreen({ }) {
