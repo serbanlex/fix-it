@@ -78,8 +78,8 @@ function HomeScreen({ }) {
     }
 
     try {
+        console.log(categories)
         console.log(session)
-        console.log(session['serviceOffererInfo'])
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>Home</Text>

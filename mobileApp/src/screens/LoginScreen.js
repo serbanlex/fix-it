@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component, useEffect } from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { Button } from 'native-base';
 import CustomInput from '../components/CustomInput';
@@ -20,6 +20,19 @@ function LoginScreen({ }) {
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   console.log(errors);
+
+  useEffect(() => {
+    fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
+      .then(response => {
+        if (response.ok) {
+          console.log("Already authorized. Going to home page")
+          navigation.navigate('Home');
+        } else {
+          console.log("Not authorized. Staying on login page")
+        }
+      })
+      .catch(error => console.error(error));
+  }, []);
 
   const onLogInPressed = async (data) => {
     await fetch(`${API_URL}/session`, {

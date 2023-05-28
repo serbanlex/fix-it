@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
 import { Button } from 'native-base';
 import Logo from '../../assets/logo.png';
