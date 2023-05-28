@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
@@ -9,10 +9,14 @@ import ServiceCategory from '../../components/ServiceCategory';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
+
 function HomeScreen({ }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [categories, setCategories] = useState([]);
     const [session, setSession] = useState([]);
+    const [ongoingOrders, setOngoingOrders] = useState([]);
+    const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order
+    const navigation = useNavigation();
 
     useEffect(() => {
         fetch(`${API_URL}/serviceCategories`, { headers: { 'Cache-Control': 'no-cache' } })
@@ -53,11 +57,30 @@ function HomeScreen({ }) {
             .catch(error => console.error(error));
     }, []);
 
-    console.log("Categories are set: " + categories)
+    useEffect(() => {
+        if (session.ID) {
+            fetch(`${API_URL}/orders/client/${session.ID}`, { headers: { 'Cache-Control': 'no-cache' } })
+                .then(response => {
+                    if (!response.ok) {
+                        console.log("Something went wrong: " + JSON.stringify(response));
+                        Alert.alert('Something went wrong', 'Failed to load ongoing orders.');
+                        throw new Error("Failed to load ongoing orders. A network error may have occurred.")
+                    }
+                    else {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    if (data) {
+                        console.log(data)
+                        setOngoingOrders(data);
+                    }
+                })
+                .catch(error => console.error(error));
+        }
+    }, [session]);
 
-    const navigation = useNavigation();
-
-    const onLogOutPressed = async () => { //fetch request to log out
+    const onLogOutPressed = async () => {
         await fetch(`${API_URL}/session`, {
             method: 'DELETE',
             headers: {
@@ -73,33 +96,33 @@ function HomeScreen({ }) {
     }
 
     const onCategoryPressed = async (data) => {
-        {
-            session.serviceOffererInfo != null && (
-                navigation.navigate('ServicesOfferer', data)
-            )
-        }
-
-        {
-            session.serviceOffererInfo == null && (
-                navigation.navigate('ServicesClient', data)
-            )
+        if (session.serviceOffererInfo != null) {
+            navigation.navigate('ServicesOfferer', data);
+        } else {
+            navigation.navigate('ServicesClient', data);
         }
     }
 
-    try {
-        console.log(categories)
-        console.log(session)
-        return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Home</Text>
-                <Text style={styles.subtitle}>Choose a category</Text>
-                <Button
-                    style={{ backgroundColor: '#fffff', position: 'absolute', top: 50, left: 20 }}
-                    onPress={handleSubmit(onLogOutPressed)}
-                >
-                    <Text style={styles.buttonText}>Log out</Text>
-                </Button>
+    const openOrderModal = (order) => {
+        setSelectedOrder(order);
+    };
+
+    const closeOrderModal = () => {
+        setSelectedOrder(null);
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Home</Text>
+            <Button
+                style={{ backgroundColor: '#fffff', position: 'absolute', top: 50, left: 20 }}
+                onPress={handleSubmit(onLogOutPressed)}
+            >
+                <Text style={styles.buttonText}>Log out</Text>
+            </Button>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View>
+                    <Text style={[styles.subtitle, styles.centerText]}>Choose a problem fix category:</Text>
                     <FlatList
                         data={categories}
                         renderItem={({ item }) => (
@@ -112,14 +135,108 @@ function HomeScreen({ }) {
                         columnWrapperStyle={styles.columnWrapper}
                         contentContainerStyle={styles.columnSpacer}
                     />
-                </View>
 
-            </View>
-        );
-    }
-    catch (err) {
-        console.log("Error making categories: " + err)
-    }
+                    <Text style={[styles.subtitle, styles.centerText]}>Ongoing Orders</Text>
+                    <FlatList
+                        data={ongoingOrders}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => openOrderModal(item)} style={styles.orderItem}>
+                                <Text style={styles.orderItemText}>
+                                    Order number #{item.ID}
+                                    {item.state && <Text style={styles.orderItemState}>, state: {item.state}, firm: </Text>}
+                                    {item.OfferedService &&
+                                        item.OfferedService.ServiceOfferer &&
+                                        item.OfferedService.ServiceOfferer.firmName && (
+                                            <Text style={styles.orderItemFirmName}>
+                                                {item.OfferedService.ServiceOfferer.firmName}
+                                            </Text>
+                                        )}
+                                </Text>
+                            </TouchableOpacity>
+                            // Render the details of the ongoing order here
+                        )}
+                        keyExtractor={item => item.ID.toString()}
+                    />
+
+
+
+
+                    {/* Modal to display order details */}
+                    <Modal
+                        visible={selectedOrder !== null}
+                        animationType="slide"
+                        onRequestClose={closeOrderModal}
+                    >
+                        {selectedOrder && (
+                            <ScrollView>
+                                <View style={styles.modalContainer}>
+                                    <Text style={styles.modalTitle}>Order Details</Text>
+                                    <Text style={styles.modalText}>Order Number: {selectedOrder.ID}</Text>
+                                    <Text style={styles.modalText}>State: {selectedOrder.state}</Text>
+                                    <Text style={styles.modalText}>Date: {selectedOrder.date}</Text>
+                                    <Text style={styles.modalText}>Time: {selectedOrder.time}</Text>
+                                    <Text style={styles.modalText}>Description: {selectedOrder.description}</Text>
+                                    <Text style={styles.modalText}>Address: {selectedOrder.address}</Text>
+
+                                    {selectedOrder.OfferedService && (
+                                        <>
+                                            <Text style={styles.modalSubTitle}>Offered Service</Text>
+                                            <Text style={styles.modalText}>Price: {selectedOrder.OfferedService.price}</Text>
+
+                                            {selectedOrder.OfferedService.ServiceOfferer && (
+                                                <>
+                                                    <Text style={styles.modalSubTitle}>Service Offerer</Text>
+                                                    <Text style={styles.modalText}>Firm Name: {selectedOrder.OfferedService.ServiceOfferer.firmName}</Text>
+                                                    <Text style={styles.modalText}>Firm City: {selectedOrder.OfferedService.ServiceOfferer.firmCity}</Text>
+                                                    <Text style={styles.modalText}>Firm Address: {selectedOrder.OfferedService.ServiceOfferer.firmAddress}</Text>
+                                                    <Text style={styles.modalText}>CUI: {selectedOrder.OfferedService.ServiceOfferer.CUI}</Text>
+                                                    <Text style={styles.modalText}>CAEN: {selectedOrder.OfferedService.ServiceOfferer.CAEN}</Text>
+
+                                                    {selectedOrder.OfferedService.ServiceOfferer.userInfo && (
+                                                        <>
+                                                            <Text style={styles.modalSubTitle}>Service Offerer's Info</Text>
+                                                            <Text style={styles.modalText}>First Name: {selectedOrder.OfferedService.ServiceOfferer.userInfo.firstName}</Text>
+                                                            <Text style={styles.modalText}>Last Name: {selectedOrder.OfferedService.ServiceOfferer.userInfo.lastName}</Text>
+                                                            <Text style={styles.modalText}>Email: {selectedOrder.OfferedService.ServiceOfferer.userInfo.email}</Text>
+                                                            <Text style={styles.modalText}>Phone Number: {selectedOrder.OfferedService.ServiceOfferer.userInfo.phoneNumber}</Text>
+                                                        </>
+                                                    )}
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+
+                                    {selectedOrder.Client && (
+                                        <>
+                                            <Text style={styles.modalSubTitle}>Client</Text>
+                                            <Text style={styles.modalText}>Client ID: {selectedOrder.Client.ID}</Text>
+
+                                            {selectedOrder.Client.userInfo && (
+                                                <>
+                                                    <Text style={styles.modalSubTitle}>Client's Info</Text>
+                                                    <Text style={styles.modalText}>First Name: {selectedOrder.Client.userInfo.firstName}</Text>
+                                                    <Text style={styles.modalText}>Last Name: {selectedOrder.Client.userInfo.lastName}</Text>
+                                                    <Text style={styles.modalText}>Email: {selectedOrder.Client.userInfo.email}</Text>
+                                                    <Text style={styles.modalText}>Phone Number: {selectedOrder.Client.userInfo.phoneNumber}</Text>
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+
+                                    <Button style={styles.modalCloseButton} onPress={closeOrderModal}>
+                                        <Text style={styles.modalCloseButtonText}>Close</Text>
+                                    </Button>
+                                </View>
+                            </ScrollView>
+                        )}
+                    </Modal>
+
+
+                </View>
+            </ScrollView>
+        </View>
+    );
+
 
 }
 
@@ -138,7 +255,7 @@ const styles = StyleSheet.create({
         marginBottom: 100,
     },
     subtitle: {
-        color: '#000',
+        color: '#43428b',
         fontWeight: 'bold',
         fontSize: 24,
         marginBottom: 50,
@@ -154,11 +271,77 @@ const styles = StyleSheet.create({
         marginHorizontal: '15%',
         marginBottom: '10%',
         marginTop: 10,
-
     },
     columnSpacer: {
         width: 400,
     },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 20,
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        padding: 16,
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 16,
+    },
+    modalSubTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 16,
+        marginBottom: 8,
+    },
+    modalText: {
+        fontSize: 16,
+        marginBottom: 8,
+    },
+    modalCloseButton: {
+        backgroundColor: '#43428b',
+        padding: 10,
+        borderRadius: 5,
+        width: 100,
+        alignItems: 'center',
+    },
+    modalCloseButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+
+    scrollContainer: {
+        alignItems: 'center',
+    },
+    centerText: {
+        textAlign: 'center',
+    },
+    centerContainer: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    orderItem: {
+        backgroundColor: '#f2f2f2',
+        padding: '2%',
+        marginBottom: 8,
+        borderRadius: 8,
+    },
+    orderItemText: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    orderItemState: {
+        fontStyle: 'italic',
+        marginLeft: 8,
+    },
+    orderItemFirmName: {
+        color: '#43428b',
+        marginTop: 8,
+    },
+
 });
 
 export default HomeScreen;
