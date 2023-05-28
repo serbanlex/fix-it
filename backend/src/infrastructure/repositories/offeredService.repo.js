@@ -12,6 +12,12 @@ class OfferedServiceRepository {
             await offeredService.setService(serviceID);
             return offeredService;
         } catch (error) {
+            try {
+                await OfferedService.destroy({ where: { id: offeredServiceInfo.id } });
+            }
+            catch (error) {
+                console.log("tried to delete the offered service that was created but failed : " + error);
+            }
             throw new Error("Failed to create offered service. Reason: " + error.message);
         }
     }
@@ -30,7 +36,7 @@ class OfferedServiceRepository {
         }
     }
 
-    async getByServiceOffererID(serviceOffererID) {
+    async getAllByServiceOffererID(serviceOffererID) {
         try {
             const offeredServices = await OfferedService.findAll({
                 where: {
@@ -44,12 +50,16 @@ class OfferedServiceRepository {
         }
     }
 
-    async getByServiceID(serviceID) {
+    async getAllByServiceID(serviceID) {
         try {
             const offeredServices = await OfferedService.findAll({
                 where: {
                     ServiceID: serviceID
-                }
+                },
+                include: [
+                    { model: ServiceOfferer },
+                    { model: Service },
+                ],
             });
             return offeredServices;
         }

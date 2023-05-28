@@ -29,7 +29,7 @@ module.exports = {
                 schema: {
                     $firstName: 'Jhon',
                     $lastName: 'Doe',
-                    $email: 'bla@bla.com',
+                    $email: 'client@email.com',
                     $phoneNumber: '0773-456-789',
                     $password: '123456',
                 }

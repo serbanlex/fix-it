@@ -8,8 +8,8 @@ module.exports = {
                 in: 'body',
                 description: 'Login details of the user that creates the session',
                 schema: {
-                    $email: 'bla@bla.com',
-                    $password: '123456',
+                    $email: 'client@email.com',
+                    $password: 'client',
                 }
             }
             #swagger.tags = ['Sessions']

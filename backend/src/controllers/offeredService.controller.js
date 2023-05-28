@@ -34,11 +34,24 @@ module.exports = {
             next(error);
         }
     },
-    async getAllOfferedServices(req, res, next) {
+    async getAll(req, res, next) {
         // #swagger.tags = ['Offered Services']
+        // #swagger.description = 'Returns all the offered services by all the service offerers'
         try {
             const offeredServices = await offeredServiceRepo.getAll();
             res.status(200).json(offeredServices);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+    async getAllOffersWithServiceID(req, res, next) {
+        // #swagger.tags = ['Services (general)']
+        // #swagger.description = 'Returns all the offered services that have the specified service ID (all the offers for a service)'
+        const id = req.params.serviceID;
+        try {
+            const offeredServicesOfService = await offeredServiceRepo.getAllByServiceID(id);
+            res.status(200).json(offeredServicesOfService);
         }
         catch (error) {
             next(error);

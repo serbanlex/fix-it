@@ -6,8 +6,9 @@ const offeredServiceCreateSchema = require('../schemas/offeredServiceCreate');
 const authenticate = require('../middleware/authenticate');
 
 
-router.get('/offeredServices', authenticate, offeredServiceController.getAllOfferedServices);
+router.get('/offeredServices', authenticate, offeredServiceController.getAll);
 router.get('/offeredServices/:id', authenticate, offeredServiceController.getOfferedService);
+router.get('/offeredServices/service/:serviceID', authenticate, offeredServiceController.getAllOffersWithServiceID);
 router.post('/offeredServices', validate(offeredServiceCreateSchema), offeredServiceController.createOfferedService);
 router.delete('/offeredServices/:id', authenticate, offeredServiceController.deleteOfferedService);
 

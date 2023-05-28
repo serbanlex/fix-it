@@ -30,7 +30,7 @@ module.exports = {
                 schema: {
                     $firstName: 'Jhon',
                     $lastName: 'Doe',
-                    $email: 'some@email.com',
+                    $email: 'offerer@email.com',
                     $phoneNumber: '0772-456-789',
                     $password: 'user',
                     $firmName: 'FixIt',

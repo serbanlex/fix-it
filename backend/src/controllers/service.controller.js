@@ -1,5 +1,6 @@
 const serviceRepo = require('../infrastructure/repositories/service.repo');
 const { EntityNotFound } = require('../exceptions');
+const offeredServiceRepo = require('../infrastructure/repositories/offeredService.repo');
 
 module.exports = {
     async createService(req, res, next) {
@@ -41,19 +42,6 @@ module.exports = {
         try {
             const service = await serviceRepo.getById(id);
             res.status(200).json(service);
-        }
-        catch (error) {
-            next(error);
-        }
-    },
-
-    // TODO: This is not what i needed for the job
-    async getServiceOfferersThatOfferService(req, res, next) {
-        // #swagger.tags = ['Services (general)']
-        const id = req.params.id;
-        try {
-            const serviceOfferers = await serviceRepo.getServiceOfferersThatOfferService(id);
-            res.status(200).json(serviceOfferers);
         }
         catch (error) {
             next(error);

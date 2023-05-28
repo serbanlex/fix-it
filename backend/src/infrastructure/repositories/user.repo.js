@@ -1,5 +1,5 @@
 const { EntityAlreadyExists, EntityNotFound } = require('../../exceptions');
-const { User, Client, ServiceOfferer } = require('../models');
+const { User, Client, ServiceOfferer, OfferedService } = require('../models');
 const { Op } = require('sequelize');
 const bcrypt = require("bcrypt");
 
@@ -22,7 +22,20 @@ class UserRepository {
         return await User.findAll({
             include: [
                 { model: Client, as: 'clientInfo', attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] } },
-                { model: ServiceOfferer, as: 'serviceOffererInfo', attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] } }
+                {
+                    model: ServiceOfferer,
+                    as: 'serviceOffererInfo',
+                    attributes: {
+                        exclude: ['ID', 'createdAt', 'updatedAt'],
+                    },
+                    include: [
+                        {
+                            model: OfferedService,
+                            as: 'offeredServices',
+                            attributes: { exclude: ['ServiceOffererId'] },
+                        },
+                    ],
+                },
             ],
             attributes: { exclude: ['password'] }
         });
@@ -32,15 +45,29 @@ class UserRepository {
         const user = await User.findByPk(id, {
             include: [
                 { model: Client, as: 'clientInfo', attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] } },
-                { model: ServiceOfferer, as: 'serviceOffererInfo', attributes: { exclude: ['ID', 'createdAt', 'updatedAt'] } }
+                {
+                    model: ServiceOfferer,
+                    as: 'serviceOffererInfo',
+                    attributes: {
+                        exclude: ['ID', 'createdAt', 'updatedAt'],
+                    },
+                    include: [
+                        {
+                            model: OfferedService,
+                            as: 'offeredServices',
+                            attributes: { exclude: ['ServiceOffererId'] },
+                        },
+                    ],
+                },
             ],
-            attributes: { exclude: ['password'] }
+            attributes: { exclude: ['password'] },
         });
         if (!user) {
             throw new EntityNotFound('User not found');
         }
         return user;
     }
+
 
     async getByEmail(email) {
         /*
@@ -66,7 +93,8 @@ class UserRepository {
         if (!user) {
             throw new EntityNotFound('User not found');
         }
-        return await user.destroy();
+        await user.destroy();
+        return this.getAll();
     }
 
     async login(email, password) {
@@ -79,6 +107,7 @@ class UserRepository {
         if (!validCredentials) {
             return null;
         }
+
         return this.getById(user.ID);
     }
 

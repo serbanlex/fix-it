@@ -52,7 +52,7 @@
                 },
                 "email": {
                   "type": "string",
-                  "example": "bla@bla.com"
+                  "example": "client@email.com"
                 },
                 "phoneNumber": {
                   "type": "string",
@@ -194,7 +194,7 @@
                 },
                 "email": {
                   "type": "string",
-                  "example": "some@email.com"
+                  "example": "offerer@email.com"
                 },
                 "phoneNumber": {
                   "type": "string",
@@ -287,11 +287,11 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "bla@bla.com"
+                  "example": "client@email.com"
                 },
                 "password": {
                   "type": "string",
-                  "example": "123456"
+                  "example": "client"
                 }
               },
               "required": [
@@ -451,27 +451,6 @@
         }
       }
     },
-    "/services/{id}/serviceOfferers": {
-      "get": {
-        "tags": [
-          "Services (general)"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/serviceCategories": {
       "get": {
         "tags": [
@@ -590,7 +569,7 @@
         "tags": [
           "Offered Services"
         ],
-        "description": "",
+        "description": "Returns all the offered services by all the service offerers",
         "parameters": [],
         "responses": {
           "200": {
@@ -670,6 +649,27 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/offeredServices/service/{serviceID}": {
+      "get": {
+        "tags": [
+          "Services (general)"
+        ],
+        "description": "Returns all the offered services that have the specified service ID (all the offers for a service)",
+        "parameters": [
+          {
+            "name": "serviceID",
             "in": "path",
             "required": true,
             "type": "string"

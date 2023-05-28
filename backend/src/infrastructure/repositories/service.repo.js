@@ -32,22 +32,6 @@ class ServiceRepository {
         return service;
     }
 
-    async getServiceOfferersThatOfferService(serviceId) {
-        await this.getById(serviceId);
-        try {
-            const services = await Service.findByPk(serviceId, {
-                include: [{
-                    model: ServiceOfferer,
-                    as: 'ServiceOfferers'
-                }]
-            });
-            return services.serviceOfferers;
-        } catch (error) {
-            console.log(`Failed to get service offerers that offer service with ID ${serviceId}. Reason: ${error}`);
-            throw new FixItError("Failed to get service offerers that offer this service");
-        }
-    }
-
     async update(id, serviceInfo) {
         const service = await this.getById(id);
         try {

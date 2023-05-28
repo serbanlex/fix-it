@@ -1,8 +1,7 @@
 // Repo for ServiceOfferer, that uses ServiceOfferer model alongside the User model
 const { EntityAlreadyExists, EntityNotFound } = require('../../exceptions');
-const { ServiceOfferer, User } = require('../models');
+const { ServiceOfferer, User, OfferedService } = require('../models');
 const userRepo = require('./user.repo');
-
 
 class ServiceOffererRepo {
     async create(serviceOffererInfo) {
@@ -31,7 +30,9 @@ class ServiceOffererRepo {
                         required: true,
                         attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] },
                         as: "userInfo"
-                    }
+                    },
+                    { model: OfferedService, as: 'offeredServices' }
+
                 ],
             },
         );
@@ -50,7 +51,9 @@ class ServiceOffererRepo {
                     required: true,
                     attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] },
                     as: "userInfo"
-                }
+                },
+                { model: OfferedService, as: 'offeredServices' }
+
             ],
         });
         return result;
