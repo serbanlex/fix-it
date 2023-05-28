@@ -78,7 +78,7 @@ function HomeScreen({ }) {
         navigation.navigate('ServicesOfferer', data)
         )}
 
-        {session.serviceOffererInfo != null && (
+        {session.serviceOffererInfo == null && (
             navigation.navigate('ServicesClient', data)
         )}
     }

@@ -24,6 +24,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#43428b',
     },
 
+    container_SECONDARY: {
+        backgroundColor: '#43428b',
+        marginBottom: 40,
+    },
+
+    text_SECONDARY: {
+        color: 'white',
+    },
+
     container_Welcome: {
         backgroundColor: 'white',
     },

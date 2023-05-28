@@ -4,6 +4,7 @@ import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
+import CustomButton from '../components/CustomButton';
 import Services from '../components/Services';
 
 if (!API_URL) {
@@ -13,6 +14,7 @@ if (!API_URL) {
 function ServicesOffererScreen({ route }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [services, setServices] = useState([]);
+    const [selectedService, setSelectedService] = useState(null);
     const category = route.params.name;
     console.log(category);
 
@@ -42,35 +44,48 @@ function ServicesOffererScreen({ route }) {
 
     const navigation = useNavigation();
 
-    const onServicePressed = async (data) => {
-        navigation.navigate('Home', data);
-    }
+    const onNextPressed = async (data) => {
+        navigation.navigate('Home');
+      };
+
+      const onServicePressed = async (data) => {
+        navigation.navigate('Home');
+      };
+
+    const handleServiceSelect = (service) => {
+        setSelectedService(service); // Update the selected service
+      };
 
     try {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Concrete services that you are offering</Text>
+                <Text style={styles.title}>Concrete service that you are offering</Text>
                 <Button
                 style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
                 onPress={() => onServicePressed()}>
                 <Text style={styles.buttonText}>Back</Text>
                 </Button>
-                <View>
+
+                <View style={styles.contentContainer}>
                     <FlatList
                         data={services}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => onServicePressed(item)}>
+                            <View >
                               {category === item.category.name && (  
                               <Services 
-                                    service={item} 
+                                    service={item}
+                                    isSelected={selectedService === item}
+                                    onSelect={handleServiceSelect}
                               />
                               )}
-                            </TouchableOpacity>
+                            </View>
                           )}
                         keyExtractor={item => item.ID.toString()}
                         contentContainerStyle={styles.listContainer} 
                     />
                 </View>
+
+                <CustomButton text="Next" onPress={() => onNextPressed()} type="SECONDARY" />
 
             </View>
         );
@@ -104,7 +119,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: '10%',
         marginTop: 10,
-
+    },
+    contentContainer: {
+        flex: 1,
+        width: '85%',
     },
 });
 
