@@ -4,20 +4,20 @@ import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
-import Services from '../../components/Services';
+import OfferedService from '../../components/OfferedService';
 
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
-console.log("Services of client using api url " + API_URL)
-function ServicesClientScreen({ route }) {
-    const { control, handleSubmit, formState: { errors } } = useForm();
-    const [services, setServices] = useState([]);
-    const category = route.params.name;
-    console.log(category);
+
+function OfferedServicesScreen({ route }) {
+    const [offeredServices, setOfferedServices] = useState([]);
+    const serviceID = route.params.item.ID;
+    const serviceName = route.params.item.name;
+    console.log(serviceID);
 
     useEffect(() => {
-        fetch(`${API_URL}/services`, { headers: { 'Cache-Control': 'no-cache' } })
+        fetch(`${API_URL}/offeredServices/service/${serviceID}`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
                     console.log("Something went wrong: " + JSON.stringify(response));
@@ -30,7 +30,7 @@ function ServicesClientScreen({ route }) {
             })
             .then(data => {
                 if (data) {
-                    setServices(data);
+                    setOfferedServices(data);
                 }
             })
             .catch(error => console.error(error));
@@ -38,19 +38,19 @@ function ServicesClientScreen({ route }) {
 
 
 
-    console.log("Services that are set: " + services)
+    console.log(`Offered services for service ID '${serviceID}': ${offeredServices}`)
 
     const navigation = useNavigation();
 
-    const onServicePressed = (item) => {
-        console.log("Service pressed, order data: " + JSON.stringify(item))
-        navigation.navigate('OfferedServices', { item: item });
-    };
+    const onServicePressed = async (data) => {
+        console.log("Service pressed, order data: " + JSON.stringify(data))
+        // navigation.navigate('Order', data);
+    }
 
     try {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>What problem needs to be fixed?</Text>
+                <Text style={styles.title}>Service offerers good at {serviceName.toLowerCase()}</Text>
                 <Button
                     style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
                     onPress={() => navigation.goBack()}>
@@ -58,15 +58,16 @@ function ServicesClientScreen({ route }) {
                 </Button>
                 <View>
                     <FlatList
-                        data={services}
+                        data={offeredServices}
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => onServicePressed(item)}>
-                                {category === item.category.name && (
-                                    <Services
-                                        service={item}
-                                        onSelect={() => onServicePressed(item)}
+                                {
+                                    <OfferedService
+                                        price={item.price}
+                                        serviceOfferer={item.ServiceOfferer}
+                                        service={item.Service}
                                     />
-                                )}
+                                }
                             </TouchableOpacity>
                         )}
                         keyExtractor={item => item.ID.toString()}
@@ -96,7 +97,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 28,
         marginBottom: 150,
-        padding: '2%'
     },
     buttonText: {
         color: '#43428b',
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ServicesClientScreen;
+export default OfferedServicesScreen;

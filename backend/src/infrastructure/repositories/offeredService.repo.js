@@ -1,22 +1,24 @@
 const { FixItError } = require("../../exceptions");
-const { OfferedService, Service, ServiceOfferer, Order } = require("../models");
+const { OfferedService, User, Service, ServiceOfferer, Order } = require("../models");
 const { EntityNotFound } = require("../../exceptions");
 
 class OfferedServiceRepository {
     async create(offeredServiceInfo) {
         console.log(offeredServiceInfo);
+        var offeredService;
         try {
             const { serviceOffererID, serviceID, ...rest } = offeredServiceInfo;
-            const offeredService = await OfferedService.create(rest);
+            offeredService = await OfferedService.create(rest);
             await offeredService.setServiceOfferer(serviceOffererID);
             await offeredService.setService(serviceID);
             return offeredService;
         } catch (error) {
+            console.log("Couldn't create offered service: " + error)
             try {
-                await OfferedService.destroy({ where: { id: offeredServiceInfo.id } });
+                await OfferedService.destroy({ where: { ID: offeredService.ID } });
             }
             catch (error) {
-                console.log("tried to delete the offered service that was created but failed : " + error);
+                console.log("Tried to delete the offered service that was created but failed : " + error);
             }
             throw new Error("Failed to create offered service. Reason: " + error.message);
         }
@@ -57,9 +59,18 @@ class OfferedServiceRepository {
                     ServiceID: serviceID
                 },
                 include: [
-                    { model: ServiceOfferer },
-                    { model: Service },
-                    { model: Order }
+                    {
+                        model: ServiceOfferer, include: [
+                            {
+                                model: User,
+                                as: 'userInfo',
+                                attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                            },
+                        ],
+                    },
+                    {
+                        model: Service
+                    },
                 ],
             });
             return offeredServices;
