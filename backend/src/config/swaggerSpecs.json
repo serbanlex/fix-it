@@ -681,6 +681,144 @@
           }
         }
       }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "order",
+            "in": "body",
+            "description": "Basic order details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "offeredServiceID": {
+                  "type": "number",
+                  "example": 1
+                },
+                "clientID": {
+                  "type": "number",
+                  "example": 1
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2021-05-05"
+                },
+                "time": {
+                  "type": "string",
+                  "example": "12:00"
+                },
+                "state": {
+                  "type": "string",
+                  "example": "pending"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "I need my sink fixed"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "1234 Main St"
+                }
+              },
+              "required": [
+                "offeredServiceID",
+                "clientID",
+                "date",
+                "time",
+                "state",
+                "description",
+                "address"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/orders/client/{clientID}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "clientID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }

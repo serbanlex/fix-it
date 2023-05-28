@@ -1,5 +1,5 @@
 const { FixItError } = require("../../exceptions");
-const { OfferedService, Service, ServiceOfferer } = require("../models");
+const { OfferedService, Service, ServiceOfferer, Order } = require("../models");
 const { EntityNotFound } = require("../../exceptions");
 
 class OfferedServiceRepository {
@@ -59,6 +59,7 @@ class OfferedServiceRepository {
                 include: [
                     { model: ServiceOfferer },
                     { model: Service },
+                    { model: Order }
                 ],
             });
             return offeredServices;
