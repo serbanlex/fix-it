@@ -47,6 +47,7 @@ module.exports = {
         }
     },
 
+    // TODO: This is not what i needed for the job
     async getServiceOfferersThatOfferService(req, res, next) {
         // #swagger.tags = ['Services (general)']
         const id = req.params.id;

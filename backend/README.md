@@ -3,4 +3,4 @@ FixIt is an app that has the sole purpose of connecting firms that offer practic
 
 Steps for setting up the backend:
 `npm install`
-`npm run start` (or, if you want to get a temporary public IP to use with the mobile app, `ngrok http 3000`)
+`npm run start` (and, if you want to get a temporary public IP for the mobile app, you can use `ngrok http 3000` **after** you've set up the backend)
