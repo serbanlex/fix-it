@@ -6,6 +6,7 @@ import WelcomeScreen from '../screens/WelcomeScreen.js';
 import ChooseRoleScreen from '../screens/ChooseRoleScreen.js';
 import RegisterOffererScreen from '../screens/RegisterOffererScreen.js';
 import ServicesOffererScreen from '../screens/ServicesOffererScreen.js'
+import ServicesClientScreen from '../screens/ServicesClientScreen.js';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ function WelcomeNavigator() {
             <Stack.Screen name="ChooseRole" component={ChooseRoleScreen} options={{ headerShown: false }} />
             <Stack.Screen name="RegisterOfferer" component={RegisterOffererScreen} options={{ headerShown: false }} />
             <Stack.Screen name="ServicesOfferer" component={ServicesOffererScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="ServicesClient" component={ServicesClientScreen} options={{ headerShown: false }} />
             <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     );

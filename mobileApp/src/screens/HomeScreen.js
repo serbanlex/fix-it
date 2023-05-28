@@ -74,7 +74,13 @@ function HomeScreen({ }) {
     }
 
     const onCategoryPressed = async (data) => {
-        navigation.navigate('ServicesOfferer', data);
+        {session.serviceOffererInfo != null && (
+        navigation.navigate('ServicesOfferer', data)
+        )}
+
+        {session.serviceOffererInfo != null && (
+            navigation.navigate('ServicesClient', data)
+        )}
     }
 
     try {

@@ -10,7 +10,7 @@ if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
 
-function ServicesOffererScreen({ route }) {
+function ServicesClientScreen({ route }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [services, setServices] = useState([]);
     const category = route.params.name;
@@ -49,7 +49,7 @@ function ServicesOffererScreen({ route }) {
     try {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Concrete services that you are offering</Text>
+                <Text style={styles.title}>What problem needs to be fixed?</Text>
                 <Button
                 style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
                 onPress={() => onServicePressed()}>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#000',
         fontWeight: 'bold',
-        fontSize: 36,
+        fontSize: 28,
         marginBottom: 150,
     },
     buttonText: {
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ServicesOffererScreen;
+export default ServicesClientScreen;
