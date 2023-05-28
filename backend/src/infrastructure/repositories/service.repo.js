@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const { FixItError } = require("../../exceptions");
-const { Service, ServiceCategory } = require("../models");
+const { Service, ServiceCategory, ServiceOfferer } = require("../models");
 const { EntityNotFound } = require("../../exceptions");
 
 class ServiceRepository {
@@ -38,7 +38,7 @@ class ServiceRepository {
             const services = await Service.findByPk(serviceId, {
                 include: [{
                     model: ServiceOfferer,
-                    as: 'serviceOfferers'
+                    as: 'ServiceOfferers'
                 }]
             });
             return services.serviceOfferers;

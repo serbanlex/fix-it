@@ -584,6 +584,103 @@
           }
         }
       }
+    },
+    "/offeredServices": {
+      "get": {
+        "tags": [
+          "Offered Services"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Offered Services"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "offeredService",
+            "in": "body",
+            "description": "Basic information of the offered service",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "serviceOffererID": {
+                  "type": "number",
+                  "example": 1
+                },
+                "serviceID": {
+                  "type": "number",
+                  "example": 1
+                },
+                "price": {
+                  "type": "number",
+                  "example": 100
+                }
+              },
+              "required": [
+                "serviceOffererID",
+                "serviceID",
+                "price"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/offeredServices/{id}": {
+      "get": {
+        "tags": [
+          "Offered Services"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Offered Services"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }

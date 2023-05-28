@@ -5,6 +5,7 @@ const serviceOffererRoute = require('./serviceOfferer.route');
 const sessionRoute = require('./session.route');
 const serviceRoute = require('./service.route');
 const serviceCategoryRoute = require('./serviceCategory.route');
+const offeredServiceRoute = require('./offeredService.route');
 const errorHandler = require('../middleware/errorHandler');
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.use(serviceOffererRoute);
 router.use(sessionRoute);
 router.use(serviceRoute);
 router.use(serviceCategoryRoute);
+router.use(offeredServiceRoute);
 
 router.use(errorHandler);
 

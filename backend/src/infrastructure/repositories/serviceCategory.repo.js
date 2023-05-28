@@ -9,7 +9,7 @@ class ServiceCategoryRepo {
             serviceCategory = await ServiceCategory.create(serviceCategoryInfo);
         } catch (error) {
             console.log("Error creating serviceCategory: " + error);
-            throw error;
+            throw new Error("Failed to create serviceCategory. Reason: " + error.message);
         }
         return serviceCategory;
     }
