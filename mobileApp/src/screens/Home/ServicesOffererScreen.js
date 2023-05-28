@@ -4,6 +4,7 @@ import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
+import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Services from '../../components/Services';
 
@@ -12,9 +13,11 @@ if (!API_URL) {
 }
 console.log(API_URL)
 function ServicesOffererScreen({ route }) {
-    const { control, handleSubmit, formState: { errors } } = useForm();
+    const { control, handleSubmit, formState: { errors }, watch } = useForm();
     const [services, setServices] = useState([]);
     const [selectedService, setSelectedService] = useState(null);
+    const [serviceOffererID, setServiceOffererID] = useState(null);
+    const priceValue = watch('price');
     const category = route.params.name;
     console.log(category);
 
@@ -22,7 +25,6 @@ function ServicesOffererScreen({ route }) {
         fetch(`${API_URL}/services`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
-                    console.log(response);
                     Alert.alert('Something went wrong', 'Failed to load services.');
                     throw new Error("Failed to load services.")
                 }
@@ -38,15 +40,61 @@ function ServicesOffererScreen({ route }) {
             .catch(error => console.error(error));
     }, []);
 
+    useEffect(() => {
+        fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
+            .then(response => {
+                if (!response.ok) {
+                    Alert.alert('Something went wrong', 'Failed to load services.');
+                    throw new Error("Failed to load services.")
+                }
+                else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    setServiceOffererID(data.ID)
+                }
+            })
+            .catch(error => console.error(error));
+    }, []);
 
-
-    console.log("Services are set: " + services)
 
     const navigation = useNavigation();
 
     const onNextPressed = async (data) => {
-        navigation.navigate('Home');
-    };
+        const requestData = {
+          serviceOffererID: serviceOffererID,
+          serviceID: selectedService.ID,
+          price: priceValue, // Use the captured price from the form
+        };
+    
+        try {
+          const response = await fetch(`${API_URL}/offeredServices`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+          });
+    
+          if (response.ok) {
+            navigation.navigate('Home');
+          } else {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+            //asuming that response is returning 500 also because it has been added
+            if (response.status === 409 || response.status === 500) {
+              Alert.alert('Services error', 'The service has already been added.');
+            } else {
+              Alert.alert('Services error', `Failed to add service. Reason: ${errorResponse.error}`);
+            }
+          }
+        } catch (error) {
+          console.error(error);
+          Alert.alert('Services error', 'Failed to add service');
+        }
+      };
 
     const onServicePressed = async (data) => {
         navigation.navigate('Home');
@@ -55,6 +103,7 @@ function ServicesOffererScreen({ route }) {
     const handleServiceSelect = (service) => {
         setSelectedService(service); // Update the selected service
     };
+
 
     try {
         return (
@@ -84,6 +133,16 @@ function ServicesOffererScreen({ route }) {
                         contentContainerStyle={styles.listContainer}
                     />
                 </View>
+
+                <CustomInput
+                name="price"
+                control={control}
+                placeholder="Price"
+                rules={{
+                    required: 'Price is required',
+                    maxLength: { value: 5, message: 'Price should not exceed 5 digits' },
+                }}
+                />
 
                 <CustomButton text="Next" onPress={() => onNextPressed()} type="SECONDARY" />
 
