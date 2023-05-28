@@ -37,6 +37,7 @@ function LoginScreen({ }) {
             Alert.alert('Login Error', 'Invalid credentials.');
           }
           else {
+            console.log(response)
             response = response.json();
             Alert.alert('Login Error', 'Failed to login user. Reason: ' + response.message);
           }
@@ -72,7 +73,7 @@ function LoginScreen({ }) {
           placeholder="Password"
           secureTextEntry={true}
           control={control}
-          rules={{ required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } }}
+          rules={{ required: 'Password is required', minLength: { value: 3, message: 'Password must be at least 3 characters long' } }}
         />
 
         <CustomButton text="Log In" onPress={handleSubmit(onLogInPressed)} />

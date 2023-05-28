@@ -37,7 +37,6 @@ function HomeScreen({ }) {
     useEffect(() => {
         fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
-                console.log("***********************" + response)
                 if (!response.ok) {
                     console.log(response);
                     Alert.alert('Something went wrong', 'Failed to load session.');
@@ -50,7 +49,6 @@ function HomeScreen({ }) {
             .then(data => {
                 if (data) {
                     setSession(data);
-                    console.log("Session: " +  data)
                 }
             })
             .catch(error => console.error(error));
@@ -80,28 +78,30 @@ function HomeScreen({ }) {
     }
 
     try {
+        console.log(session)
+        console.log(session['serviceOffererInfo'])
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>Home</Text>
                 <Text style={styles.subtitle}>Choose a category</Text>
                 <Button
-                style={{ backgroundColor: '#fffff', position: 'absolute', top: 50, left: 20 }}
-                onPress={handleSubmit(onLogOutPressed)}
+                    style={{ backgroundColor: '#fffff', position: 'absolute', top: 50, left: 20 }}
+                    onPress={handleSubmit(onLogOutPressed)}
                 >
-                <Text style={styles.buttonText}>Log out</Text>
-            </Button>
+                    <Text style={styles.buttonText}>Log out</Text>
+                </Button>
                 <View>
                     <FlatList
                         data={categories}
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => onCategoryPressed(item)}>
-                              <ServiceCategory category={item} />
+                                <ServiceCategory category={item} />
                             </TouchableOpacity>
-                          )}
+                        )}
                         keyExtractor={item => item.ID.toString()}
                         numColumns={2}
                         columnWrapperStyle={styles.columnWrapper}
-                        contentContainerStyle={styles.columnSpacer} 
+                        contentContainerStyle={styles.columnSpacer}
                     />
                 </View>
 
