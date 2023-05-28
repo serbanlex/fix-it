@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, Alert } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react-native';
 import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
@@ -13,12 +13,12 @@ if (!API_URL) {
 function HomeScreen({ }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [categories, setCategories] = useState([]);
+    const [session, setSession] = useState([]);
 
     useEffect(() => {
         fetch(`${API_URL}/serviceCategories`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
-                    console.log(response);
                     Alert.alert('Something went wrong', 'Failed to load service categories.');
                     throw new Error("Failed to load service categories.")
                 }
@@ -34,7 +34,27 @@ function HomeScreen({ }) {
             .catch(error => console.error(error));
     }, []);
 
-
+    useEffect(() => {
+        fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
+            .then(response => {
+                console.log("***********************" + response)
+                if (!response.ok) {
+                    console.log(response);
+                    Alert.alert('Something went wrong', 'Failed to load session.');
+                    throw new Error("Failed to load session.")
+                }
+                else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    setSession(data);
+                    console.log("Session: " +  data)
+                }
+            })
+            .catch(error => console.error(error));
+    }, []);
 
     console.log("Categories are set: " + categories)
 
@@ -55,10 +75,15 @@ function HomeScreen({ }) {
             });
     }
 
+    const onCategoryPressed = async (data) => {
+        navigation.navigate('ServicesOfferer', data);
+    }
+
     try {
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>Home</Text>
+                <Text style={styles.subtitle}>Choose a category</Text>
                 <Button
                 style={{ backgroundColor: '#fffff', position: 'absolute', top: 50, left: 20 }}
                 onPress={handleSubmit(onLogOutPressed)}
@@ -68,7 +93,11 @@ function HomeScreen({ }) {
                 <View>
                     <FlatList
                         data={categories}
-                        renderItem={({ item }) => <ServiceCategory category={item} />}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => onCategoryPressed(item)}>
+                              <ServiceCategory category={item} />
+                            </TouchableOpacity>
+                          )}
                         keyExtractor={item => item.ID.toString()}
                         numColumns={2}
                         columnWrapperStyle={styles.columnWrapper}
@@ -97,7 +126,13 @@ const styles = StyleSheet.create({
         color: '#43428b',
         fontWeight: 'bold',
         fontSize: 36,
-        marginBottom: 150,
+        marginBottom: 100,
+    },
+    subtitle: {
+        color: '#000',
+        fontWeight: 'bold',
+        fontSize: 24,
+        marginBottom: 50,
     },
     buttonText: {
         color: '#43428b',

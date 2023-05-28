@@ -49,7 +49,7 @@ function LoginScreen({ }) {
   };
 
   const onRegisterPressed = () => {
-    navigation.navigate('Register');
+    navigation.navigate('ChooseRole');
   };
 
   return (
