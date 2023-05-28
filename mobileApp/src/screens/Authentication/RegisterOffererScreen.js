@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
+import CustomInput from '../../components/CustomInput';
+import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -16,21 +16,21 @@ const RegisterOffererScreen = ({ route }) => {
     delete data['password-repeat'];
     console.log(data)
     try {
-        const response = await fetch(`${API_URL}/serviceOfferers`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-          
-          if (response.ok) {
-            navigation.navigate('SuccessfulLogin');
-          } else {
-            const errorResponse = await response.json();
-            console.log(errorResponse);
-            Alert.alert('Registration Error', `Failed to register service offerer. Reason: ${errorResponse.error}`);
-          }
+      const response = await fetch(`${API_URL}/serviceOfferers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        navigation.navigate('SuccessfulLogin');
+      } else {
+        const errorResponse = await response.json();
+        console.log(errorResponse);
+        Alert.alert('Registration Error', `Failed to register service offerer. Reason: ${errorResponse.error}`);
+      }
     } catch (error) {
       console.error(error);
       Alert.alert('Registration Error', 'Failed to register service offerer.');

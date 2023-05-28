@@ -1,11 +1,11 @@
 import React, { useState, Component, useEffect } from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { Button } from 'native-base';
-import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
+import CustomInput from '../../components/CustomInput';
+import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
-import GradientBackground from '../components/GradientBackground2';
+import GradientBackground from '../../components/GradientBackground2';
 import { API_URL } from '@env';
 
 if (!API_URL) {
@@ -22,6 +22,7 @@ function LoginScreen({ }) {
   console.log(errors);
 
   useEffect(() => {
+    console.log("Checking if already authorized with url " + API_URL)
     fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
       .then(response => {
         if (response.ok) {
@@ -44,7 +45,10 @@ function LoginScreen({ }) {
     })
       .then(response => {
         if (response.ok) {
-          navigation.navigate('Home');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          });
         } else {
           if (response.status === 401) {
             Alert.alert('Login Error', 'Invalid credentials.');

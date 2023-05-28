@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Alert } from 'react-native';
 import { Button } from 'native-base';
-import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
+import CustomInput from '../../components/CustomInput';
+import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
-import GradientBackground from '../components/GradientBackground2';
+import GradientBackground from '../../components/GradientBackground2';
 import { API_URL } from '@env';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -104,7 +104,7 @@ const RegisterScreen = ({ route }) => {
             secureTextEntry={true}
             rules={{
               required: 'Password is required',
-              minLength: { value: 8, message: 'Password must be at least 8 characters long' },
+              minLength: { value: 3, message: 'Password must be at least 3 characters long' },
             }}
           />
           <CustomInput

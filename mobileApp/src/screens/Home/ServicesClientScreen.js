@@ -4,7 +4,7 @@ import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
-import Services from '../components/Services';
+import Services from '../../components/Services';
 
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
@@ -20,9 +20,9 @@ function ServicesClientScreen({ route }) {
         fetch(`${API_URL}/services`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
-                    console.log(response);
+                    console.log("Something went wrong: " + JSON.stringify(response));
                     Alert.alert('Something went wrong', 'Failed to load services.');
-                    throw new Error("Failed to load services.")
+                    throw new Error("Failed to load services. A network error may have occurred.")
                 }
                 else {
                     return response.json();
@@ -38,7 +38,7 @@ function ServicesClientScreen({ route }) {
 
 
 
-    console.log("Services are set: " + services)
+    console.log("Services that are set: " + services)
 
     const navigation = useNavigation();
 
@@ -51,24 +51,24 @@ function ServicesClientScreen({ route }) {
             <View style={styles.container}>
                 <Text style={styles.title}>What problem needs to be fixed?</Text>
                 <Button
-                style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
-                onPress={() => onServicePressed()}>
-                <Text style={styles.buttonText}>Back</Text>
+                    style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
+                    onPress={() => onServicePressed()}>
+                    <Text style={styles.buttonText}>Back</Text>
                 </Button>
                 <View>
                     <FlatList
                         data={services}
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => onServicePressed(item)}>
-                              {category === item.category.name && (  
-                              <Services 
-                                    service={item} 
-                              />
-                              )}
+                                {category === item.category.name && (
+                                    <Services
+                                        service={item}
+                                    />
+                                )}
                             </TouchableOpacity>
-                          )}
+                        )}
                         keyExtractor={item => item.ID.toString()}
-                        contentContainerStyle={styles.listContainer} 
+                        contentContainerStyle={styles.listContainer}
                     />
                 </View>
 

@@ -4,8 +4,8 @@ import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
-import CustomButton from '../components/CustomButton';
-import Services from '../components/Services';
+import CustomButton from '../../components/CustomButton';
+import Services from '../../components/Services';
 
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
@@ -46,24 +46,24 @@ function ServicesOffererScreen({ route }) {
 
     const onNextPressed = async (data) => {
         navigation.navigate('Home');
-      };
+    };
 
-      const onServicePressed = async (data) => {
+    const onServicePressed = async (data) => {
         navigation.navigate('Home');
-      };
+    };
 
     const handleServiceSelect = (service) => {
         setSelectedService(service); // Update the selected service
-      };
+    };
 
     try {
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>Concrete service that you are offering</Text>
                 <Button
-                style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
-                onPress={() => onServicePressed()}>
-                <Text style={styles.buttonText}>Back</Text>
+                    style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
+                    onPress={() => onServicePressed()}>
+                    <Text style={styles.buttonText}>Back</Text>
                 </Button>
 
                 <View style={styles.contentContainer}>
@@ -71,17 +71,17 @@ function ServicesOffererScreen({ route }) {
                         data={services}
                         renderItem={({ item }) => (
                             <View >
-                              {category === item.category.name && (  
-                              <Services 
-                                    service={item}
-                                    isSelected={selectedService === item}
-                                    onSelect={handleServiceSelect}
-                              />
-                              )}
+                                {category === item.category.name && (
+                                    <Services
+                                        service={item}
+                                        isSelected={selectedService === item}
+                                        onSelect={handleServiceSelect}
+                                    />
+                                )}
                             </View>
-                          )}
+                        )}
                         keyExtractor={item => item.ID.toString()}
-                        contentContainerStyle={styles.listContainer} 
+                        contentContainerStyle={styles.listContainer}
                     />
                 </View>
 

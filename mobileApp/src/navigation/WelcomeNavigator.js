@@ -1,13 +1,14 @@
-import LoginScreen from '../screens/LoginScreen.js';
-import SuccessfulLoginScreen from '../screens/SuccessfulLoginScreen.js';
-import RegisterScreen from '../screens/RegisterScreen.js';
-import NewPasswordScreen from '../screens/NewPasswordScreen.js';
+import LoginScreen from '../screens/Authentication/LoginScreen.js';
+import SuccessfulLoginScreen from '../screens/Authentication/SuccessfulLoginScreen.js';
+import RegisterScreen from '../screens/Authentication/RegisterScreen.js';
+import NewPasswordScreen from '../screens/Authentication/NewPasswordScreen.js';
 import WelcomeScreen from '../screens/WelcomeScreen.js';
-import ChooseRoleScreen from '../screens/ChooseRoleScreen.js';
-import RegisterOffererScreen from '../screens/RegisterOffererScreen.js';
-import ServicesOffererScreen from '../screens/ServicesOffererScreen.js'
-import ServicesClientScreen from '../screens/ServicesClientScreen.js';
+import ChooseRoleScreen from '../screens/Authentication/ChooseRoleScreen.js';
+import RegisterOffererScreen from '../screens/Authentication/RegisterOffererScreen.js';
+import ServicesOffererScreen from '../screens/Home/ServicesOffererScreen.js'
+import ServicesClientScreen from '../screens/Home/ServicesClientScreen.js';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from '../screens/Home/HomeScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ function WelcomeNavigator() {
             <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
             <Stack.Screen name="ChooseRole" component={ChooseRoleScreen} options={{ headerShown: false }} />
             <Stack.Screen name="RegisterOfferer" component={RegisterOffererScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
             <Stack.Screen name="ServicesOfferer" component={ServicesOffererScreen} options={{ headerShown: false }} />
             <Stack.Screen name="ServicesClient" component={ServicesClientScreen} options={{ headerShown: false }} />
             <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false }} />

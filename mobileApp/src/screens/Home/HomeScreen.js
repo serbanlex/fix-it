@@ -4,7 +4,7 @@ import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
-import ServiceCategory from '../components/ServiceCategory';
+import ServiceCategory from '../../components/ServiceCategory';
 
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
@@ -20,7 +20,7 @@ function HomeScreen({ }) {
             .then(response => {
                 if (!response.ok) {
                     Alert.alert('Something went wrong', 'Failed to load service categories.');
-                    throw new Error("Failed to load service categories.")
+                    throw new Error("Failed to load service categories. A network error may have occurred.")
                 }
                 else {
                     return response.json();
@@ -74,13 +74,17 @@ function HomeScreen({ }) {
     }
 
     const onCategoryPressed = async (data) => {
-        {session.serviceOffererInfo != null && (
-        navigation.navigate('ServicesOfferer', data)
-        )}
+        {
+            session.serviceOffererInfo != null && (
+                navigation.navigate('ServicesOfferer', data)
+            )
+        }
 
-        {session.serviceOffererInfo == null && (
-            navigation.navigate('ServicesClient', data)
-        )}
+        {
+            session.serviceOffererInfo == null && (
+                navigation.navigate('ServicesClient', data)
+            )
+        }
     }
 
     try {

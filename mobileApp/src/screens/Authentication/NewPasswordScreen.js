@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
+import CustomInput from '../../components/CustomInput';
+import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 
@@ -45,8 +45,8 @@ const NewPasswordScreen = () => {
           rules={{
             required: 'Password is required',
             minLength: {
-              value: 8,
-              message: 'Password should be at least 8 characters long',
+              value: 3,
+              message: 'Password should be at least 3 characters long',
             },
           }}
         />
