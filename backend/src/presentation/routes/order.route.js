@@ -12,5 +12,7 @@ router.post('/orders', validate(orderCreateSchema), orderController.createOrder)
 router.delete('/orders/:id', authenticate, orderController.deleteOrder);
 router.get('/orders/client/:clientID', authenticate, orderController.getAllOrdersWithClientID);
 router.get('/orders/serviceOfferer/:serviceOffererID', authenticate, orderController.getAllOrdersWithServiceOffererID);
+router.put('/orders/:id/state', authenticate, orderController.updateOrderState); // todo: this could be a patch for all of the order
+
 
 module.exports = router;

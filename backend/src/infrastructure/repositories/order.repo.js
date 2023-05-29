@@ -181,7 +181,14 @@ class OrderRepository {
         return filteredOrders;
     }
 
-
+    async updateOrderState(id, state) {
+        const order = await this.getById(id);
+        try {
+            return await order.update({ state: state });
+        } catch (error) {
+            throw new Error('Failed to update order. Reason: ' + error);
+        }
+    }
 
     async getAllByState(state) {
         const order = await Order.findAll({

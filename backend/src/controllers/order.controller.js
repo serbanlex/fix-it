@@ -76,6 +76,24 @@ module.exports = {
         catch (error) {
             next(error);
         }
+    },
+    async updateOrderState(req, res, next) {
+        // #swagger.tags = ['Orders']
+        /*  #swagger.parameters['order'] = {
+                in: 'body',
+                description: 'Basic order details',
+                schema: {
+                    $state: 'pending',
+                }
+            }
+        */
+        try {
+            const orderData = await OrderRepo.updateOrderState(req.params.id, req.body.state);
+            res.status(200).json(orderData);
+        }
+        catch (error) {
+            next(error);
+        }
     }
 };
 
