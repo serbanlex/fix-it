@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     container_SECONDARY: {
         backgroundColor: '#43428b',
         marginBottom: 40,
+        marginTop: 40,
     },
 
     text_SECONDARY: {
