@@ -106,7 +106,7 @@ class OrderRepository {
         }
     }
 
-    async getByClientId(id) {
+    async getAllByClientId(id) {
         const order = await Order.findAll({
             where: {
                 clientID: id
@@ -144,6 +144,43 @@ class OrderRepository {
         }
         return order;
     }
+
+    async getAllByServiceOffererId(id) {
+        const orders = await Order.findAll({
+            include: [
+                {
+                    model: OfferedService,
+                    include: [
+                        {
+                            model: ServiceOfferer,
+                            include: [
+                                {
+                                    model: User,
+                                    as: 'userInfo',
+                                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    model: Client,
+                    include: [
+                        {
+                            model: User,
+                            as: 'userInfo',
+                            attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                        },
+                    ],
+                }
+            ],
+        });
+
+        const filteredOrders = orders.filter(order => order.OfferedService && order.OfferedService.ServiceOfferer && order.OfferedService.ServiceOfferer.ID == id);
+
+        return filteredOrders;
+    }
+
 
 
     async getAllByState(state) {

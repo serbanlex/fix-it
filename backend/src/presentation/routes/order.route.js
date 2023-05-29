@@ -11,5 +11,6 @@ router.get('/orders/:id', authenticate, orderController.getOrderById);
 router.post('/orders', validate(orderCreateSchema), orderController.createOrder);
 router.delete('/orders/:id', authenticate, orderController.deleteOrder);
 router.get('/orders/client/:clientID', authenticate, orderController.getAllOrdersWithClientID);
+router.get('/orders/serviceOfferer/:serviceOffererID', authenticate, orderController.getAllOrdersWithServiceOffererID);
 
 module.exports = router;

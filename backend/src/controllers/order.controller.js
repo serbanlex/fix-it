@@ -60,7 +60,17 @@ module.exports = {
     async getAllOrdersWithClientID(req, res, next) {
         // #swagger.tags = ['Orders']
         try {
-            const orderData = await OrderRepo.getByClientId(req.params.clientID);
+            const orderData = await OrderRepo.getAllByClientId(req.params.clientID);
+            res.status(200).json(orderData);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+    async getAllOrdersWithServiceOffererID(req, res, next) {
+        // #swagger.tags = ['Orders']
+        try {
+            const orderData = await OrderRepo.getAllByServiceOffererId(req.params.serviceOffererID);
             res.status(200).json(orderData);
         }
         catch (error) {
