@@ -16,6 +16,8 @@ if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
 
+console.log(API_URL);
+
 function OrderServiceScreen({ route }) {
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedTime, setSelectedTime] = useState('');

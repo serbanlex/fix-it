@@ -13,6 +13,8 @@ if (!API_URL) {
 }
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
+console.log(API_URL);
+
 function LoginScreen({ }) {
   const navigation = useNavigation();
 

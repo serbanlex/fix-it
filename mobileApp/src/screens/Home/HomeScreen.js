@@ -10,12 +10,16 @@ if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
 
+console.log(API_URL)
+
 function HomeScreen({ }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [categories, setCategories] = useState([]);
     const [session, setSession] = useState([]);
     const [ongoingOrders, setOngoingOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order
+    const [selectedOrderStatus, setSelectedOrderStatus] = useState(null); // Track the selected order's status
+
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -59,7 +63,13 @@ function HomeScreen({ }) {
 
     useEffect(() => {
         if (session.ID) {
-            fetch(`${API_URL}/orders/client/${session.ID}`, { headers: { 'Cache-Control': 'no-cache' } })
+            var ongoingOrdersLink;
+            if (session.serviceOffererInfo != null) {
+                ongoingOrdersLink = `${API_URL}/orders/serviceOfferer/${session.ID}`;
+            } else {
+                ongoingOrdersLink = `${API_URL}/orders/client/${session.ID}`;
+            }
+            fetch(ongoingOrdersLink, { headers: { 'Cache-Control': 'no-cache' } })
                 .then(response => {
                     if (!response.ok) {
                         console.log("Something went wrong: " + JSON.stringify(response));
@@ -105,10 +115,49 @@ function HomeScreen({ }) {
 
     const openOrderModal = (order) => {
         setSelectedOrder(order);
+        setSelectedOrderStatus(order.state);
     };
+
+    const handleChangeStatus = async (status) => {
+        try {
+            const response = await fetch(`${API_URL}/orders/${selectedOrder.ID}/state`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ state: status }),
+            });
+
+            if (response.ok) {
+                // Update the selected order's status and close the modal
+                setSelectedOrderStatus(status);
+
+                // Update the order's status in the list of ongoing orders
+                setOngoingOrders((prevOrders) => {
+                    const updatedOrders = prevOrders.map((order) => {
+                        if (order.ID === selectedOrder.ID) {
+                            return {
+                                ...order,
+                                state: status,
+                            };
+                        }
+                        return order;
+                    });
+                    return updatedOrders;
+                });
+            } else {
+                Alert.alert('Status Update Failed', 'Failed to update the order status. Please try again.');
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Status Update Error', 'An error occurred while updating the order status. Please try again.');
+        }
+    };
+
 
     const closeOrderModal = () => {
         setSelectedOrder(null);
+        setSelectedOrderStatus(null);
     };
 
     return (
@@ -157,9 +206,6 @@ function HomeScreen({ }) {
                         )}
                         keyExtractor={item => item.ID.toString()}
                     />
-
-
-
 
                     {/* Modal to display order details */}
                     <Modal
@@ -222,7 +268,36 @@ function HomeScreen({ }) {
                                             )}
                                         </>
                                     )}
+                                    {session.serviceOffererInfo !== null && (
+                                        <View style={styles.buttonContainer}>
+                                            {session.serviceOfferInfo !== null && (
+                                                <>
+                                                    <Button
+                                                        style={[styles.modalActionButton, styles.modalPendingButton, selectedOrderStatus === 'pending' && styles.selectedButton]}
+                                                        onPress={() => handleChangeStatus('pending')}
+                                                        disabled={selectedOrderStatus === 'pending'}
+                                                    >
+                                                        <Text style={[styles.modalActionButtonText, styles.modalPendingButtonText]}>Set as pending</Text>
+                                                    </Button>
+                                                    <Button
+                                                        style={[styles.modalActionButton, styles.modalInProgressButton, selectedOrderStatus === 'in progress' && styles.selectedButton]}
+                                                        onPress={() => handleChangeStatus('in progress')}
+                                                        disabled={selectedOrderStatus === 'in progress'}
+                                                    >
+                                                        <Text style={[styles.modalActionButtonText, styles.modalInProgressButtonText]}>Set in progress</Text>
+                                                    </Button>
+                                                    <Button
+                                                        style={[styles.modalActionButton, styles.modalDoneButton, selectedOrderStatus === 'done' && styles.selectedButton]}
+                                                        onPress={() => handleChangeStatus('done')}
+                                                        disabled={selectedOrderStatus === 'done'}
+                                                    >
+                                                        <Text style={[styles.modalActionButtonText, styles.modalDoneButtonText]}>Set as done</Text>
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </View>
 
+                                    )}
                                     <Button style={styles.modalCloseButton} onPress={closeOrderModal}>
                                         <Text style={styles.modalCloseButtonText}>Close</Text>
                                     </Button>
@@ -340,6 +415,49 @@ const styles = StyleSheet.create({
     orderItemFirmName: {
         color: '#43428b',
         marginTop: 8,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        marginTop: 16,
+        marginBottom: 10,
+    },
+    selectedButton: {
+        // backgroundColor: '#ccc', // Light gray background color
+        // color: '#888', // Dark gray text color
+        // padding: '2%',
+        opacity: 0.3, // Reduced opacity to indicate disabled state
+    },
+    modalActionButton: {
+        backgroundColor: '#43428b',
+        color: '#fff',
+        padding: '2%',
+        borderRadius: 5,
+        width: 100,
+        alignItems: 'center',
+        marginRight: 8,
+    },
+    modalActionButtonText: {
+        color: '#fff',
+        fontWeight: '500',
+        fontSize: 14,
+    },
+    modalInProgressButton: {
+        backgroundColor: '#80d4ff',
+    },
+    modalInProgressButtonText: {
+        color: '#43428b',
+    },
+    modalPendingButton: {
+        backgroundColor: '#ffbf80',
+    },
+    modalPendingButtonText: {
+        color: '#43428b',
+    },
+    modalDoneButton: {
+        backgroundColor: '#70db70',
+    },
+    modalDoneButtonText: {
+        color: '#43428b',
     },
 
 });

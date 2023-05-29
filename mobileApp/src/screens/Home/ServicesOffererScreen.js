@@ -12,7 +12,9 @@ import Services from '../../components/Services';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
+
 console.log(API_URL)
+
 function ServicesOffererScreen({ route }) {
     const { control, handleSubmit, formState: { errors }, watch } = useForm();
     const [services, setServices] = useState([]);
@@ -80,11 +82,11 @@ function ServicesOffererScreen({ route }) {
             const response = await fetch(`${API_URL}/offeredServices`, {
                 method: 'POST',
                 headers: {
-                'Content-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(requestData)
             });
-        
+
             if (response.ok) {
                 setShowModal(true);
 
@@ -93,16 +95,16 @@ function ServicesOffererScreen({ route }) {
                 console.log(errorResponse);
                 //asuming that response is returning 500 also because it has been added before
                 if (response.status === 409 || response.status === 500) {
-                Alert.alert('Services error', 'The service has already been added.');
+                    Alert.alert('Services error', 'The service has already been added.');
                 } else {
-                Alert.alert('Services error', `Failed to add service. Reason: ${errorResponse.error}`);
+                    Alert.alert('Services error', `Failed to add service. Reason: ${errorResponse.error}`);
                 }
             }
-            } catch (error) {
+        } catch (error) {
             console.error(error);
             Alert.alert('Services error', 'Failed to add service');
-            }
-        };
+        }
+    };
 
     const closeModal = () => {
         setShowModal(false);
@@ -149,13 +151,13 @@ function ServicesOffererScreen({ route }) {
                     </View>
 
                     <CustomInput
-                    name="price"
-                    control={control}
-                    placeholder="Price"
-                    rules={{
-                        required: 'Price is required',
-                        maxLength: { value: 5, message: 'Price should not exceed 5 digits' },
-                    }}
+                        name="price"
+                        control={control}
+                        placeholder="Price"
+                        rules={{
+                            required: 'Price is required',
+                            maxLength: { value: 5, message: 'Price should not exceed 5 digits' },
+                        }}
                     />
 
                     <CustomButton text="Save" onPress={() => onSavePressed()} type="SECONDARY" />
