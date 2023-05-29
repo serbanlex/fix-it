@@ -11,6 +11,7 @@ if (!API_URL) {
 }
 
 console.log(API_URL)
+
 function OfferedServicesScreen({ route }) {
     const [offeredServices, setOfferedServices] = useState([]);
     const serviceID = route.params.item.ID;

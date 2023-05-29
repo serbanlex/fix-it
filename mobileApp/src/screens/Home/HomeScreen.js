@@ -171,7 +171,10 @@ function HomeScreen({ }) {
             </Button>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View>
-                    <Text style={[styles.subtitle, styles.centerText]}>Choose a problem fix category:</Text>
+                    <Text style={[styles.subtitle, styles.centerText]}>
+                        {session.serviceOffererInfo == null ? 'Choose a service to offer:' : 'Choose a problem fix category:'}
+                    </Text>
+
                     <FlatList
                         data={categories}
                         renderItem={({ item }) => (
@@ -185,7 +188,7 @@ function HomeScreen({ }) {
                         contentContainerStyle={styles.columnSpacer}
                     />
 
-                    <Text style={[styles.subtitle, styles.centerText]}>Ongoing Orders</Text>
+                    <Text style={[styles.subtitle, styles.centerText]}>Your orders</Text>
                     <FlatList
                         data={ongoingOrders}
                         renderItem={({ item }) => (
