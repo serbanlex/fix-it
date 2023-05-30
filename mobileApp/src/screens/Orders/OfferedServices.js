@@ -9,7 +9,6 @@ import OfferedService from '../../components/OfferedService';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
-
 console.log(API_URL)
 
 function OfferedServicesScreen({ route }) {

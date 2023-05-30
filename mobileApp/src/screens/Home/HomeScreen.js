@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { Button } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { API_URL } from '@env';
 import ServiceCategory from '../../components/ServiceCategory';
@@ -9,7 +9,6 @@ import ServiceCategory from '../../components/ServiceCategory';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
-
 console.log(API_URL)
 
 function HomeScreen({ }) {
@@ -89,6 +88,38 @@ function HomeScreen({ }) {
                 .catch(error => console.error(error));
         }
     }, [session]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (session.ID) {
+                var ongoingOrdersLink;
+                if (session.serviceOffererInfo != null) {
+                    ongoingOrdersLink = `${API_URL}/orders/serviceOfferer/${session.ID}`;
+                } else {
+                    ongoingOrdersLink = `${API_URL}/orders/client/${session.ID}`;
+                }
+                fetch(ongoingOrdersLink, { headers: { 'Cache-Control': 'no-cache' } })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.log("Something went wrong: " + JSON.stringify(response));
+                            Alert.alert('Something went wrong', 'Failed to load ongoing orders.');
+                            throw new Error("Failed to load ongoing orders. A network error may have occurred.")
+                        } else {
+                            return response.json();
+                        }
+                    })
+                    .then(data => {
+                        if (data) {
+                            console.log(data)
+                            setOngoingOrders(data);
+                        }
+                    })
+                    .catch(error => console.error(error));
+            }
+        }, [session])
+    );
+
+
 
     const onLogOutPressed = async () => {
         await fetch(`${API_URL}/session`, {

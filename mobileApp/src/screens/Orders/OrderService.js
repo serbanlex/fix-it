@@ -15,7 +15,6 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 if (!API_URL) {
     API_URL = "http://192.168.100.71:3000";
 }
-
 console.log(API_URL);
 
 function OrderServiceScreen({ route }) {
@@ -53,9 +52,12 @@ function OrderServiceScreen({ route }) {
     };
 
     const handleTimeConfirm = (time) => {
-        setSelectedTime(time.toISOString().split('T')[1].slice(0, 5));
+        const localTimeString = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        setSelectedTime(localTimeString);
         hideTimePicker();
     };
+
+
 
 
     useEffect(() => {
