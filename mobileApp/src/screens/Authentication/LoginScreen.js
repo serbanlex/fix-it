@@ -6,12 +6,12 @@ import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import GradientBackground from '../../components/GradientBackground2';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 
-if (!API_URL) {
-  API_URL = "http://192.168.100.71:3000";
+if (!REACT_APP_API_URL) {
+  REACT_APP_API_URL = "http://192.168.100.71:3000";
 }
-console.log(API_URL);
+console.log(REACT_APP_API_URL);
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -23,8 +23,8 @@ function LoginScreen({ }) {
   console.log(errors);
 
   useEffect(() => {
-    console.log("Checking if already authorized with url " + API_URL)
-    fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
+    console.log("Checking if already authorized with url " + REACT_APP_API_URL)
+    fetch(`${REACT_APP_API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
       .then(response => {
         if (response.ok) {
           console.log("Already authorized. Going to home page")
@@ -37,7 +37,8 @@ function LoginScreen({ }) {
   }, []);
 
   const onLogInPressed = async (data) => {
-    await fetch(`${API_URL}/session`, {
+    console.log("Hello");
+    await fetch(`${REACT_APP_API_URL}/session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -45,6 +46,7 @@ function LoginScreen({ }) {
       body: JSON.stringify(data)
     })
       .then(response => {
+        console.log(response);
         if (response.ok) {
           navigation.reset({
             index: 0,

@@ -3,13 +3,13 @@ import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, Modal, Scrol
 import { Button } from 'native-base';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 import ServiceCategory from '../../components/ServiceCategory';
 
-if (!API_URL) {
-    API_URL = "http://192.168.100.71:3000";
+if (!REACT_APP_API_URL) {
+    REACT_APP_API_URL = "http://192.168.100.71:3000";
 }
-console.log(API_URL)
+console.log(REACT_APP_API_URL)
 
 function HomeScreen({ }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -22,7 +22,7 @@ function HomeScreen({ }) {
     const navigation = useNavigation();
 
     useEffect(() => {
-        fetch(`${API_URL}/serviceCategories`, { headers: { 'Cache-Control': 'no-cache' } })
+        fetch(`${REACT_APP_API_URL}/serviceCategories`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
                     Alert.alert('Something went wrong', 'Failed to load service categories.');
@@ -41,7 +41,7 @@ function HomeScreen({ }) {
     }, []);
 
     useEffect(() => {
-        fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
+        fetch(`${REACT_APP_API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
                     console.log(response);
@@ -64,9 +64,9 @@ function HomeScreen({ }) {
         if (session.ID) {
             var ongoingOrdersLink;
             if (session.serviceOffererInfo != null) {
-                ongoingOrdersLink = `${API_URL}/orders/serviceOfferer/${session.ID}`;
+                ongoingOrdersLink = `${REACT_APP_API_URL}/orders/serviceOfferer/${session.ID}`;
             } else {
-                ongoingOrdersLink = `${API_URL}/orders/client/${session.ID}`;
+                ongoingOrdersLink = `${REACT_APP_API_URL}/orders/client/${session.ID}`;
             }
             fetch(ongoingOrdersLink, { headers: { 'Cache-Control': 'no-cache' } })
                 .then(response => {
@@ -94,9 +94,9 @@ function HomeScreen({ }) {
             if (session.ID) {
                 var ongoingOrdersLink;
                 if (session.serviceOffererInfo != null) {
-                    ongoingOrdersLink = `${API_URL}/orders/serviceOfferer/${session.ID}`;
+                    ongoingOrdersLink = `${REACT_APP_API_URL}/orders/serviceOfferer/${session.ID}`;
                 } else {
-                    ongoingOrdersLink = `${API_URL}/orders/client/${session.ID}`;
+                    ongoingOrdersLink = `${REACT_APP_API_URL}/orders/client/${session.ID}`;
                 }
                 fetch(ongoingOrdersLink, { headers: { 'Cache-Control': 'no-cache' } })
                     .then(response => {
@@ -122,7 +122,7 @@ function HomeScreen({ }) {
 
 
     const onLogOutPressed = async () => {
-        await fetch(`${API_URL}/session`, {
+        await fetch(`${REACT_APP_API_URL}/session`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ function HomeScreen({ }) {
 
     const handleChangeStatus = async (status) => {
         try {
-            const response = await fetch(`${API_URL}/orders/${selectedOrder.ID}/state`, {
+            const response = await fetch(`${REACT_APP_API_URL}/orders/${selectedOrder.ID}/state`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

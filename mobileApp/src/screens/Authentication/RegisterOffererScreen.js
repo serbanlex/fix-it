@@ -4,10 +4,10 @@ import { useForm, Controller } from 'react-hook-form';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 
-if (!API_URL) {
-  API_URL = "http://192.168.100.71:3000";
+if (!REACT_APP_API_URL) {
+  REACT_APP_API_URL = "http://192.168.100.71:3000";
 }
 
 const RegisterOffererScreen = ({ route }) => {
@@ -20,7 +20,7 @@ const RegisterOffererScreen = ({ route }) => {
     delete data['password-repeat'];
     console.log(data)
     try {
-      const response = await fetch(`${API_URL}/serviceOfferers`, {
+      const response = await fetch(`${REACT_APP_API_URL}/serviceOfferers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

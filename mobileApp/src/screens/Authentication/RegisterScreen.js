@@ -6,12 +6,12 @@ import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import GradientBackground from '../../components/GradientBackground2';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-if (!API_URL) {
-  API_URL = "http://192.168.100.71:3000";
+if (!REACT_APP_API_URL) {
+  REACT_APP_API_URL = "http://192.168.100.71:3000";
 }
 
 const RegisterScreen = ({ route }) => {
@@ -30,7 +30,7 @@ const RegisterScreen = ({ route }) => {
 
   const onRegisterPressed = async data => {
     try {
-      const response = await fetch(`${API_URL}/clients`, {
+      const response = await fetch(`${REACT_APP_API_URL}/clients`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -41,6 +41,7 @@ const RegisterScreen = ({ route }) => {
       if (response.ok) {
         navigation.navigate('SuccessfulLogin');
       } else {
+        console.log(response);
         const errorResponse = await response.json();
         console.log(errorResponse);
         Alert.alert('Registration Error', `Failed to register client. Reason: ${errorResponse.error}`);

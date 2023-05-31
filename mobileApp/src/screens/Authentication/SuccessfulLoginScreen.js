@@ -6,14 +6,14 @@ import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import GradientBackground from '../../components/GradientBackground2';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-if (!API_URL) {
-  API_URL = "http://192.168.100.71:3000";
+if (!REACT_APP_API_URL) {
+  REACT_APP_API_URL = "http://192.168.100.71:3000";
 }
-console.log(API_URL);
+console.log(REACT_APP_API_URL);
 
 function SuccessfulLoginScreen({ }) {
   const navigation = useNavigation();
@@ -23,8 +23,8 @@ function SuccessfulLoginScreen({ }) {
   console.log(errors);
 
   const onLogInPressed = async (data) => {
-    console.log(API_URL)
-    await fetch(`${API_URL}/session`, {
+    console.log(REACT_APP_API_URL)
+    await fetch(`${REACT_APP_API_URL}/session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

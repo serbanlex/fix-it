@@ -3,17 +3,17 @@ import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, Modal } from
 import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 import GradientBackground from '../../components/GradientBackground2';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import Services from '../../components/Services';
 
-if (!API_URL) {
-    API_URL = "http://192.168.100.71:3000";
+if (!REACT_APP_API_URL) {
+    REACT_APP_API_URL = "http://192.168.100.71:3000";
 }
 
-console.log(API_URL)
+console.log(REACT_APP_API_URL)
 
 function ServicesOffererScreen({ route }) {
     const { control, handleSubmit, formState: { errors }, watch } = useForm();
@@ -26,7 +26,7 @@ function ServicesOffererScreen({ route }) {
     console.log(category);
 
     useEffect(() => {
-        fetch(`${API_URL}/services`, { headers: { 'Cache-Control': 'no-cache' } })
+        fetch(`${REACT_APP_API_URL}/services`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
                     Alert.alert('Something went wrong', 'Failed to load services.');
@@ -45,7 +45,7 @@ function ServicesOffererScreen({ route }) {
     }, []);
 
     useEffect(() => {
-        fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
+        fetch(`${REACT_APP_API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
                     Alert.alert('Something went wrong', 'Failed to load services.');
@@ -79,7 +79,7 @@ function ServicesOffererScreen({ route }) {
                 serviceID: selectedService.ID,
                 price: priceValue, // Use the captured price from the form
             }
-            const response = await fetch(`${API_URL}/offeredServices`, {
+            const response = await fetch(`${REACT_APP_API_URL}/offeredServices`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

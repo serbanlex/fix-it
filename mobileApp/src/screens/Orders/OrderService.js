@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, ScrollView, 
 import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 import OfferedService from '../../components/OfferedService';
 import GradientBackground from '../../components/GradientBackground2';
 import CustomInput from '../../components/CustomInput';
@@ -12,10 +12,10 @@ import DatePicker from 'react-native-datepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 
-if (!API_URL) {
-    API_URL = "http://192.168.100.71:3000";
+if (!REACT_APP_API_URL) {
+    REACT_APP_API_URL = "http://192.168.100.71:3000";
 }
-console.log(API_URL);
+console.log(REACT_APP_API_URL);
 
 function OrderServiceScreen({ route }) {
     const [selectedDate, setSelectedDate] = useState('');
@@ -61,7 +61,7 @@ function OrderServiceScreen({ route }) {
 
 
     useEffect(() => {
-        fetch(`${API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
+        fetch(`${REACT_APP_API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
                 if (!response.ok) {
                     console.log(response);
@@ -90,7 +90,7 @@ function OrderServiceScreen({ route }) {
                 date: selectedDate,
                 time: selectedTime,
             }
-            const response = await fetch(`${API_URL}/orders`, {
+            const response = await fetch(`${REACT_APP_API_URL}/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
