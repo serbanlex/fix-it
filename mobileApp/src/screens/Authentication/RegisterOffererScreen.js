@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { REACT_APP_API_URL } from '@env';
 
 if (!REACT_APP_API_URL) {
-  REACT_APP_API_URL = "http://192.168.100.71:3000";
+  REACT_APP_API_URL = "http://192.168.0.188:3000";
 }
 
 const RegisterOffererScreen = ({ route }) => {

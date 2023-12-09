@@ -664,7 +664,7 @@
     "/offeredServices/service/{serviceID}": {
       "get": {
         "tags": [
-          "Services (general)"
+          "Offered Services"
         ],
         "description": "Returns all the offered services that have the specified service ID (all the offers for a service)",
         "parameters": [
@@ -870,6 +870,134 @@
                 "state"
               ]
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "review",
+            "in": "body",
+            "description": "Basic review details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number",
+                  "example": 5
+                },
+                "comment": {
+                  "type": "string",
+                  "example": "This is a comment"
+                },
+                "imageUrl": {
+                  "type": "string",
+                  "example": "https://i.imgur.com/4NZ6uLY.jpeg"
+                },
+                "clientID": {
+                  "type": "number",
+                  "example": 1
+                },
+                "offeredServiceID": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "required": [
+                "rating",
+                "comment",
+                "imageUrl",
+                "clientID",
+                "offeredServiceID"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/reviews/{id}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/reviews/offeredService/{id}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

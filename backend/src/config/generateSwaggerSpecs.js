@@ -1,4 +1,18 @@
 const swaggerAutogen = require('swagger-autogen')();
+const fs = require('fs');
+
+const swaggerSpecsFilePath = 'src/config/swaggerSpecs.json';
+
+const lastModified = fs.statSync(swaggerSpecsFilePath).mtime;
+
+const now = Date.now();
+const currentTime = now - lastModified;
+
+if (currentTime < 1000) {
+    console.log('Swagger specs are up to date');
+    return;
+}
+
 
 const doc = {
     info: {
@@ -23,7 +37,9 @@ const doc = {
     components: {}            // by default: empty object (OpenAPI 3.x)
 };
 
-const outputFile = './swaggerSpecs.json';
-const endpointsFiles = ['../presentation/routes/*.js'];
+// output file should be in this directory
+const endpointsFiles = ['src/presentation/routes/*.js'];
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+console.log('Generating Swagger specs... ');
+
+swaggerAutogen(swaggerSpecsFilePath, endpointsFiles, doc);

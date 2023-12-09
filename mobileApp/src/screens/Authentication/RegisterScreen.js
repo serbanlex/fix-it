@@ -11,7 +11,7 @@ import { REACT_APP_API_URL } from '@env';
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 if (!REACT_APP_API_URL) {
-  REACT_APP_API_URL = "http://192.168.100.71:3000";
+  REACT_APP_API_URL = "http://192.168.0.188:3000";
 }
 
 const RegisterScreen = ({ route }) => {

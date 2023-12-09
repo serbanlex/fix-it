@@ -19,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+
 // routers
 app.use("/", routes);
 
@@ -57,6 +58,11 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   console.log(err);
   res.status(500).json({ message: 'Something went wrong' });
+});
+
+const port = 8000;
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running at http://0.0.0.0:${port}`);
 });
 
 module.exports = app;

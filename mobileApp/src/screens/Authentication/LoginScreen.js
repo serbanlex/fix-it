@@ -9,7 +9,7 @@ import GradientBackground from '../../components/GradientBackground2';
 import { REACT_APP_API_URL } from '@env';
 
 if (!REACT_APP_API_URL) {
-  REACT_APP_API_URL = "http://192.168.100.71:3000";
+  REACT_APP_API_URL = "http://192.168.0.188:3000";
 }
 console.log(REACT_APP_API_URL);
 

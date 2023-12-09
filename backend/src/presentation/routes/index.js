@@ -7,6 +7,7 @@ const serviceRoute = require('./service.route');
 const serviceCategoryRoute = require('./serviceCategory.route');
 const offeredServiceRoute = require('./offeredService.route');
 const orderRoute = require('./order.route');
+const reviewRoute = require('./review.route');
 const errorHandler = require('../middleware/errorHandler');
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.use(serviceRoute);
 router.use(serviceCategoryRoute);
 router.use(offeredServiceRoute);
 router.use(orderRoute);
+router.use(reviewRoute);
 
 router.use(errorHandler);
 

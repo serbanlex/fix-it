@@ -44,9 +44,10 @@ module.exports = {
         catch (error) {
             next(error);
         }
+
     },
     async getAllOffersWithServiceID(req, res, next) {
-        // #swagger.tags = ['Services (general)']
+        // #swagger.tags = ['Offered Services']
         // #swagger.description = 'Returns all the offered services that have the specified service ID (all the offers for a service)'
         const id = req.params.serviceID;
         try {
