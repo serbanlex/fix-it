@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   OfferedService.associate = (models) => {
     OfferedService.belongsTo(models.ServiceOfferer);
     OfferedService.belongsTo(models.Service);
+    OfferedService.hasMany(models.Review);
   };
 
   return OfferedService;

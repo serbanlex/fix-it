@@ -1,5 +1,5 @@
 const { FixItError } = require("../../exceptions");
-const { OfferedService, User, Service, ServiceOfferer, Order } = require("../models");
+const { OfferedService, User, Service, ServiceOfferer, Review, Client } = require("../models");
 const { EntityNotFound } = require("../../exceptions");
 
 class OfferedServiceRepository {
@@ -71,6 +71,19 @@ class OfferedServiceRepository {
                     {
                         model: Service
                     },
+                    {
+                        model: Review, include: [
+                            {
+                                model: Client, include: [
+                                    {
+                                        model: User,
+                                        as: 'userInfo',
+                                        attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                    },
+                                ],
+                            },
+                        ],
+                    }
                 ],
             });
             return offeredServices;
