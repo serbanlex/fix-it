@@ -1,4 +1,4 @@
-const { Order, OfferedService, Client, User, ServiceOfferer } = require("../models");
+const { Order, OfferedService, Client, User, ServiceOfferer, Review, Service } = require("../models");
 const { EntityNotFound } = require("../../exceptions");
 
 
@@ -35,6 +35,12 @@ class OrderRepository {
                                 },
                             ],
                         },
+                        {
+                            model: Review,
+                        },
+                        {
+                            model: Service,
+                        }
                     ],
                 },
                 {
@@ -125,6 +131,12 @@ class OrderRepository {
                                 },
                             ],
                         },
+                        {
+                            model: Review,
+                        },
+                        {
+                            model: Service,
+                        }
                     ],
                 },
                 {
@@ -136,7 +148,7 @@ class OrderRepository {
                             attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
                         },
                     ],
-                }
+                },
             ],
         });
         if (!order) {
@@ -160,6 +172,9 @@ class OrderRepository {
                                     attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
                                 },
                             ],
+                        },
+                        {
+                            model: Review,
                         },
                     ],
                 },

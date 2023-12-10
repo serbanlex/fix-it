@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Alert, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { Button } from 'native-base';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ function HomeScreen({ }) {
     const [ongoingOrders, setOngoingOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order
     const [selectedOrderStatus, setSelectedOrderStatus] = useState(null); // Track the selected order's status
+    const [clientGivenReviews, setClientGivenReviews] = useState([]);
 
     const navigation = useNavigation();
 
@@ -39,6 +40,29 @@ function HomeScreen({ }) {
             })
             .catch(error => console.error(error));
     }, []);
+
+
+    useEffect( () => {
+        fetch(`${REACT_APP_API_URL}/reviews/client/{session.ID}/`, { headers: { 'Cache-Control': 'no-cache' } })
+            .then(
+                response => {
+                    if (!response.ok) {
+                        console.log(response);
+                        Alert.alert('Something went wrong', 'Failed to load reviews.');
+                        throw new Error("Failed to load reviews.")
+                    }
+                    else {
+                        return response.json();
+                    }
+                })
+            .then(data => {
+                if (data) {
+                    setClientGivenReviews(data);
+                }
+            })
+            .catch(error => console.error(error));
+        }, []
+    )
 
     useEffect(() => {
         fetch(`${REACT_APP_API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
@@ -204,7 +228,7 @@ function HomeScreen({ }) {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View>
                     <Text style={[styles.subtitle, styles.centerText]}>
-                        {session.serviceOffererInfo == null ? 'Choose a service to offer:' : 'Choose a problem fix category:'}
+                        {session.serviceOffererInfo == null ? 'Choose a problem fix category:' : 'Choose a new service category to offer:'}
                     </Text>
 
                     <View style={styles.columnWrapper}>
@@ -233,6 +257,38 @@ function HomeScreen({ }) {
                         ))}
                     </View>
 
+                    {session.serviceOffererInfo == null &&
+                        (
+                            <View>
+                                <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>Orders waiting for review</Text>
+                                <View>
+                                {/*    We take the client's orders and see, using his reviews, which ones he didn't review */}
+                                    {ongoingOrders
+                                        .filter(
+                                            order => order.state === 'done'
+                                        )
+                                        .filter(
+                                            order => !order.OfferedService.Reviews || !order.OfferedService.Reviews.some(review => review.ClientID == session.ID)
+                                        )
+                                        .map((order) => (
+                                        <TouchableOpacity key={order.ID} onPress={() => navigation.navigate('Review', { order: order })} style={styles.orderItem}>
+                                            <Text style={styles.orderItemText}>
+                                                Order number #{order.ID}
+                                                {order.state && <Text style={styles.orderItemState}>, state: {order.state}, firm: </Text>}
+                                                {order.OfferedService &&
+                                                    order.OfferedService.ServiceOfferer &&
+                                                    order.OfferedService.ServiceOfferer.firmName && (
+                                                        <Text style={styles.orderItemFirmName}>{order.OfferedService.ServiceOfferer.firmName}</Text>
+                                                    )}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+
+                            </View>
+                        )
+                    }
+
 
                     {/* Modal to display order details */}
                     <Modal
@@ -254,7 +310,10 @@ function HomeScreen({ }) {
                                     {selectedOrder.OfferedService && (
                                         <>
                                             <Text style={styles.modalSubTitle}>Offered Service</Text>
-                                            <Text style={styles.modalText}>Price: {selectedOrder.OfferedService.price}</Text>
+                                            <Text style={styles.modalText}>Price: {selectedOrder.OfferedService.price}$</Text>
+                                            {selectedOrder.OfferedService.Service && (
+                                                <Text style={styles.modalText}>Service: {selectedOrder.OfferedService.Service.name}</Text>
+                                            )}
 
                                             {selectedOrder.OfferedService.ServiceOfferer && (
                                                 <>
@@ -360,7 +419,7 @@ const styles = StyleSheet.create({
         color: '#43428b',
         fontWeight: 'bold',
         fontSize: 24,
-        marginBottom: 50,
+        marginBottom: "5%",
     },
     buttonText: {
         color: '#43428b',
@@ -424,6 +483,9 @@ const styles = StyleSheet.create({
     },
     centerText: {
         textAlign: 'center',
+    },
+    paddingTop: {
+        paddingTop: "5%",
     },
     centerContainer: {
         flex: 1,

@@ -124,19 +124,38 @@ class ReviewRepository {
         });
     }
 
-    async countByOfferedServiceId(offeredServiceId) {
-        return await Review.count({
+    async getByClientId(clientId) {
+        return await Review.findAll({
             where: {
-                offeredServiceID: offeredServiceId
-            }
-        });
-    }
-
-    async sumByOfferedServiceId(offeredServiceId) {
-        return await Review.sum('rating', {
-            where: {
-                offeredServiceID: offeredServiceId
-            }
+                clientID: clientId
+            },
+            include: [
+                {
+                    model: Client,
+                    include: [
+                        {
+                            model: User,
+                            as: 'userInfo',
+                            attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                        }
+                    ],
+                },
+                {
+                    model: OfferedService,
+                    include: [
+                        {
+                            model: ServiceOfferer,
+                            include: [
+                                {
+                                    model: User,
+                                    as: 'userInfo',
+                                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         });
     }
 

@@ -33,6 +33,17 @@ module.exports = {
         }
     },
 
+    async getAllReviewsWithClientID(req, res, next) {
+        // #swagger.tags = ['Reviews']
+        try {
+            const reviewData = await ReviewRepository.getByClientId(req.params.id);
+            res.status(200).json(reviewData);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+
     async createReview(req, res, next) {
         // #swagger.tags = ['Reviews']
         /*  #swagger.parameters['review'] = {

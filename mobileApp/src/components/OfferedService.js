@@ -23,7 +23,7 @@ const OfferedService = ({ price, serviceOfferer, service, reviews }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.price}>Price: ${price}</Text>
+            <Text style={styles.price}>Price: ${price} </Text>
             <Text style={styles.offerer}>{serviceOfferer.userInfo.firstName} {serviceOfferer.userInfo.lastName}, {serviceOfferer.firmName}</Text>
             <Text style={styles.address}>Located at: {serviceOfferer.firmCity}, {serviceOfferer.firmAddress}</Text>
             {ratingComponent}
