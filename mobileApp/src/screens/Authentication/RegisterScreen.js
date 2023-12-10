@@ -56,13 +56,14 @@ const RegisterScreen = ({ route }) => {
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
       <View style={styles.container}>
         <GradientBackground>
-          <Text style={styles.title}>Register</Text>
           <Button
-            style={{ backgroundColor: '#00fff', position: 'absolute', top: 0, left: 20 }}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.buttonText}>Back</Text>
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}>
+            <Text style={styles.buttonText}>{"<"} Back
+            </Text>
           </Button>
+          <Text style={styles.title}>Register</Text>
+
           <CustomInput
             name="firstName"
             control={control}
@@ -143,7 +144,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 40,
+  },
+  backButton: {
+    backgroundColor: '#fff',
+    zIndex: 1,
+    alignSelf: 'flex-start'
   },
   contentContainer: {
     flexGrow: 1,

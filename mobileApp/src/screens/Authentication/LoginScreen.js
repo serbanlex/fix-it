@@ -80,7 +80,8 @@ function LoginScreen({ }) {
         <Button
           style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
           onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Back</Text>
+          <Text style={styles.buttonText}>{"<"} Back
+          </Text>
         </Button>
         <CustomInput
           name="email"

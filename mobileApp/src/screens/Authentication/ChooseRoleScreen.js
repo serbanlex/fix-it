@@ -27,12 +27,14 @@ function ChooseRoleScreen({ }) {
   return (
     <View style={styles.container}>
       <GradientBackground>
-        <Text style={styles.title}>Register as</Text>
         <Button
-          style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Back</Text>
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+          <Text style={styles.buttonText}>{"<"} Back
+          </Text>
         </Button>
+        <Text style={styles.title}>Register as</Text>
+
 
         <View style={styles.radioContainer}>
           <Radio.Group
@@ -66,6 +68,11 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
     fontSize: 36,
+  },
+  backButton: {
+    backgroundColor: '#fff',
+    zIndex: 1,
+    alignSelf: 'flex-start'
   },
   buttonText: {
     color: '#43428b',

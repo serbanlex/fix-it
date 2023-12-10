@@ -79,12 +79,14 @@ function ServicesClientScreen({ route }) {
     try {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>What problem needs to be fixed?</Text>
                 <Button
-                    style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
+                    style={styles.backButton}
                     onPress={() => navigation.goBack()}>
-                    <Text style={styles.buttonText}>Back</Text>
+                    <Text style={styles.buttonText}>{"<"} Back
+                    </Text>
                 </Button>
+                <Text style={styles.title}>What problem needs to be fixed?</Text>
+
                 <View>
                     <FlatList
                         data={services}
@@ -117,14 +119,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 100,
+        padding: "10%"
     },
     title: {
         color: '#000',
         fontWeight: 'bold',
         fontSize: 28,
-        marginBottom: 150,
         padding: '2%'
+    },
+    backButton: {
+        backgroundColor: '#00fff',
+        zIndex: 1,
+        alignSelf: 'flex-start'
     },
     buttonText: {
         color: '#43428b',

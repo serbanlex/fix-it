@@ -58,8 +58,6 @@ function OrderServiceScreen({ route }) {
     };
 
 
-
-
     useEffect(() => {
         fetch(`${REACT_APP_API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
             .then(response => {
@@ -121,13 +119,15 @@ function OrderServiceScreen({ route }) {
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
             <View style={styles.container}>
                 <GradientBackground>
-                    <Text style={styles.title}>Some last details...</Text>
                     <Button
-                        style={{ backgroundColor: '#00fff', position: 'absolute', top: 0, left: 20 }}
+                        style={styles.backButton}
                         onPress={() => navigation.goBack()}
                     >
                         <Text style={styles.buttonText}>{"< Back"}</Text>
                     </Button>
+
+                    <Text style={styles.title}>Some last details...</Text>
+
                     <CustomInput
                         name="address"
                         control={control}
@@ -222,10 +222,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 40,
     },
     contentContainer: {
         flexGrow: 1,
+    },
+    backButton: {
+        backgroundColor: '#00fff',
+        zIndex: 1,
+        alignSelf: 'flex-start',
     },
     title: {
         color: '#000',

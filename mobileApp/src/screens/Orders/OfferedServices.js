@@ -84,11 +84,13 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         backgroundColor: '#fff',
-        padding: '10%'
+        padding: '10%',
+        justifyContent: 'flex-start',
     },
     backButton: {
         backgroundColor: '#00fff',
         zIndex: 1,
+        alignSelf: 'flex-start'
     },
     buttonText: {
         color: '#43428b',

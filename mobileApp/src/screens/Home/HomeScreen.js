@@ -193,53 +193,46 @@ function HomeScreen({ }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Home</Text>
             <Button
-                style={{ backgroundColor: '#fffff', position: 'absolute', top: 50, left: 20 }}
+                style={{ backgroundColor: '#fffff', alignSelf: 'flex-start', marginBottom: '10%' }}
                 onPress={handleSubmit(onLogOutPressed)}
             >
                 <Text style={styles.buttonText}>Log out</Text>
             </Button>
+            <Text style={styles.title}>Welcome!</Text>
+
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View>
                     <Text style={[styles.subtitle, styles.centerText]}>
                         {session.serviceOffererInfo == null ? 'Choose a service to offer:' : 'Choose a problem fix category:'}
                     </Text>
 
-                    <FlatList
-                        data={categories}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => onCategoryPressed(item)}>
+                    <View style={styles.columnWrapper}>
+                        {categories.map((item, index) => (
+                            <TouchableOpacity key={item.ID} onPress={() => onCategoryPressed(item)} style={styles.categoryItem}>
                                 <ServiceCategory category={item} />
+                                {(index + 1) % 2 === 0 && <View style={styles.columnSpacer} />}
                             </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item.ID.toString()}
-                        numColumns={2}
-                        columnWrapperStyle={styles.columnWrapper}
-                        contentContainerStyle={styles.columnSpacer}
-                    />
+                        ))}
+                    </View>
 
                     <Text style={[styles.subtitle, styles.centerText]}>Your orders</Text>
-                    <FlatList
-                        data={ongoingOrders}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => openOrderModal(item)} style={styles.orderItem}>
+                    <View>
+                        {ongoingOrders.map((order) => (
+                            <TouchableOpacity key={order.ID} onPress={() => openOrderModal(order)} style={styles.orderItem}>
                                 <Text style={styles.orderItemText}>
-                                    Order number #{item.ID}
-                                    {item.state && <Text style={styles.orderItemState}>, state: {item.state}, firm: </Text>}
-                                    {item.OfferedService &&
-                                        item.OfferedService.ServiceOfferer &&
-                                        item.OfferedService.ServiceOfferer.firmName && (
-                                            <Text style={styles.orderItemFirmName}>
-                                                {item.OfferedService.ServiceOfferer.firmName}
-                                            </Text>
+                                    Order number #{order.ID}
+                                    {order.state && <Text style={styles.orderItemState}>, state: {order.state}, firm: </Text>}
+                                    {order.OfferedService &&
+                                        order.OfferedService.ServiceOfferer &&
+                                        order.OfferedService.ServiceOfferer.firmName && (
+                                            <Text style={styles.orderItemFirmName}>{order.OfferedService.ServiceOfferer.firmName}</Text>
                                         )}
                                 </Text>
                             </TouchableOpacity>
-                            // Render the details of the ongoing order here
-                        )}
-                        keyExtractor={item => item.ID.toString()}
-                    />
+                        ))}
+                    </View>
+
 
                     {/* Modal to display order details */}
                     <Modal
@@ -355,13 +348,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 100,
+        padding: '10%',
     },
     title: {
         color: '#43428b',
         fontWeight: 'bold',
-        fontSize: 36,
-        marginBottom: 100,
+        fontSize: 32,
+        paddingBottom: '5%',
     },
     subtitle: {
         color: '#43428b',
@@ -375,15 +368,18 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     columnWrapper: {
-        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginHorizontal: '15%',
-        marginBottom: '10%',
-        marginTop: 10,
+    },
+    categoryItem: {
+        width: '48%', // leaving some space for margins/padding
     },
     columnSpacer: {
-        width: 400,
+        width: '48%', // Adjust to match the width of the category items
+        marginBottom: 10, // Adjust as needed for vertical spacing
     },
+
     sectionTitle: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -424,7 +420,7 @@ const styles = StyleSheet.create({
 
     scrollContainer: {
         alignItems: 'center',
-        padding: '10%'
+        paddingHorizontal: '2%',
     },
     centerText: {
         textAlign: 'center',

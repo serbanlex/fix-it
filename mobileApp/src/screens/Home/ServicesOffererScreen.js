@@ -128,7 +128,8 @@ function ServicesOffererScreen({ route }) {
                     <Button
                         style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
                         onPress={() => onServicePressed()}>
-                        <Text style={styles.buttonText}>Back</Text>
+                        <Text style={styles.buttonText}>{"<"} Back
+                        </Text>
                     </Button>
 
                     <View style={styles.contentContainer}>
@@ -200,7 +201,6 @@ const styles = StyleSheet.create({
         color: '#000',
         fontWeight: 'bold',
         fontSize: 36,
-        marginBottom: 150,
     },
     buttonText: {
         color: '#43428b',
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        width: '85%',
+        width: '100%',
     },
     modalContainer: {
         flex: 1,
