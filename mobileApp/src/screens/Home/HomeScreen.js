@@ -424,6 +424,7 @@ const styles = StyleSheet.create({
 
     scrollContainer: {
         alignItems: 'center',
+        padding: '10%'
     },
     centerText: {
         textAlign: 'center',

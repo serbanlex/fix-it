@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react-native';
-import { Button } from 'native-base';
+import {Text, View, StyleSheet, Alert, TouchableOpacity, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useForm } from 'react-hook-form';
 import { REACT_APP_API_URL } from '@env';
 import OfferedService from '../../components/OfferedService';
 
-if (!REACT_APP_API_URL) {
-    REACT_APP_API_URL = "http://192.168.0.188:3000";
-}
+
 console.log(REACT_APP_API_URL)
 
 function OfferedServicesScreen({ route }) {
@@ -39,77 +35,79 @@ function OfferedServicesScreen({ route }) {
 
 
 
-    console.log(`Offered services for service ID '${serviceID}': ${offeredServices}`)
+    console.log(`Offered services for service ID '${serviceID}': ${JSON.stringify(offeredServices)}`);
 
     const navigation = useNavigation();
 
     const onServicePressed = async (data) => {
         console.log("Service pressed, order data: " + JSON.stringify(data))
-        navigation.navigate('OrderService', { data: data });
+        navigation.navigate('OfferedService', { data: data });
     }
+
+    const renderOfferedService = (item) => (
+        <TouchableOpacity style={{width: '100%'}} key={item.ID} onPress={() => onServicePressed(item)}>
+            <OfferedService
+                price={item.price}
+                serviceOfferer={item.ServiceOfferer}
+                service={item.Service}
+                reviews={item.Reviews}
+            />
+        </TouchableOpacity>
+    );
 
     try {
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Service offerers good at {serviceName.toLowerCase()}</Text>
-                <Button
-                    style={{ backgroundColor: '#00fff', position: 'absolute', top: 40, left: 20 }}
+            <ScrollView contentContainerStyle={styles.container}>
+                <TouchableOpacity
+                    style={styles.backButton}
                     onPress={() => navigation.goBack()}>
-                    <Text style={styles.buttonText}>Back</Text>
-                </Button>
-                <View>
-                    <FlatList
-                        data={offeredServices}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => onServicePressed(item)}>
-                                {
-                                    <OfferedService
-                                        price={item.price}
-                                        serviceOfferer={item.ServiceOfferer}
-                                        service={item.Service}
-                                    />
-                                }
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item.ID.toString()}
-                        contentContainerStyle={styles.listContainer}
-                    />
-                </View>
+                    <Text style={styles.buttonText}>{"<"} Back
+                    </Text>
+                </TouchableOpacity>
 
-            </View>
+                <View style={styles.contentContainer}>
+                    <Text style={styles.title}>Service offerers good at {serviceName.toLowerCase()}</Text>
+
+                    {offeredServices.map((service) => renderOfferedService(service))}
+                </View>
+            </ScrollView>
         );
+
     }
     catch (err) {
-        console.log("Error making categories: " + err)
+        console.log("Error making service offerers view: " + err)
     }
 
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: '#fff',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: 100,
+        padding: '10%'
     },
-    title: {
-        color: '#000',
-        fontWeight: 'bold',
-        fontSize: 28,
-        marginBottom: 150,
+    backButton: {
+        backgroundColor: '#00fff',
+        zIndex: 1,
     },
     buttonText: {
         color: '#43428b',
         fontWeight: 'bold',
         fontSize: 20,
     },
-    listContainer: {
-        flex: 1,
-        marginBottom: '10%',
-        marginTop: 10,
-
+    contentContainer: {
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginTop: '10%',
+    },
+    title: {
+        color: '#000',
+        fontWeight: 'bold',
+        fontSize: 28,
+        marginBottom: '5%',
     },
 });
+
+
 
 export default OfferedServicesScreen;
