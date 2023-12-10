@@ -17,11 +17,12 @@ console.log(REACT_APP_API_URL)
 
 function ServicesOffererScreen({ route }) {
     const { control, handleSubmit, formState: { errors }, watch } = useForm();
+    const priceValue = watch('price', { valueAsNumber: true });
     const [services, setServices] = useState([]);
     const [selectedService, setSelectedService] = useState(null);
     const [serviceOffererID, setServiceOffererID] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const priceValue = watch('price');
+
     const category = route.params.name;
     console.log(category);
 
@@ -77,7 +78,7 @@ function ServicesOffererScreen({ route }) {
             const requestData = {
                 serviceOffererID: serviceOffererID,
                 serviceID: selectedService.ID,
-                price: priceValue, // Use the captured price from the form
+                price: parseInt(priceValue), // Use the captured price from the form
             }
             const response = await fetch(`${REACT_APP_API_URL}/offeredServices`, {
                 method: 'POST',
@@ -94,7 +95,7 @@ function ServicesOffererScreen({ route }) {
                 const errorResponse = await response.json();
                 console.log(errorResponse);
                 //asuming that response is returning 500 also because it has been added before
-                if (response.status === 409 || response.status === 500) {
+                if (response.status === 409) {
                     Alert.alert('Services error', 'The service has already been added.');
                 } else {
                     Alert.alert('Services error', `Failed to add service. Reason: ${errorResponse.error}`);
