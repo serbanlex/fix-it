@@ -126,7 +126,7 @@ function OrderServiceScreen({ route }) {
                         style={{ backgroundColor: '#00fff', position: 'absolute', top: 0, left: 20 }}
                         onPress={() => navigation.goBack()}
                     >
-                        <Text style={styles.buttonText}>Back</Text>
+                        <Text style={styles.buttonText}>{"< Back"}</Text>
                     </Button>
                     <CustomInput
                         name="address"
@@ -152,7 +152,7 @@ function OrderServiceScreen({ route }) {
                             The date & time you'd like us to fix it at:
                             {selectedDate && (
                                 <Text style={{ fontWeight: 'bold' }}>{`\n${selectedDate}`}</Text>
-                            )}{' '}
+                            )}{', '}
                             {selectedTime && (
                                 <Text style={{ fontWeight: 'bold' }}>{selectedTime}</Text>
                             )}
@@ -163,25 +163,33 @@ function OrderServiceScreen({ route }) {
 
 
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity onPress={showDatePicker} style={styles.dateButton}>
-                            <Text style={styles.dateButtonText}>Select Date: {selectedDate}</Text>
-                        </TouchableOpacity>
-                        <DateTimePickerModal
-                            isVisible={isDatePickerVisible}
-                            mode="date"
-                            onConfirm={handleDateConfirm}
-                            onCancel={hideDatePicker}
-                        />
-                        <TouchableOpacity onPress={showTimePicker} style={styles.timeButton}>
-                            <Text style={styles.timeButtonText}>Select Time: {selectedTime}</Text>
-                        </TouchableOpacity>
-                        <DateTimePickerModal
-                            isVisible={isTimePickerVisible}
-                            mode="time"
-                            onConfirm={handleTimeConfirm}
-                            onCancel={hideTimePicker}
-                        />
+                        {/* Date Picker */}
+                        <View>
+                            <TouchableOpacity onPress={showDatePicker} style={styles.dateButton}>
+                                <Text style={styles.dateButtonText}>Select Date</Text>
+                            </TouchableOpacity>
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="date"
+                                onConfirm={handleDateConfirm}
+                                onCancel={hideDatePicker}
+                            />
+                        </View>
+
+                        {/* Time Picker */}
+                        <View>
+                            <TouchableOpacity onPress={showTimePicker} style={styles.timeButton}>
+                                <Text style={styles.timeButtonText}>Select Time</Text>
+                            </TouchableOpacity>
+                            <DateTimePickerModal
+                                isVisible={isTimePickerVisible}
+                                mode="time"
+                                onConfirm={handleTimeConfirm}
+                                onCancel={hideTimePicker}
+                            />
+                        </View>
                     </View>
+
 
                     <CustomButton text="Fix it!" onPress={handleSubmit(onRegisterPressed)} />
                     <Modal
@@ -263,7 +271,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     buttonsContainer: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         marginBottom: 10,
         padding: '2%',
