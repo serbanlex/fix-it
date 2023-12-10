@@ -97,6 +97,27 @@ class UserRepository {
         return this.getAll();
     }
 
+    async editById(id, userInfo) {
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw new EntityNotFound('User not found');
+        }
+        const updatedUser = {};
+        for (const key in userInfo) {
+            if (key in user && key !== 'ID' && key !== 'createdAt' && key !== 'updatedAt' && userInfo[key] !== null) {
+                console.log(`Changing ${key} of user ${id} to ${userInfo[key]}`)
+                if(key === 'password'){
+                    userInfo[key] = await bcrypt.hash(userInfo[key], 10);
+                }
+                updatedUser[key] = userInfo[key];
+            }
+        }
+        await user.set(updatedUser);
+        await user.save();
+        return this.getById(id);
+
+    }
+
     async login(email, password) {
         const user = await this.getByEmail(email);
         if (!user || !email || !password) {

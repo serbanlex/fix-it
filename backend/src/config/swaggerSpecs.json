@@ -156,6 +156,55 @@
             "description": "OK"
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "The core information of the user, that can be changed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "offerer@email.com"
+                },
+                "phoneNumber": {
+                  "type": "string",
+                  "example": "0772-456-789"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "user"
+                }
+              },
+              "required": [
+                "email",
+                "phoneNumber",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
       }
     },
     "/serviceOfferers": {

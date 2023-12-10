@@ -5,10 +5,6 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             references: { model: 'Users', key: 'ID', onDelete: 'CASCADE' }
         },
-        history: {
-            type: Sequelize.STRING,
-            nullable: true,
-        },
     });
     Client.associate = (models) => {
         Client.hasMany(models.Order);

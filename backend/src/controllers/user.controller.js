@@ -31,5 +31,29 @@ module.exports = {
         } catch (error) {
             next(error);
         }
+    },
+
+
+    async editUser(req, res, next) {
+        // #swagger.tags = ['Users']
+        /*  #swagger.parameters['user'] = {
+                in: 'body',
+                description: 'The core information of the user, that can be changed',
+                schema: {
+                    $email: 'offerer@email.com',
+                    $phoneNumber: '0772-456-789',
+                    $password: 'user',
+                }
+            }
+         */
+        try {
+            console.log(req.body);
+            const userData = await userRepo.editById(req.params.id, req.body);
+            res.status(200).json(userData);
+        }
+        catch (error) {
+            next(error);
+        }
+
     }
 };
