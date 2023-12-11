@@ -25,24 +25,11 @@ module.exports = (sequelize, Sequelize) => {
       'type': Sequelize.STRING,
       'allowNull': false,
     },
-  },{
-    getterMethods: {
-      async isAwaitingReview() {
-        // Access the associated OfferedService and Reviews
-        const offeredService = await this.getOfferedService();
-        const reviews = await offeredService.getReviews();
-
-        // Check if there is no review matching the Order's ClientID
-        const orderClientID = this.ClientID; // Assuming you have a ClientID field in Order model
-        return !reviews.some(review => review.ClientID === orderClientID);
-      },
-    }
-      }
-
-      );
+  });
   Order.associate = (models) => {
     Order.belongsTo(models.Client);
     Order.belongsTo(models.OfferedService);
+    Order.hasOne(models.Review);
   };
   return Order;
 };

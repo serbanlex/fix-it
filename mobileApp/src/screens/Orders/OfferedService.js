@@ -10,9 +10,9 @@ console.log(REACT_APP_API_URL)
 function OfferedServiceScreen({ route }) {
     // contains the offered service + the reviews
     const offeredService = route.params.data;
-    const reviews = offeredService.Reviews;
     const service = offeredService.Service;
     const serviceOfferer = offeredService.ServiceOfferer;
+    const reviews = route.params.Reviews;
     const [showReviews, setShowReviews] = useState(false);
     const navigation = useNavigation();
 
@@ -26,6 +26,7 @@ function OfferedServiceScreen({ route }) {
 
     // Review component
     const Review = ({ review }) => {
+        if(review == null) return (<View></View>);
         const [isModalVisible, setModalVisible] = useState(false);
 
         const toggleModal = () => {
@@ -34,9 +35,9 @@ function OfferedServiceScreen({ route }) {
 
         const starsText = "★".repeat(review.rating) + "✰".repeat(5 - review.rating);
 
-        const ratingText = reviews.length > 0 ? `Rating: ${starsText}️ (${review.rating}/5)` : "This service has no reviews yet.";
+        const ratingText = (reviews != null && reviews.length > 0) ? `Rating: ${starsText}️ (${review.rating}/5)` : "This service has no reviews yet.";
 
-        const ratingComponent = reviews.length > 0 ? (
+        const ratingComponent = (reviews != null && reviews.length > 0) ? (
             <View>
                 <Text style={styles.ratingText}>{ratingText}</Text>
             </View>
@@ -85,13 +86,14 @@ function OfferedServiceScreen({ route }) {
                     <Text style={styles.info}>Firm: {offeredService.ServiceOfferer.firmName}</Text>
                     <Text style={styles.info}>Address: {serviceOfferer.firmCity}, {offeredService.ServiceOfferer.firmAddress}</Text>
 
+
                     <TouchableOpacity
                         style={styles.callToAction}
                         onPress={() => goToOrderPage(offeredService)}>
                         <Text style={styles.callToActionText}>{"Order service"}</Text>
                     </TouchableOpacity>
 
-                    {reviews.length > 0 ? (
+                    {reviews != null && reviews.length > 0 ? (
                         <View>
                         <TouchableOpacity
                             style={styles.reviewToggleButton}

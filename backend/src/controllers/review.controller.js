@@ -22,10 +22,10 @@ module.exports = {
         }
     },
 
-    async getAllReviewsWithOfferedServiceID(req, res, next) {
+    async getAllReviewsWithOrderID(req, res, next) {
         // #swagger.tags = ['Reviews']
         try {
-            const reviewData = await ReviewRepository.getByOfferedServiceId(req.params.id);
+            const reviewData = await ReviewRepository.getByOrderId(req.params.id);
             res.status(200).json(reviewData);
         }
         catch (error) {
@@ -44,6 +44,28 @@ module.exports = {
         }
     },
 
+    async getAllReviewsWithOfferedServiceID(req, res, next) {
+        // #swagger.tags = ['Reviews']
+        try {
+            const reviewData = await ReviewRepository.getByOfferedServiceId(req.params.id);
+            res.status(200).json(reviewData);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+
+    async getAllReviewsWithServiceID(req, res, next) {
+        // #swagger.tags = ['Reviews']
+        try {
+            const reviewData = await ReviewRepository.getByServiceId(req.params.id);
+            res.status(200).json(reviewData);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+
     async createReview(req, res, next) {
         // #swagger.tags = ['Reviews']
         /*  #swagger.parameters['review'] = {
@@ -54,7 +76,7 @@ module.exports = {
                     $comment: 'This is a comment',
                     $imageUrl: 'https://i.imgur.com/4NZ6uLY.jpeg',
                     $clientID: 1,
-                    $offeredServiceID: 1
+                    $orderID: 1
                 }
             }
         */

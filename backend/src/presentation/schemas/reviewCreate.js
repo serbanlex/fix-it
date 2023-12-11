@@ -5,5 +5,5 @@ module.exports = Joi.object({
     comment: Joi.string().required(),
     imageUrl: Joi.string().required(),
     clientID: Joi.number().integer().required(),
-    offeredServiceID: Joi.number().integer().required()
+    orderID: Joi.number().integer().required()
 });

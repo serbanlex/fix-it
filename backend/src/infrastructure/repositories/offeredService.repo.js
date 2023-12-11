@@ -1,5 +1,5 @@
 const { FixItError } = require("../../exceptions");
-const { OfferedService, User, Service, ServiceOfferer, Review, Client } = require("../models");
+const { OfferedService, User, Service, ServiceOfferer } = require("../models");
 const { EntityNotFound } = require("../../exceptions");
 
 class OfferedServiceRepository {
@@ -26,16 +26,17 @@ class OfferedServiceRepository {
 
 
     async getById(offeredServiceID) {
+        var offeredService;
         try {
-            const offeredService = await OfferedService.findByPk(offeredServiceID);
-            if (!offeredService) {
-                throw new EntityNotFound(`Offered service with ID ${offeredServiceID} not found`);
-            }
-            return offeredService;
+            offeredService = await OfferedService.findByPk(offeredServiceID);
         }
         catch (error) {
             throw new Error("Failed to find offered service. Reason: " + error.message);
         }
+        if (!offeredService) {
+            throw new EntityNotFound(`Offered service with ID ${offeredServiceID} not found`);
+        }
+        return offeredService;
     }
 
     async getAllByServiceOffererID(serviceOffererID) {
@@ -71,19 +72,6 @@ class OfferedServiceRepository {
                     {
                         model: Service
                     },
-                    {
-                        model: Review, include: [
-                            {
-                                model: Client, include: [
-                                    {
-                                        model: User,
-                                        as: 'userInfo',
-                                        attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
-                                    },
-                                ],
-                            },
-                        ],
-                    }
                 ],
             });
             return offeredServices;

@@ -2,6 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const OfferedService = ({ price, serviceOfferer, service, reviews }) => {
+    if(reviews == null) {
+        console.log("Reviews is null");
+        return (
+            <View style={styles.container}>
+                <Text style={styles.price}>Price: ${price} </Text>
+                <Text
+                    style={styles.offerer}>{serviceOfferer.userInfo.firstName} {serviceOfferer.userInfo.lastName}, {serviceOfferer.firmName}</Text>
+                <Text style={styles.address}>Located at: {serviceOfferer.firmCity}, {serviceOfferer.firmAddress}</Text>
+            </View>
+        );
+    }
+
     const rating = reviews.length > 0 ? Math.round(reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length) : 0;
 
 

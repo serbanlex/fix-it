@@ -970,7 +970,7 @@
                   "type": "number",
                   "example": 1
                 },
-                "offeredServiceID": {
+                "orderID": {
                   "type": "number",
                   "example": 1
                 }
@@ -980,7 +980,7 @@
                 "comment",
                 "imageUrl",
                 "clientID",
-                "offeredServiceID"
+                "orderID"
               ]
             }
           }
@@ -1035,7 +1035,7 @@
         }
       }
     },
-    "/reviews/offeredService/{id}": {
+    "/reviews/order/{id}": {
       "get": {
         "tags": [
           "Reviews"
@@ -1057,6 +1057,48 @@
       }
     },
     "/reviews/client/{id}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/reviews/offeredService/{id}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/reviews/service/{id}": {
       "get": {
         "tags": [
           "Reviews"

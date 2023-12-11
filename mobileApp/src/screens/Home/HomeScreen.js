@@ -18,7 +18,6 @@ function HomeScreen({ }) {
     const [ongoingOrders, setOngoingOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order
     const [selectedOrderStatus, setSelectedOrderStatus] = useState(null); // Track the selected order's status
-    const [clientGivenReviews, setClientGivenReviews] = useState([]);
 
     const navigation = useNavigation();
 
@@ -41,28 +40,6 @@ function HomeScreen({ }) {
             .catch(error => console.error(error));
     }, []);
 
-
-    useEffect( () => {
-        fetch(`${REACT_APP_API_URL}/reviews/client/{session.ID}/`, { headers: { 'Cache-Control': 'no-cache' } })
-            .then(
-                response => {
-                    if (!response.ok) {
-                        console.log(response);
-                        Alert.alert('Something went wrong', 'Failed to load reviews.');
-                        throw new Error("Failed to load reviews.")
-                    }
-                    else {
-                        return response.json();
-                    }
-                })
-            .then(data => {
-                if (data) {
-                    setClientGivenReviews(data);
-                }
-            })
-            .catch(error => console.error(error));
-        }, []
-    )
 
     useEffect(() => {
         fetch(`${REACT_APP_API_URL}/session`, { headers: { 'Cache-Control': 'no-cache' } })
@@ -260,15 +237,12 @@ function HomeScreen({ }) {
                     {session.serviceOffererInfo == null &&
                         (
                             <View>
-                                <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>Orders waiting for review</Text>
+                                <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>Orders waiting for your review</Text>
                                 <View>
                                 {/*    We take the client's orders and see, using his reviews, which ones he didn't review */}
                                     {ongoingOrders
                                         .filter(
-                                            order => order.state === 'done'
-                                        )
-                                        .filter(
-                                            order => !order.OfferedService.Reviews || !order.OfferedService.Reviews.some(review => review.ClientID == session.ID)
+                                            order => order.state === 'done' && order.Review == null
                                         )
                                         .map((order) => (
                                         <TouchableOpacity key={order.ID} onPress={() => navigation.navigate('Review', { order: order })} style={styles.orderItem}>

@@ -22,9 +22,7 @@ module.exports = (sequelize, Sequelize) => {
 
     Review.associate = (models) => {
         Review.belongsTo(models.Client);
-        Review.belongsTo(models.OfferedService);
+        Review.belongsTo(models.Order);
     };
     return Review;
-
-
 }

@@ -36,12 +36,12 @@ class OrderRepository {
                             ],
                         },
                         {
-                            model: Review,
-                        },
-                        {
                             model: Service,
                         }
                     ],
+                },
+                {
+                    model: Review,
                 },
                 {
                     model: Client,
@@ -132,12 +132,12 @@ class OrderRepository {
                             ],
                         },
                         {
-                            model: Review,
-                        },
-                        {
                             model: Service,
                         }
                     ],
+                },
+                {
+                    model: Review,
                 },
                 {
                     model: Client,
@@ -173,10 +173,10 @@ class OrderRepository {
                                 },
                             ],
                         },
-                        {
-                            model: Review,
-                        },
                     ],
+                },
+                {
+                    model: Review,
                 },
                 {
                     model: Client,

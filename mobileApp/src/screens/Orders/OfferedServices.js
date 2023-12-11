@@ -9,9 +9,9 @@ console.log(REACT_APP_API_URL)
 
 function OfferedServicesScreen({ route }) {
     const [offeredServices, setOfferedServices] = useState([]);
+    const [reviews, setReviews] = useState([]);
     const serviceID = route.params.item.ID;
     const serviceName = route.params.item.name;
-    console.log(serviceID);
 
     useEffect(() => {
         fetch(`${REACT_APP_API_URL}/offeredServices/service/${serviceID}`, { headers: { 'Cache-Control': 'no-cache' } })
@@ -34,8 +34,28 @@ function OfferedServicesScreen({ route }) {
     }, []);
 
 
+    useEffect(() => {
+        fetch(`${REACT_APP_API_URL}/reviews/service/${serviceID}`, { headers: { 'Cache-Control': 'no-cache' } })
+            .then(response => {
+                if (!response.ok) {
+                    console.log("Something went wrong: " + JSON.stringify(response));
+                    Alert.alert('Something went wrong', 'Failed to load reviews.');
+                    throw new Error("Failed to load reviews. A network error may have occurred.")
+                }
+                else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    setReviews(data);
+                }
+            })
+            .catch(error => console.error(error));
+    }, []);
 
     console.log(`Offered services for service ID '${serviceID}': ${JSON.stringify(offeredServices)}`);
+    console.log(`Reviews for service ID '${serviceID}': ${JSON.stringify(reviews)}`);
 
     const navigation = useNavigation();
 
@@ -50,7 +70,13 @@ function OfferedServicesScreen({ route }) {
                 price={item.price}
                 serviceOfferer={item.ServiceOfferer}
                 service={item.Service}
-                reviews={item.Reviews}
+                reviews={reviews.reduce((accumulator, review) => {
+                    if (review.Order.OfferedServiceID === item.ID) {
+                        return review;
+                    } else {
+                        return accumulator;
+                    }
+                }, null)}
             />
         </TouchableOpacity>
     );

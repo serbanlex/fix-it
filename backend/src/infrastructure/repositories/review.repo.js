@@ -1,4 +1,4 @@
-const {Review, Client, OfferedService, User, ServiceOfferer} = require('../models');
+const {Review, Client, OfferedService, User, ServiceOfferer, Order} = require('../models');
 const {EntityNotFound} = require('../../exceptions');
 
 class ReviewRepository {
@@ -7,11 +7,17 @@ class ReviewRepository {
         try {
             review = await Review.create(reviewInfo);
             review.setClient(reviewInfo.clientID);
-            review.setOfferedService(reviewInfo.offeredServiceID);
+            review.setOrder(reviewInfo.orderID);
         } catch (error) {
             if (error.name === 'SequelizeForeignKeyConstraintError') {
                 console.log(error);
                 throw new EntityNotFound(`Review reference(s) not found`);
+            }
+            try{
+                await review.destroy();
+            }
+            catch(error){
+                throw new Error('Failed to delete review. Reason: ' + error);
             }
             throw new Error('Failed to create review. Reason: ' + error);
         }
@@ -21,11 +27,11 @@ class ReviewRepository {
     async deleteById(id) {
         const review = await this.getById(id);
         await review.destroy();
-        return review;
+        return this.getAll();
     }
 
     async getById(id) {
-        return await Review.findByPk(id, {
+        const foundReview = await Review.findByPk(id, {
             include: [
                 {
                     model: Client,
@@ -38,15 +44,20 @@ class ReviewRepository {
                     ],
                 },
                 {
-                    model: OfferedService,
+                    model: Order,
                     include: [
                         {
-                            model: ServiceOfferer,
+                            model: OfferedService,
                             include: [
                                 {
-                                    model: User,
-                                    as: 'userInfo',
-                                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                    model: ServiceOfferer,
+                                    include: [
+                                        {
+                                            model: User,
+                                            as: 'userInfo',
+                                            attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                        },
+                                    ],
                                 },
                             ],
                         },
@@ -54,6 +65,10 @@ class ReviewRepository {
                 },
             ],
         });
+        if (!foundReview) {
+            throw new EntityNotFound('Review with id ' + id + ' not found');
+        }
+        return foundReview;
     }
 
     async getAll() {
@@ -70,15 +85,20 @@ class ReviewRepository {
                     ],
                 },
                 {
-                    model: OfferedService,
+                    model: Order,
                     include: [
                         {
-                            model: ServiceOfferer,
+                            model: OfferedService,
                             include: [
                                 {
-                                    model: User,
-                                    as: 'userInfo',
-                                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                    model: ServiceOfferer,
+                                    include: [
+                                        {
+                                            model: User,
+                                            as: 'userInfo',
+                                            attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                        },
+                                    ],
                                 },
                             ],
                         },
@@ -89,10 +109,10 @@ class ReviewRepository {
     }
 
 
-    async getByOfferedServiceId(offeredServiceId) {
+    async getByOrderId(orderId) {
         return await Review.findAll({
             where: {
-                offeredServiceID: offeredServiceId
+                orderID: orderId
             },
             include: [
                 {
@@ -106,15 +126,20 @@ class ReviewRepository {
                     ],
                 },
                 {
-                    model: OfferedService,
+                    model: Order,
                     include: [
                         {
-                            model: ServiceOfferer,
+                            model: OfferedService,
                             include: [
                                 {
-                                    model: User,
-                                    as: 'userInfo',
-                                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                    model: ServiceOfferer,
+                                    include: [
+                                        {
+                                            model: User,
+                                            as: 'userInfo',
+                                            attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                        },
+                                    ],
                                 },
                             ],
                         },
@@ -141,15 +166,20 @@ class ReviewRepository {
                     ],
                 },
                 {
-                    model: OfferedService,
+                    model: Order,
                     include: [
                         {
-                            model: ServiceOfferer,
+                            model: OfferedService,
                             include: [
                                 {
-                                    model: User,
-                                    as: 'userInfo',
-                                    attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                    model: ServiceOfferer,
+                                    include: [
+                                        {
+                                            model: User,
+                                            as: 'userInfo',
+                                            attributes: { exclude: ['ID', 'createdAt', 'updatedAt', 'password'] }
+                                        },
+                                    ],
                                 },
                             ],
                         },
@@ -158,6 +188,18 @@ class ReviewRepository {
             ],
         });
     }
+
+    async getByOfferedServiceId(offeredServiceId) {
+        // TODO: this should be improved, done somehow just with the ORM
+        const allReviews = await this.getAll();
+        return allReviews.filter(review => review.Order.OfferedServiceID == offeredServiceId);
+    }
+
+    async getByServiceId(serviceId) {
+        const allReviews = await this.getAll();
+        return allReviews.filter(review => review.Order.OfferedService.ServiceID == serviceId);
+    }
+
 
 }
 
