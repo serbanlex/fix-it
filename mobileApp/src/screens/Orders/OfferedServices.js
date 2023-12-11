@@ -59,9 +59,10 @@ function OfferedServicesScreen({ route }) {
 
     const navigation = useNavigation();
 
-    const onServicePressed = async (data) => {
-        console.log("Service pressed, order data: " + JSON.stringify(data))
-        navigation.navigate('OfferedService', { data: data });
+    const onServicePressed = async (serviceItem) => {
+        console.log("Service pressed, order data: " + JSON.stringify(serviceItem))
+        serviceItem.reviews = reviews.filter(review => review.Order.OfferedService.ServiceOffererID == serviceItem.ServiceOffererID)
+        navigation.navigate('OfferedService', { data: serviceItem });
     }
 
     const renderOfferedService = (item) => (
@@ -70,13 +71,7 @@ function OfferedServicesScreen({ route }) {
                 price={item.price}
                 serviceOfferer={item.ServiceOfferer}
                 service={item.Service}
-                reviews={reviews.reduce((accumulator, review) => {
-                    if (review.Order.OfferedServiceID === item.ID) {
-                        return review;
-                    } else {
-                        return accumulator;
-                    }
-                }, null)}
+                reviews={reviews.filter(review => review.Order.OfferedService.ServiceOffererID == item.ServiceOffererID)}
             />
         </TouchableOpacity>
     );
@@ -94,7 +89,7 @@ function OfferedServicesScreen({ route }) {
                 <View style={styles.contentContainer}>
                     <Text style={styles.title}>Service offerers good at {serviceName.toLowerCase()}</Text>
 
-                    {offeredServices.map((service) => renderOfferedService(service))}
+                    {offeredServices.map((offeredService) => renderOfferedService(offeredService))}
                 </View>
             </ScrollView>
         );

@@ -12,7 +12,7 @@ function OfferedServiceScreen({ route }) {
     const offeredService = route.params.data;
     const service = offeredService.Service;
     const serviceOfferer = offeredService.ServiceOfferer;
-    const reviews = route.params.Reviews;
+    const reviews = offeredService.reviews;
     const [showReviews, setShowReviews] = useState(false);
     const navigation = useNavigation();
 

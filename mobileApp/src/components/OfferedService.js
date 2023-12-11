@@ -20,7 +20,7 @@ const OfferedService = ({ price, serviceOfferer, service, reviews }) => {
     // based on the rating, have a different color for the stars: ✰ and ⭐
     const starsText = "★".repeat(rating) + "✰".repeat(5 - rating);
 
-    const ratingText = reviews.length > 0 ? `Rating on service: ${starsText}️ (${rating}/5)` : "This service has no reviews yet.";
+    const ratingText = reviews.length > 0 ? `Rating on service: ${starsText}️ (${rating}/5) \n(${reviews.length} reviews)` : "This service has no reviews yet.";
 
     const ratingComponent = reviews.length > 0 ? (
         <View>
