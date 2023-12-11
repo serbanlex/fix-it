@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     modalTitle: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: 'bold',
         alignSelf: 'flex-start'
     },
