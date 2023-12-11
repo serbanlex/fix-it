@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {Text, View, Modal, StyleSheet, Image, TouchableOpacity, ScrollView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { REACT_APP_API_URL } from '@env';
-import {Button} from "native-base";
 
 
 console.log(REACT_APP_API_URL)

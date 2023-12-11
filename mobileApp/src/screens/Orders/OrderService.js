@@ -4,17 +4,12 @@ import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { REACT_APP_API_URL } from '@env';
-import OfferedService from '../../components/OfferedService';
 import GradientBackground from '../../components/GradientBackground2';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import DatePicker from 'react-native-datepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 
-if (!REACT_APP_API_URL) {
-    REACT_APP_API_URL = "http://192.168.0.188:3000";
-}
 console.log(REACT_APP_API_URL);
 
 function OrderServiceScreen({ route }) {

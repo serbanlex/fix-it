@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { REACT_APP_API_URL } from '@env';
 import OfferedService from '../../components/OfferedService';
 
-
 console.log(REACT_APP_API_URL)
 
 function OfferedServicesScreen({ route }) {

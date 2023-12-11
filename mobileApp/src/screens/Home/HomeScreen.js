@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Alert, TouchableOpacity, Modal, ScrollView } from 'react-native';
-import { Button } from 'native-base';
+import {Button, IconButton} from 'native-base';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { REACT_APP_API_URL } from '@env';
 import ServiceCategory from '../../components/ServiceCategory';
+import ClosingButton from "../../components/ClosingButton";
 
-if (!REACT_APP_API_URL) {
-    REACT_APP_API_URL = "http://192.168.0.188:3000";
-}
 console.log(REACT_APP_API_URL)
 
 function HomeScreen({ }) {
@@ -270,10 +268,16 @@ function HomeScreen({ }) {
                         animationType="slide"
                         onRequestClose={closeOrderModal}
                     >
+                        <View style={styles.modalNavbar}>
+                            <Text style={styles.modalTitle}>Order Details</Text>
+                            <TouchableOpacity style={styles.modalCloseUpperButton} onPress={closeOrderModal}>
+                                <Text style={styles.modalCloseButtonText}>x</Text>
+                            </TouchableOpacity>
+                        </View>
+
                         {selectedOrder && (
                             <ScrollView>
                                 <View style={styles.modalContainer}>
-                                    <Text style={styles.modalTitle}>Order Details</Text>
                                     <Text style={styles.modalText}>Order Number: {selectedOrder.ID}</Text>
                                     <Text style={styles.modalText}>State: {selectedOrder.state}</Text>
                                     <Text style={styles.modalText}>Date: {selectedOrder.date}</Text>
@@ -358,9 +362,9 @@ function HomeScreen({ }) {
                                         </View>
 
                                     )}
-                                    <Button style={styles.modalCloseButton} onPress={closeOrderModal}>
+                                    <TouchableOpacity style={styles.modalCloseButton} onPress={closeOrderModal}>
                                         <Text style={styles.modalCloseButtonText}>Close</Text>
-                                    </Button>
+                                    </TouchableOpacity>
                                 </View>
                             </ScrollView>
                         )}
@@ -381,7 +385,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: '10%',
+        padding: '5%',
     },
     title: {
         color: '#43428b',
@@ -426,7 +430,7 @@ const styles = StyleSheet.create({
     modalTitle: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 16,
+        alignSelf: 'flex-start'
     },
     modalSubTitle: {
         fontSize: 18,
@@ -445,10 +449,18 @@ const styles = StyleSheet.create({
         width: 100,
         alignItems: 'center',
     },
+    modalCloseUpperButton: {
+        backgroundColor: '#43428b',
+        borderRadius: 100,
+        alignSelf: 'flex-end',
+        marginRight: '2%',
+        padding: '3%',
+    },
     modalCloseButtonText: {
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16,
+        paddingHorizontal: '2%',
     },
 
     scrollContainer: {
@@ -525,6 +537,13 @@ const styles = StyleSheet.create({
     },
     modalDoneButtonText: {
         color: '#43428b',
+    },
+    modalNavbar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: '2%',
+        paddingTop: '2%',
     },
 
 });

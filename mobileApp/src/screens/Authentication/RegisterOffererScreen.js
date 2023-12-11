@@ -6,9 +6,6 @@ import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { REACT_APP_API_URL } from '@env';
 
-if (!REACT_APP_API_URL) {
-  REACT_APP_API_URL = "http://192.168.0.188:3000";
-}
 
 const RegisterOffererScreen = ({ route }) => {
   const { control, handleSubmit, watch } = useForm();
