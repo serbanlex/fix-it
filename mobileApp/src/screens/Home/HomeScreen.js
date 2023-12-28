@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { REACT_APP_API_URL } from '@env';
 import ServiceCategory from '../../components/ServiceCategory';
 import ClosingButton from "../../components/ClosingButton";
+import ReviewModal from "../../components/ReviewModal";
 
 console.log(REACT_APP_API_URL)
 
@@ -16,6 +17,8 @@ function HomeScreen({ }) {
     const [ongoingOrders, setOngoingOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order
     const [selectedOrderStatus, setSelectedOrderStatus] = useState(null); // Track the selected order's status
+    const [orderReviewModalVisible, setReviewModalVisible] = useState(false);
+    const [orderInReview, setOrderInReview] = useState(null); // Track the order that is in review
 
     const navigation = useNavigation();
 
@@ -148,6 +151,12 @@ function HomeScreen({ }) {
         setSelectedOrderStatus(order.state);
     };
 
+
+    const openReviewModal = (order) => {
+        setOrderInReview(order);
+        setReviewModalVisible(true);
+    }
+
     const handleChangeStatus = async (status) => {
         try {
             const response = await fetch(`${REACT_APP_API_URL}/orders/${selectedOrder.ID}/state`, {
@@ -237,13 +246,13 @@ function HomeScreen({ }) {
                             <View>
                                 <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>Orders waiting for your review</Text>
                                 <View>
-                                {/*    We take the client's orders and see, using his reviews, which ones he didn't review */}
+                                {/* We take the client's orders and see, using his reviews, which ones he didn't review yet */}
                                     {ongoingOrders
                                         .filter(
                                             order => order.state === 'done' && order.Review == null
                                         )
                                         .map((order) => (
-                                        <TouchableOpacity key={order.ID} onPress={() => navigation.navigate('Review', { order: order })} style={styles.orderItem}>
+                                        <TouchableOpacity key={order.ID} onPress={() => openReviewModal(order)} style={styles.orderItem} style={styles.orderItem}>
                                             <Text style={styles.orderItemText}>
                                                 Order number #{order.ID}
                                                 {order.state && <Text style={styles.orderItemState}>, state: {order.state}, firm: </Text>}
@@ -260,6 +269,15 @@ function HomeScreen({ }) {
                             </View>
                         )
                     }
+
+                    {/* Modal to display order clicked for review */}
+                    <ReviewModal
+                        orderInReview={orderInReview}
+                        setReviewModalVisible={setReviewModalVisible}
+                        orderReviewModalVisible={orderReviewModalVisible}
+                        setOrderInReview={setOrderInReview}
+                    />
+
 
 
                     {/* Modal to display order details */}
@@ -442,9 +460,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 8,
     },
+    modalCallToAction: {
+        fontSize: 18,
+        marginBottom: 8,
+        fontWeight: '500',
+        color: '#43428b',
+    },
     modalCloseButton: {
         backgroundColor: '#43428b',
         padding: 10,
+        marginTop: 16,
         borderRadius: 5,
         width: 100,
         alignItems: 'center',
