@@ -122,6 +122,7 @@ const ReviewModal = ({orderReviewModalVisible, setReviewModalVisible, orderInRev
                     quality: 1
                 }).then(result => {
                     setAttachmentButtonText("Change Attached Image");
+                    console.log(result);
                     if (!result.cancelled) {
                         setImageUrl(result.assets[0].uri);
                     }
@@ -214,10 +215,11 @@ const ReviewModal = ({orderReviewModalVisible, setReviewModalVisible, orderInRev
                                 <Text style={styles.modalTextBold}>Rate the service:</Text>
                                 <AirbnbRating
                                     count={5}
-                                    reviews={['Terrible', 'Bad', 'OK', 'Good', 'Excellent']}
                                     defaultRating={0}
                                     size={20}
                                     onFinishRating={(rating) => setRating(rating)}
+                                    selectedColor={'#9292f0'}
+                                    showRating={false}
                                 />
 
                                 <Text style={styles.modalTextBold}>Leave a comment:</Text>
