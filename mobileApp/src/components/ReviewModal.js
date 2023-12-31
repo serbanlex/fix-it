@@ -210,7 +210,7 @@ const ReviewModal = ({session, orderReviewModalVisible, setReviewModalVisible, o
     }
 
     const submitReview = async () => {
-        let uploadedImageUrl = null;
+        let uploadedImageUrl;
         if(imageUrl) {
             try{
                 const pathInFirebase = orderInReview.ID + "#" + orderInReview.Client.ID + getCurrentDateTimeString() + ".jpg";

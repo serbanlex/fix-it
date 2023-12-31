@@ -55,9 +55,13 @@ function OfferedServiceScreen({ route }) {
                 <Text style={styles.reviewText}>{ratingComponent}</Text>
                 <Text>{review.comment}</Text>
                 {/* Open modal on image click */}
-                <TouchableOpacity onPress={toggleModal}>
-                    <Image source={{ uri: review.imageUrl }} style={styles.reviewImage} />
-                </TouchableOpacity>
+                {
+                    review.imageUrl ? (
+                        <TouchableOpacity onPress={toggleModal}>
+                            <Image source={{ uri: review.imageUrl }} style={styles.reviewImage} />
+                        </TouchableOpacity>
+                    ) : (<View></View>)
+                }
 
                 {/* Modal for larger image */}
                 <Modal visible={isModalVisible} transparent={true} onRequestClose={toggleModal}>
