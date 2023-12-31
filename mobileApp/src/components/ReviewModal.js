@@ -1,18 +1,12 @@
-import React, { useState } from 'react';
-import {
-    Modal,
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    ScrollView,
-    Image,
-    Alert,
-} from 'react-native';
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import React, {useState} from 'react';
+import {Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View,} from 'react-native';
+import {AirbnbRating} from 'react-native-ratings';
 import * as ImagePicker from 'expo-image-picker';
 
-import {AddIcon, CloseIcon, Icon} from "native-base";
+import {AddIcon, CloseIcon} from "native-base";
+import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import { REACT_APP_API_URL } from '@env';
+
 
 const styles = {
     modalContainer: {
@@ -144,29 +138,101 @@ const ReviewModal = ({orderReviewModalVisible, setReviewModalVisible, orderInRev
         setAttachmentButtonText(initialAttachmentButtonText);
     }
 
-    const submitReview = () => {
 
+    const uploadImageToFirebase = async (uri, fileName) => {
+        console.log("Trying to upload image to Firebase... (path: " + fileName + ")" + ", uri: " + uri);
+        const storage = getStorage();
+        const reference = ref(storage, 'images/reviews/' + fileName);
+
+        const imageUrlLocalResponse = await fetch(uri);
+        const blob = await imageUrlLocalResponse.blob();
+
+        // Upload the Blob to Firebase Storage
+        await uploadBytes(reference, blob).then(
+            (snapshot) => {
+                console.log('Image uploaded to Firebase successfully!');
+            }
+        ).catch((error) => {
+            console.log("Error at the uploadbytes:", error);
+            if (error.serverResponse) {
+                console.log('Server Response:', error.serverResponse);
+            }
+            throw error;
+            }
+        )
+
+        // Get the download URL
+        const url = await getDownloadURL(reference);
+        console.log('Image uploaded successfully! Download URL:', url);
+        return url;
+
+
+    };
+
+    function getCurrentDateTimeString() {
+        const currentDate = new Date();
+
+        // Get year, month, day, hours, minutes, and seconds
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = currentDate.getDate().toString().padStart(2, '0');
+        const hours = currentDate.getHours().toString().padStart(2, '0');
+        const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+        const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+
+        // Construct the desired string
+        return `${year}-${month}-${day}-${hours}:${minutes}:${seconds}`;
+    }
+
+    const submitReview = async () => {
+        let uploadedImageUrl = null;
+        if(imageUrl) {
+            try{
+                const pathInFirebase = orderInReview.ID + "#" + orderInReview.Client.ID + getCurrentDateTimeString() + ".jpg";
+                uploadedImageUrl = await uploadImageToFirebase(imageUrl, pathInFirebase);
+            }
+            catch (error) {
+                console.log(error);
+                console.log("Error uploading image to Firebase:", error);
+                Alert.alert("Your image could not be uploaded. Please try again later.");
+                return;
+            }
+        }
         const reviewData = {
-            rating,
-            comment,
-            imageUrl,
+            rating: rating,
+            comment: comment,
+            imageUrl: uploadedImageUrl,
             clientID: orderInReview.Client.ID,
             orderID: orderInReview.ID,
         };
-
         // Call your API endpoint with reviewData
         console.log('Submitting review:', reviewData);
 
-
-        // Show an alert that says it's successful, and close the modal
-        Alert.alert('Review submitted successfully!', "You'll be redirected to your home page swiftly.", [
-            {
-                text: 'Great!',
-                onPress: () => handleModalClose(),
+        await fetch(`${REACT_APP_API_URL}/reviews`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-        ]);
-
-
+            body: JSON.stringify(reviewData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error){
+                    throw new Error("Error uploading review: " + data.error);
+                }
+                console.log('Successfully uploaded review:', data);
+                // Show an alert that says it's successful, and close the modal
+                Alert.alert('Review submitted successfully!', "You'll be redirected to your home page swiftly.", [
+                    {
+                        text: 'Great!',
+                        onPress: () => handleModalClose(),
+                    },
+                ]);
+            })
+            .catch((error) => {
+                console.error('Error uploading review:', error);
+                Alert.alert(`Your review could not be uploaded. Reason: ${error}`);
+            });
     };
 
     return (

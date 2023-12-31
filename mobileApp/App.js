@@ -8,6 +8,11 @@ import MainNavigator from './src/navigation/MainNavigator';
 
 const Stack = createStackNavigator();
 
+import { initializeApp, getApps } from "firebase/app";
+import firebaseConfig from "./firebaseConfig";
+!getApps().length ? initializeApp(firebaseConfig) : getApps();
+
+
 export default function App() {
   return (
     <NativeBaseProvider>
