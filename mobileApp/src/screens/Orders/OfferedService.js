@@ -48,7 +48,10 @@ function OfferedServiceScreen({ route }) {
 
         return (
             <View style={styles.reviewContainer}>
-                <Text style={styles.reviewText}>{review.Client.userInfo.firstName} {review.Client.userInfo.lastName}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                    <Text style={styles.reviewText}>{review.Client.userInfo.firstName} {review.Client.userInfo.lastName} ({new Date(review.createdAt).toLocaleDateString('RO')})</Text>
+                    <Image source={{ uri: serviceOfferer.userInfo.imageUrl }} style={{ width: 50, height: 50, borderRadius: 100}} />
+                </View>
                 <Text style={styles.reviewText}>{ratingComponent}</Text>
                 <Text>{review.comment}</Text>
                 {/* Open modal on image click */}
@@ -182,7 +185,11 @@ const styles = StyleSheet.create({
         height: 200,
         marginTop: 8,
     },
-
+    reviewText: {
+        fontSize: 14,
+        marginBottom: 4,
+        fontWeight: '500',
+    },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',

@@ -68,6 +68,7 @@ function OfferedServicesScreen({ route }) {
         <TouchableOpacity style={{width: '100%'}} key={item.ID} onPress={() => onServicePressed(item)}>
             <OfferedService
                 price={item.price}
+                userImage={item.ServiceOfferer.userInfo.imageUrl}
                 serviceOfferer={item.ServiceOfferer}
                 service={item.Service}
                 reviews={reviews.filter(review => review.Order.OfferedService.ServiceOffererID == item.ServiceOffererID)}

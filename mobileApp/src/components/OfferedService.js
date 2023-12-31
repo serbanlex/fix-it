@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 
 const OfferedService = ({ price, serviceOfferer, service, reviews }) => {
     if(reviews == null) {
@@ -35,7 +35,11 @@ const OfferedService = ({ price, serviceOfferer, service, reviews }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.price}>Price: ${price} </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <Text style={styles.price}>Price: ${price}</Text>
+                <Image source={{ uri: serviceOfferer.userInfo.imageUrl }} style={{ width: 50, height: 50, borderRadius: 100}} />
+            </View>
+
             <Text style={styles.offerer}>{serviceOfferer.userInfo.firstName} {serviceOfferer.userInfo.lastName}, {serviceOfferer.firmName}</Text>
             <Text style={styles.address}>Located at: {serviceOfferer.firmCity}, {serviceOfferer.firmAddress}</Text>
             {ratingComponent}

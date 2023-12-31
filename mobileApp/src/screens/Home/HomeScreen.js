@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Alert, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import {Text, View, StyleSheet, Alert, TouchableOpacity, Modal, ScrollView, Image} from 'react-native';
 import {Button} from 'native-base';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
@@ -200,12 +200,19 @@ function HomeScreen({ }) {
 
     return (
         <View style={styles.container}>
-            <Button
-                style={{ backgroundColor: '#fffff', alignSelf: 'flex-start', marginBottom: '10%' }}
-                onPress={handleSubmit(onLogOutPressed)}
-            >
-                <Text style={styles.buttonText}>Log out</Text>
-            </Button>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingTop: '2%' }}>
+                <Button
+                    style={{ backgroundColor: '#fffff' }}
+                    onPress={handleSubmit(onLogOutPressed)}
+                >
+                    <Text style={styles.buttonText}>Log out</Text>
+                </Button>
+                <Image
+                    source={{ uri: session.imageUrl }}
+                    style={{ width: 50, height: 50, borderRadius: 100, marginBottom: '5%' }}
+                />
+            </View>
+
             <Text style={styles.title}>Welcome,</Text>
             <Text style={styles.title}>{session.firstName} {session.lastName}!</Text>
 
