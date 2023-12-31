@@ -50,7 +50,7 @@ function OfferedServiceScreen({ route }) {
             <View style={styles.reviewContainer}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                     <Text style={styles.reviewText}>{review.Client.userInfo.firstName} {review.Client.userInfo.lastName} ({new Date(review.createdAt).toLocaleDateString('RO')})</Text>
-                    <Image source={{ uri: serviceOfferer.userInfo.imageUrl }} style={{ width: 50, height: 50, borderRadius: 100}} />
+                    <Image source={{ uri: review.Client.userInfo.imageUrl }} style={{ width: 50, height: 50, borderRadius: 100}} />
                 </View>
                 <Text style={styles.reviewText}>{ratingComponent}</Text>
                 <Text>{review.comment}</Text>
