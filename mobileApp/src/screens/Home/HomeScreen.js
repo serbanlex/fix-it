@@ -224,11 +224,23 @@ function HomeScreen({ }) {
                         ))}
                     </View>
                     {session.serviceOffererInfo != null ? (
-                        <Text style={[styles.subtitle, styles.centerText]}>Your clients orders</Text>
-                        ) : (
-                        <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>Your placed orders</Text>
-                        )
-                    }
+                        <>
+                            <Text style={[styles.subtitle, styles.centerText]}>
+                                {ongoingOrders.length > 0
+                                    ? 'Your clients orders'
+                                    : 'You have no client orders yet. Start offering services!'}
+                            </Text>
+                        </>
+                    ) : (
+                        <>
+                            <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>
+                                {ongoingOrders.length > 0
+                                    ? 'Your placed orders'
+                                    : 'You have not placed any order yet.'}
+                            </Text>
+                        </>
+                    )}
+
                     <View>
                         {ongoingOrders
                             .slice()

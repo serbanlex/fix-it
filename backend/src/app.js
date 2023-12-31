@@ -34,7 +34,7 @@ app.use(
 //app.use(cors())
 // db table syncing
 db.sequelize
-  .sync({ force: false }).then(() => {
+  .sync({ force: false}).then(() => {
     console.log("Synced (created) db models")
   })
   .then(() => {

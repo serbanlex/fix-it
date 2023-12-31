@@ -33,7 +33,10 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             unique: true,
         },
-        // TODO: Add image
+        imageUrl: {
+            type: Sequelize.STRING,
+            allowNull: true,
+        },
         password: {
             type: Sequelize.STRING,
             allowNull: false,

@@ -61,6 +61,10 @@
                 "password": {
                   "type": "string",
                   "example": "123456"
+                },
+                "imageUrl": {
+                  "type": "string",
+                  "example": "https://firebasestorage.googleapis.com/v0/b/fix-it-4efd5.appspot.com/o/images%2Fusers%2F39013954-f5091c3a-43e6-11e8-9cac-37cf8e8c8e4e.jpg?alt=media&token=12d89c90-c039-4ef8-a26a-e908cdcc0890"
                 }
               },
               "required": [
@@ -68,7 +72,8 @@
                 "lastName",
                 "email",
                 "phoneNumber",
-                "password"
+                "password",
+                "imageUrl"
               ]
             }
           }
@@ -282,6 +287,10 @@
                 "CAEN": {
                   "type": "string",
                   "example": "4123"
+                },
+                "imageUrl": {
+                  "type": "string",
+                  "example": "https://firebasestorage.googleapis.com/v0/b/fix-it-4efd5.appspot.com/o/images%2Fusers%2F39013954-f5091c3a-43e6-11e8-9cac-37cf8e8c8e4e.jpg?alt=media&token=12d89c90-c039-4ef8-a26a-e908cdcc0890"
                 }
               },
               "required": [
@@ -294,7 +303,8 @@
                 "firmCity",
                 "firmAddress",
                 "CUI",
-                "CAEN"
+                "CAEN",
+                "imageUrl"
               ]
             }
           }

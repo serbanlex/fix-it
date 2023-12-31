@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Alert } from 'react-native';
-import { Button } from 'native-base';
+import {StyleSheet, Text, View, ImageBackground, ScrollView, Alert, TouchableOpacity, Image} from 'react-native';
+import {Button, CloseIcon} from 'native-base';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import GradientBackground from '../../components/GradientBackground2';
 import { REACT_APP_API_URL } from '@env';
+import ImageUploadButton from "../../components/ImageUploadButton";
+import * as ImagePicker from "expo-image-picker";
+import ImageRemoveButton from "../../components/ImageRemoveButton";
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -14,15 +17,54 @@ const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const RegisterScreen = ({ route }) => {
   const navigation = useNavigation();
   const role = route.params.role;
+
   const [genericUserData, setGenericUserData] = useState('');
+  const [attachmentButtonText, setAttachmentButtonText] = useState("Upload your profile picture");
+  const [imageUrl, setImageUrl] = useState(null);
+
   const { control, handleSubmit, watch } = useForm();
   const pwd = watch('password');
+  const handleImageUpload = () => {
+    ImagePicker.requestMediaLibraryPermissionsAsync().then(r => {
+      if (r.granted) {
+        ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1
+        }).then(result => {
+          setAttachmentButtonText("Change Profile Picture");
+          console.log(result);
+          if (!result.cancelled) {
+            setImageUrl(result.assets[0].uri);
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      } else {
+        Alert.alert("Permission to access camera roll is required!");
+      }
+    })
 
+  };
   const onNextPressed = (data) => {
-    setGenericUserData(data);
-    console.log("########", genericUserData);
-    console.log("########", data);
-    navigation.navigate('RegisterOfferer', { data: data });
+    let userData = {};
+    if(imageUrl){
+       userData = {
+        ...data,
+        imageUrl: imageUrl,
+      };
+    }
+    else{
+         userData = {
+            ...data,
+            imageUrl: "https://firebasestorage.googleapis.com/v0/b/fix-it-4efd5.appspot.com/o/images%2Fusers%2F39013954-f5091c3a-43e6-11e8-9cac-37cf8e8c8e4e.jpg?alt=media&token=12d89c90-c039-4ef8-a26a-e908cdcc0890",
+        };
+    }
+
+    setGenericUserData(userData);
+    console.log("########", userData);
+    navigation.navigate('RegisterOfferer', { data: userData });
   };
 
   const onRegisterPressed = async data => {
@@ -116,6 +158,23 @@ const RegisterScreen = ({ route }) => {
                 value == pwd || 'Passwords do not match',
             }}
           />
+          <ImageUploadButton onPress={handleImageUpload} buttonText={attachmentButtonText} />
+          {imageUrl && (
+              <>
+                <ImageRemoveButton
+                    onPress={() => {
+                      setImageUrl(null);
+                      setAttachmentButtonText("Upload your profile picture");
+                    }}
+                    buttonText={"Remove Profile Picture"}
+                />
+                <Image
+                    source={{ uri: imageUrl }}
+                    style={{ width: 200, height: 200 }}
+                />
+              </>
+          )}
+
           {role === "serviceOfferer" && (
             <>
               <CustomButton text="Next" onPress={handleSubmit(onNextPressed)} />
@@ -161,6 +220,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+
 });
 
 export default RegisterScreen;
