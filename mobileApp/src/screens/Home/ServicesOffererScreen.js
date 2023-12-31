@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, Modal } from 'react-native';
+import {Text, View, StyleSheet, FlatList, Alert, TouchableOpacity, Modal, ScrollView} from 'react-native';
 import { Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
@@ -130,7 +130,7 @@ function ServicesOffererScreen({ route }) {
                         </Text>
                     </Button>
 
-                    <View style={styles.contentContainer}>
+                    <ScrollView style={styles.contentContainer}>
                         <FlatList
                             data={services}
                             renderItem={({ item }) => (
@@ -147,7 +147,9 @@ function ServicesOffererScreen({ route }) {
                             keyExtractor={item => item.ID.toString()}
                             contentContainerStyle={styles.listContainer}
                         />
-                    </View>
+                    </ScrollView>
+
+
 
                     <CustomInput
                         name="price"
@@ -214,6 +216,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         width: '100%',
+        padding: '10%',
     },
     modalContainer: {
         flex: 1,

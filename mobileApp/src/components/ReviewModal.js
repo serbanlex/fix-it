@@ -4,8 +4,8 @@ import {AirbnbRating} from 'react-native-ratings';
 import * as ImagePicker from 'expo-image-picker';
 
 import {AddIcon, CloseIcon} from "native-base";
-import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
-import { REACT_APP_API_URL } from '@env';
+import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
+import {REACT_APP_API_URL} from '@env';
 
 
 const styles = {
@@ -99,7 +99,7 @@ const styles = {
 };
 
 
-const ReviewModal = ({orderReviewModalVisible, setReviewModalVisible, orderInReview}) => {
+const ReviewModal = ({session, orderReviewModalVisible, setReviewModalVisible, orderInReview, setOngoingOrders}) => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [imageUrl, setImageUrl] = useState(null);
@@ -136,6 +136,31 @@ const ReviewModal = ({orderReviewModalVisible, setReviewModalVisible, orderInRev
         setComment('');
         setRating(0);
         setAttachmentButtonText(initialAttachmentButtonText);
+    }
+
+    const closeModalAndRefreshOrders = () => {
+        setReviewModalVisible(false);
+        setImageUrl(null);
+        setComment('');
+        setRating(0);
+        setAttachmentButtonText(initialAttachmentButtonText);
+        fetch(`${REACT_APP_API_URL}/orders/client/${session.ID}`, { headers: { 'Cache-Control': 'no-cache' } })
+            .then(response => {
+                if (!response.ok) {
+                    console.log("Something went wrong: " + JSON.stringify(response));
+                    Alert.alert('Something went wrong', 'Failed to load ongoing orders.');
+                    throw new Error("Failed to load ongoing orders. A network error may have occurred.")
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    console.log(data)
+                    setOngoingOrders(data);
+                }
+            })
+            .catch(error => console.error(error));
     }
 
 
@@ -225,7 +250,7 @@ const ReviewModal = ({orderReviewModalVisible, setReviewModalVisible, orderInRev
                 Alert.alert('Review submitted successfully!', "You'll be redirected to your home page swiftly.", [
                     {
                         text: 'Great!',
-                        onPress: () => handleModalClose(),
+                        onPress: () => closeModalAndRefreshOrders(),
                     },
                 ]);
             })

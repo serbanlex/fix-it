@@ -41,6 +41,7 @@ const RegisterOffererScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
+        <Text style={styles.title}>Some last details...</Text>
       <CustomInput
         name="firmName"
         control={control}
@@ -82,6 +83,7 @@ const RegisterOffererScreen = ({ route }) => {
         }}
       />
 
+
       <CustomButton text="Register" onPress={handleSubmit(onRegisterPressed)} />
     </View>
   );
@@ -93,6 +95,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+    title: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 36,
+    }
 });
 
 export default RegisterOffererScreen;

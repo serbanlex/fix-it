@@ -43,6 +43,8 @@ module.exports = {
                     $email: 'offerer@email.com',
                     $phoneNumber: '0772-456-789',
                     $password: 'user',
+                    $firstName: 'John',
+                    $lastName: 'Doe',
                 }
             }
          */

@@ -86,9 +86,14 @@ function OfferedServicesScreen({ route }) {
                 </TouchableOpacity>
 
                 <View style={styles.contentContainer}>
-                    <Text style={styles.title}>Service offerers good at {serviceName.toLowerCase()}</Text>
+                    {
+                        offeredServices.length == 0
+                        ? <Text style={styles.title}>Unfortunately, there are no service offerers that can do {serviceName.toLowerCase()}, just yet. Please stay tuned.</Text>
+                        : <Text style={styles.title}>Service offerers good at {serviceName.toLowerCase()}</Text>
+                    }
 
                     {offeredServices.map((offeredService) => renderOfferedService(offeredService))}
+
                 </View>
             </ScrollView>
         );

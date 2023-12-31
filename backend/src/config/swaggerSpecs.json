@@ -187,12 +187,22 @@
                 "password": {
                   "type": "string",
                   "example": "user"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
                 }
               },
               "required": [
                 "email",
                 "phoneNumber",
-                "password"
+                "password",
+                "firstName",
+                "lastName"
               ]
             }
           }

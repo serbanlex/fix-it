@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Alert, TouchableOpacity, Modal, ScrollView } from 'react-native';
-import {Button, IconButton} from 'native-base';
+import {Button} from 'native-base';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { REACT_APP_API_URL } from '@env';
 import ServiceCategory from '../../components/ServiceCategory';
-import ClosingButton from "../../components/ClosingButton";
 import ReviewModal from "../../components/ReviewModal";
 
 console.log(REACT_APP_API_URL)
@@ -207,12 +206,13 @@ function HomeScreen({ }) {
             >
                 <Text style={styles.buttonText}>Log out</Text>
             </Button>
-            <Text style={styles.title}>Welcome!</Text>
+            <Text style={styles.title}>Welcome,</Text>
+            <Text style={styles.title}>{session.firstName} {session.lastName}!</Text>
 
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View>
                     <Text style={[styles.subtitle, styles.centerText]}>
-                        {session.serviceOffererInfo == null ? 'Choose a problem fix category:' : 'Choose a new service category to offer:'}
+                        {session.serviceOffererInfo == null ? "Ready to fix it?\n Choose a service category:" : 'Ready to fix more? \n Choose a new service category to offer:'}
                     </Text>
 
                     <View style={styles.columnWrapper}>
@@ -223,23 +223,49 @@ function HomeScreen({ }) {
                             </TouchableOpacity>
                         ))}
                     </View>
-
-                    <Text style={[styles.subtitle, styles.centerText]}>Your orders</Text>
+                    {session.serviceOffererInfo != null ? (
+                        <Text style={[styles.subtitle, styles.centerText]}>Your clients orders</Text>
+                        ) : (
+                        <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>Your placed orders</Text>
+                        )
+                    }
                     <View>
-                        {ongoingOrders.map((order) => (
-                            <TouchableOpacity key={order.ID} onPress={() => openOrderModal(order)} style={styles.orderItem}>
-                                <Text style={styles.orderItemText}>
-                                    Order number #{order.ID}
-                                    {order.state && <Text style={styles.orderItemState}>, state: {order.state}, firm: </Text>}
-                                    {order.OfferedService &&
-                                        order.OfferedService.ServiceOfferer &&
-                                        order.OfferedService.ServiceOfferer.firmName && (
-                                            <Text style={styles.orderItemFirmName}>{order.OfferedService.ServiceOfferer.firmName}</Text>
+                        {ongoingOrders
+                            .slice()
+                            .sort((a, b) => {
+                                const orderStatusOrder = ['pending', 'in progress', 'done'];
+                                return orderStatusOrder.indexOf(a.state) - orderStatusOrder.indexOf(b.state);
+                            })
+                            .map((order) => (
+                                <TouchableOpacity key={order.ID} onPress={() => openOrderModal(order)} style={styles.orderItem}>
+                                    <Text style={styles.orderItemText}>
+                                        Order number #{order.ID}
+                                        {session.serviceOffererInfo !== null ? (
+                                            <>
+                                                {order.state && <Text style={styles.orderItemState}>, state: {order.state}, client: </Text>}
+                                                {order.Client && order.Client.userInfo && (
+                                                    <Text style={styles.orderItemFirmName}>
+                                                        {order.Client.userInfo.firstName} {order.Client.userInfo.lastName}
+                                                    </Text>
+                                                )}
+                                            </>
+                                        ) : (
+                                            <>
+                                                {order.state && <Text style={styles.orderItemState}>, state: {order.state}, firm: </Text>}
+                                                {order.OfferedService &&
+                                                    order.OfferedService.ServiceOfferer &&
+                                                    order.OfferedService.ServiceOfferer.firmName && (
+                                                        <Text style={styles.orderItemFirmName}>
+                                                            {order.OfferedService.ServiceOfferer.firmName}
+                                                        </Text>
+                                                    )}
+                                            </>
                                         )}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
                     </View>
+
 
                     {session.serviceOffererInfo == null && ongoingOrders.some(order => order.state === 'done' && !order.Review) &&
                         (
@@ -272,10 +298,11 @@ function HomeScreen({ }) {
 
                     {/* Modal to display order clicked for review */}
                     <ReviewModal
+                        session={session}
                         orderInReview={orderInReview}
                         setReviewModalVisible={setReviewModalVisible}
                         orderReviewModalVisible={orderReviewModalVisible}
-                        setOrderInReview={setOrderInReview}
+                        setOngoingOrders={setOngoingOrders}
                     />
 
 
@@ -409,7 +436,6 @@ const styles = StyleSheet.create({
         color: '#43428b',
         fontWeight: 'bold',
         fontSize: 32,
-        paddingBottom: '5%',
     },
     subtitle: {
         color: '#43428b',
@@ -491,6 +517,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         alignItems: 'center',
         paddingHorizontal: '2%',
+        paddingTop: '5%',
     },
     centerText: {
         textAlign: 'center',
