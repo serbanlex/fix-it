@@ -241,7 +241,7 @@ function HomeScreen({ }) {
                         ))}
                     </View>
 
-                    {session.serviceOffererInfo == null &&
+                    {session.serviceOffererInfo == null && ongoingOrders.some(order => order.state === 'done' && !order.Review) &&
                         (
                             <View>
                                 <Text style={[styles.subtitle, styles.centerText, styles.paddingTop]}>Orders waiting for your review</Text>
