@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
-import { Button } from 'native-base';
+import React from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import Logo from '../../assets/logo.png';
-import Background from '../../assets/background-welcome-2.jpg';
 import GradientBackground from '../components/GradientBackground';
 import CustomButton from '../components/CustomButton';
 
